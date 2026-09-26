@@ -1,0 +1,29 @@
+{
+  "name": "constructora",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@nuxt/image": "^2.0.0",
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@supabase/supabase-js": "^2.39.8",
+    "@vueuse/core": "^11.0.0",
+    "@vueuse/nuxt": "^11.0.0",
+    "gsap": "^3.15.0",
+    "nuxt": "^3.13.0",
+    "ogl": "^1.0.11",
+    "resend": "^4.0.0",
+    "three": "^0.186.0",
+    "vue": "^3.5.0",
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.0"
+  }
+}

@@ -1,0 +1,1265 @@
+<template>
+  <section
+    id="servicios"
+    ref="sectionRef"
+    class="servicios"
+    :class="{ 'is-visible': isVisible }"
+    aria-labelledby="servicios-title"
+  >
+    <!-- Background -->
+    <div class="servicios-bg" aria-hidden="true">
+      <div class="bg-gradient"></div>
+      <div class="bg-noise"></div>
+      <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+      </div>
+    </div>
+
+    <div class="servicios-container">
+      <!-- Header - Dramatic Redesign -->
+      <header class="servicios-header">
+        <div class="header-tag">
+          <span class="tag-dot"></span>
+          <span>Expertos Certificados</span>
+        </div>
+
+        <!-- Main title with dramatic split -->
+        <div class="header-title-wrapper">
+          <h2 id="servicios-title" class="header-title">
+            <span class="title-line title-line-1">
+              <span class="title-word" v-for="(word, i) in ['Soluciones', 'que']" :key="i" :style="{ '--i': i }">{{ word }}</span>
+            </span>
+            <span class="title-line title-line-2">
+              <span class="title-word accent" :style="{ '--i': 2 }">Construyen</span>
+              <span class="title-word" :style="{ '--i': 3 }">tu</span>
+            </span>
+            <span class="title-line title-line-3">
+              <span class="title-word accent" :style="{ '--i': 4 }">Futuro</span>
+            </span>
+          </h2>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="header-desc">
+          <span class="desc-highlight">Profesionales certificados</span> en instalaciones sanitarias, eléctricas y regularización de propiedades en la Región de Los Ríos.
+        </p>
+
+        <!-- Scroll indicator -->
+        <div class="header-scroll">
+          <span>Explorar servicios</span>
+          <div class="scroll-arrow">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M19 12l-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- Services Tabs -->
+      <div class="services-wrapper">
+        <!-- Tab Navigation -->
+        <nav class="tabs-nav" role="tablist" aria-label="Categorías de servicios">
+          <button
+            v-for="(servicio, index) in servicios"
+            :key="servicio.id"
+            :id="`tab-${servicio.id}`"
+            class="tab-btn"
+            :class="{ active: activeTab === index }"
+            role="tab"
+            :aria-selected="activeTab === index"
+            :aria-controls="`panel-${servicio.id}`"
+            :tabindex="activeTab === index ? 0 : -1"
+            @click="activeTab = index"
+            @keydown="handleTabKeydown($event, index)"
+          >
+            <span class="tab-icon" v-html="servicio.icon" aria-hidden="true"></span>
+            <span class="tab-label">{{ servicio.shortTitle }}</span>
+            <span class="tab-indicator" aria-hidden="true"></span>
+          </button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="tabs-content">
+          <TransitionGroup name="tab-fade">
+            <article
+              v-for="(servicio, index) in servicios"
+              v-show="activeTab === index"
+              :key="servicio.id"
+              :id="`panel-${servicio.id}`"
+              class="service-panel"
+              role="tabpanel"
+              :aria-labelledby="`tab-${servicio.id}`"
+              :hidden="activeTab !== index"
+            >
+              <!-- Panel Header -->
+              <header class="panel-header">
+                <div class="panel-badge">{{ servicio.badge }}</div>
+                <h3 class="panel-title">{{ servicio.title }}</h3>
+                <p class="panel-intro">{{ servicio.intro }}</p>
+              </header>
+
+              <!-- Features Grid -->
+              <div class="features-grid">
+                <div
+                  v-for="(feature, fIndex) in servicio.features"
+                  :key="fIndex"
+                  class="feature-card"
+                  :style="{ '--delay': `${fIndex * 0.1}s` }"
+                >
+                  <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  </div>
+                  <div class="feature-content">
+                    <h4 class="feature-title">{{ feature.title }}</h4>
+                    <p class="feature-desc">{{ feature.desc }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Benefits -->
+              <aside v-if="servicio.benefits" class="benefits-section" aria-label="Beneficios del servicio">
+                <h4 class="benefits-title">Beneficios principales</h4>
+                <ul class="benefits-list">
+                  <li
+                    v-for="(benefit, bIndex) in servicio.benefits"
+                    :key="bIndex"
+                    :style="{ '--delay': `${bIndex * 0.08}s` }"
+                  >
+                    <span class="benefit-check" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none">
+                        <path d="M13 5L6 12L3 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <span>{{ benefit }}</span>
+                  </li>
+                </ul>
+              </aside>
+
+              <!-- CTA -->
+              <div class="panel-cta">
+                <a
+                  href="/contacto"
+                  class="cta-primary"
+                  :aria-label="`Solicitar cotización para ${servicio.shortTitle}`"
+                >
+                  <span>Solicitar Cotización</span>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a
+                  :href="whatsappLink(servicio.shortTitle)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="cta-whatsapp"
+                  :aria-label="`Consultar por WhatsApp sobre ${servicio.shortTitle}`"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                  <span>Consultar por WhatsApp</span>
+                </a>
+              </div>
+            </article>
+          </TransitionGroup>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+// SEO - JSON-LD Structured Data
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        'name': 'Constructora - Servicios Profesionales',
+        'description': 'Servicios profesionales de instalaciones sanitarias, eléctricas y regularización de propiedades en la Región de Los Ríos, Chile.',
+        'url': 'https://constructora.cl/#servicios',
+        'areaServed': {
+          '@type': 'AdministrativeArea',
+          'name': 'Región de Los Ríos, Chile'
+        },
+        'hasOfferCatalog': {
+          '@type': 'OfferCatalog',
+          'name': 'Servicios de Construcción',
+          'itemListElement': [
+            {
+              '@type': 'Offer',
+              'itemOffered': {
+                '@type': 'Service',
+                'name': 'Proyectos e Instalaciones Sanitarias',
+                'description': 'Diseño, gestión y aprobación de proyectos de agua potable y alcantarillado para zonas rurales y urbanas.',
+                'provider': {
+                  '@type': 'LocalBusiness',
+                  'name': 'Constructora'
+                },
+                'serviceType': 'Instalaciones Sanitarias',
+                'areaServed': 'Región de Los Ríos'
+              }
+            },
+            {
+              '@type': 'Offer',
+              'itemOffered': {
+                '@type': 'Service',
+                'name': 'Servicios e Instalaciones Eléctricas',
+                'description': 'Instalaciones eléctricas con certificación SEC, empalmes, tableros y proyectos normados.',
+                'provider': {
+                  '@type': 'LocalBusiness',
+                  'name': 'Constructora'
+                },
+                'serviceType': 'Instalaciones Eléctricas',
+                'areaServed': 'Región de Los Ríos'
+              }
+            },
+            {
+              '@type': 'Offer',
+              'itemOffered': {
+                '@type': 'Service',
+                'name': 'Regularización de Propiedades - Ley del Mono',
+                'description': 'Regularización de viviendas y ampliaciones bajo Ley N° 20.898 con hasta 75% de descuento en derechos municipales.',
+                'provider': {
+                  '@type': 'LocalBusiness',
+                  'name': 'Constructora'
+                },
+                'serviceType': 'Regularización de Propiedades',
+                'areaServed': 'Región de Los Ríos'
+              }
+            }
+          ]
+        }
+      })
+    }
+  ]
+})
+
+const sectionRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+const activeTab = ref(0)
+
+// WhatsApp link generator
+const whatsappLink = (servicio: string) => {
+  const message = encodeURIComponent(`Hola, me interesa obtener información sobre ${servicio}. ¿Podrían ayudarme?`)
+  return `https://wa.me/56959266213?text=${message}`
+}
+
+// Keyboard navigation for tabs
+const handleTabKeydown = (event: KeyboardEvent, currentIndex: number) => {
+  const tabCount = servicios.length
+  let newIndex = currentIndex
+
+  switch (event.key) {
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      event.preventDefault()
+      newIndex = currentIndex === 0 ? tabCount - 1 : currentIndex - 1
+      break
+    case 'ArrowRight':
+    case 'ArrowDown':
+      event.preventDefault()
+      newIndex = currentIndex === tabCount - 1 ? 0 : currentIndex + 1
+      break
+    case 'Home':
+      event.preventDefault()
+      newIndex = 0
+      break
+    case 'End':
+      event.preventDefault()
+      newIndex = tabCount - 1
+      break
+    default:
+      return
+  }
+
+  activeTab.value = newIndex
+  // Focus the new tab
+  nextTick(() => {
+    const newTab = document.getElementById(`tab-${servicios[newIndex].id}`)
+    newTab?.focus()
+  })
+}
+
+onMounted(() => {
+  if (sectionRef.value) {
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          isVisible.value = true
+          sectionObserver.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    sectionObserver.observe(sectionRef.value)
+  }
+})
+
+const servicios = [
+  {
+    id: 'sanitario',
+    shortTitle: 'Sanitarios',
+    badge: 'Proyectos Sanitarios',
+    title: 'Proyectos e Instalaciones Sanitarias',
+    intro: '¿Necesitas construir y/o regularizar tus instalaciones sanitarias? Nuestra empresa cuenta con los profesionales competentes para el desarrollo, gestión y aprobación de tu proyecto sanitario, tanto en zonas rurales como urbanas.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 2v6M12 22v-6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M22 12h-6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>`,
+    features: [
+      {
+        title: 'Diseño de Proyectos',
+        desc: 'Elaboramos diseños de proyectos de agua potable y alcantarillado (sistemas de impulsión de agua, alcantarillados particulares, etc.) adaptados a sectores rurales y urbanos.'
+      },
+      {
+        title: 'Levantamientos Técnicos',
+        desc: 'Realizamos levantamientos de artefactos y/o arquitectura de construcciones, lo cual incluye levantamiento topográfico profesional.'
+      },
+      {
+        title: 'Gestión y Tramitación',
+        desc: 'Gestionamos el ingreso y la aprobación de proyectos ante las Empresas Sanitarias (Suralis, Aguas Décimas, etc.) y/o el Servicio de Salud respectivo.'
+      }
+    ],
+    benefits: [
+      'Profesionales certificados en el área',
+      'Cobertura en zonas rurales y urbanas',
+      'Gestión completa ante entidades sanitarias',
+      'Plazos claros y cumplimiento garantizado'
+    ]
+  },
+  {
+    id: 'electrico',
+    shortTitle: 'Eléctricos',
+    badge: 'Certificación SEC',
+    title: 'Servicios e Instalaciones Eléctricas',
+    intro: '¿Necesitas instalaciones eléctricas nuevas para tu vivienda o construcción, o buscas mejorar, renovar y ampliar tu red eléctrica? Entregamos servicios eléctricos con seguridad, respaldo y calidad técnica para tu construcción en la Región de Los Ríos.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+    features: [
+      {
+        title: 'Instalaciones Completas',
+        desc: 'Ejecutamos instalaciones eléctricas, empalmes, tableros, proyectos y servicios normados según la legislación vigente.'
+      },
+      {
+        title: 'Seguridad Garantizada',
+        desc: 'Todas nuestras obras cumplen con la normativa chilena vigente, asegurando la protección de tu familia y propiedad.'
+      },
+      {
+        title: 'Respaldo Profesional',
+        desc: 'Contamos con profesionales y/o técnicos autorizados por la SEC (Superintendencia de Electricidad y Combustibles).'
+      },
+      {
+        title: 'Calidad Técnica',
+        desc: 'Entregamos trabajos con garantía, respaldo y alta calidad en cada proyecto realizado.'
+      }
+    ],
+    benefits: [
+      'Certificación TE1 incluida',
+      'Profesionales autorizados SEC',
+      'Garantía en todos los trabajos',
+      'Materiales de primera calidad'
+    ]
+  },
+  {
+    id: 'mono',
+    shortTitle: 'Ley del Mono',
+    badge: 'Ley N° 20.898',
+    title: 'Regularización de Propiedades',
+    intro: '¿Necesitas regularizar tu vivienda, ampliaciones, local comercial y/o recintos sociales? Estamos para ayudarte a obtener seguridad jurídica y tranquilidad para tu familia.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke-linecap="round"/>
+      <rect x="9" y="3" width="6" height="4" rx="1"/>
+      <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+    features: [
+      {
+        title: 'Trámite Único y Rápido',
+        desc: 'La Ley del Mono permite obtener, en un solo trámite simplificado, el permiso de edificación y la recepción definitiva de tu propiedad.'
+      },
+      {
+        title: 'Prevención de Sanciones',
+        desc: 'Pone al día las construcciones o ampliaciones ejecutadas sin permiso municipal previo, evitando multas u órdenes de demolición.'
+      },
+      {
+        title: 'Menor Burocracia',
+        desc: 'Exige menos documentos técnicos que una regularización tradicional, requiriendo principalmente un plano firmado y/o certificación profesional.'
+      },
+      {
+        title: 'Ahorro Económico',
+        desc: 'Otorga importantes descuentos en los pagos municipales según la tasación del bien raíz, alcanzando hasta un 75% de rebaja en propiedades de menor avalúo.'
+      }
+    ],
+    benefits: [
+      'Rebaja de hasta 75% en derechos municipales',
+      'Un solo trámite simplificado',
+      'Evita multas y demoliciones',
+      'Seguridad jurídica para tu familia'
+    ]
+  }
+]
+</script>
+
+<style scoped>
+/* ═══════════════════════════════════════
+   BASE - Mobile First
+   ═══════════════════════════════════════ */
+.servicios {
+  position: relative;
+  padding: 80px 5vw;
+  background: var(--texto);
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════
+   BACKGROUND
+   ═══════════════════════════════════════ */
+.servicios-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 0% 0%, rgba(43, 95, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 60% at 100% 100%, rgba(43, 95, 0, 0.1) 0%, transparent 50%);
+}
+
+.bg-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+}
+
+/* Floating orbs */
+.bg-orbs {
+  position: absolute;
+  inset: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.servicios.is-visible .orb {
+  opacity: 1;
+}
+
+.orb-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(93, 214, 44, 0.06) 0%, transparent 60%);
+  top: 5%;
+  left: -10%;
+}
+
+.orb-2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(51, 116, 24, 0.08) 0%, transparent 60%);
+  bottom: 5%;
+  right: 0%;
+}
+
+/* ═══════════════════════════════════════
+   CONTAINER
+   ═══════════════════════════════════════ */
+.servicios-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════
+   HEADER - DRAMATIC REDESIGN
+   ═══════════════════════════════════════ */
+.servicios-header {
+  margin-bottom: 60px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.servicios.is-visible .servicios-header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header-tag {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(93, 214, 44, 0.08);
+  border: 1px solid rgba(93, 214, 44, 0.2);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--acento);
+}
+
+.tag-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--acento);
+  border-radius: 50%;
+}
+
+/* Title Wrapper */
+.header-title-wrapper {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.header-title {
+  font-family: var(--f-display);
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.title-line {
+  display: block;
+  overflow: hidden;
+}
+
+.title-word {
+  display: inline-block;
+  color: var(--fondo-puro);
+  opacity: 0;
+  transform: translateY(100%);
+  animation: wordReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i) * 0.1s + 0.3s);
+  margin-right: 0.2em;
+}
+
+.servicios:not(.is-visible) .title-word {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes wordReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title-word.accent {
+  color: var(--acento);
+}
+
+
+/* Description */
+.header-desc {
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 550px;
+  margin-bottom: 32px;
+}
+
+.desc-highlight {
+  color: var(--fondo-puro);
+  font-weight: 600;
+}
+
+/* Scroll Indicator */
+.header-scroll {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.3s ease;
+}
+
+.header-scroll:hover {
+  color: var(--acento);
+}
+
+.header-scroll span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.scroll-arrow {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.scroll-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* ═══════════════════════════════════════
+   TABS NAVIGATION
+   ═══════════════════════════════════════ */
+.services-wrapper {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+}
+
+.servicios.is-visible .services-wrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tabs-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(93, 214, 44, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tab-btn:hover::before {
+  opacity: 1;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(93, 214, 44, 0.3);
+  transform: translateX(4px);
+}
+
+.tab-btn:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.tab-btn.active {
+  background: rgba(93, 214, 44, 0.1);
+  border-color: var(--acento);
+  transform: translateX(0);
+}
+
+.tab-btn.active::before {
+  opacity: 1;
+}
+
+.tab-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.tab-icon :deep(svg) {
+  width: 24px;
+  height: 24px;
+}
+
+.tab-btn:hover .tab-icon,
+.tab-btn.active .tab-icon {
+  color: var(--acento);
+  transform: scale(1.1);
+}
+
+.tab-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.tab-btn:hover .tab-label,
+.tab-btn.active .tab-label {
+  color: var(--fondo-puro);
+}
+
+.tab-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--acento) 0%, rgba(93, 214, 44, 0.5) 100%);
+  border-radius: 0 3px 3px 0;
+  transform: scaleY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-btn.active .tab-indicator {
+  transform: scaleY(1);
+}
+
+/* ═══════════════════════════════════════
+   TAB CONTENT
+   ═══════════════════════════════════════ */
+.tabs-content {
+  position: relative;
+  min-height: 400px;
+}
+
+.service-panel {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+/* Panel Header */
+.panel-header {
+  margin-bottom: 32px;
+}
+
+.panel-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--acento);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.panel-title {
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--fondo-puro);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.panel-intro {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Features Grid */
+.features-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.feature-card {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: featureReveal 0.6s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes featureReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(93, 214, 44, 0.25);
+  transform: translateY(-4px) translateX(4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(93, 214, 44, 0.12);
+  border: 1px solid rgba(93, 214, 44, 0.2);
+  border-radius: 12px;
+  color: var(--acento);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  background: rgba(93, 214, 44, 0.2);
+  transform: scale(1.05);
+}
+
+.feature-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.feature-content {
+  flex: 1;
+}
+
+.feature-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fondo-puro);
+  margin-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+.feature-card:hover .feature-title {
+  color: var(--acento);
+}
+
+.feature-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Benefits */
+.benefits-section {
+  padding: 24px;
+  background: rgba(93, 214, 44, 0.06);
+  border: 1px solid rgba(93, 214, 44, 0.15);
+  border-radius: 14px;
+  margin-bottom: 32px;
+}
+
+.benefits-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 16px;
+}
+
+.benefits-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.benefits-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: benefitReveal 0.4s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes benefitReveal {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.benefit-check {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--acento);
+  border-radius: 50%;
+  color: white;
+  margin-top: 1px;
+}
+
+.benefit-check svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Panel CTA */
+.panel-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cta-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  background: var(--acento);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.cta-primary:hover {
+  background: var(--acento-dark);
+  transform: translateY(-2px);
+}
+
+.cta-primary:focus-visible {
+  outline: 2px solid var(--fondo-puro);
+  outline-offset: 2px;
+}
+
+.cta-primary svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.cta-primary:hover svg {
+  transform: translateX(4px);
+}
+
+.cta-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: rgba(37, 211, 102, 0.1);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #25D366;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-whatsapp:hover {
+  background: rgba(37, 211, 102, 0.2);
+  border-color: #25D366;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
+}
+
+.cta-whatsapp:focus-visible {
+  outline: 2px solid #25D366;
+  outline-offset: 2px;
+}
+
+.cta-whatsapp svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Tab Transition */
+.tab-fade-enter-active {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.tab-fade-leave-active {
+  transition: opacity 0.2s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.tab-fade-leave-to {
+  opacity: 0;
+}
+
+/* ═══════════════════════════════════════
+   TABLET (min-width: 640px)
+   ═══════════════════════════════════════ */
+@media (min-width: 640px) {
+  .servicios {
+    padding: 100px 6vw;
+  }
+
+  .servicios-header {
+    margin-bottom: 80px;
+  }
+
+  .header-desc {
+    font-size: 17px;
+  }
+
+  .tabs-nav {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .tab-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .tab-indicator {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: auto;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    transform: scaleX(0);
+    background: linear-gradient(90deg, var(--acento) 0%, rgba(93, 214, 44, 0.5) 100%);
+  }
+
+  .tab-btn.active .tab-indicator {
+    transform: scaleX(1);
+  }
+
+  .service-panel {
+    padding: 32px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .benefits-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .panel-cta {
+    flex-direction: row;
+  }
+
+  .cta-primary,
+  .cta-whatsapp {
+    flex: 1;
+  }
+}
+
+/* ═══════════════════════════════════════
+   DESKTOP (min-width: 1024px)
+   ═══════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .servicios {
+    padding: 140px 6vw;
+  }
+
+  .servicios-header {
+    margin-bottom: 100px;
+  }
+
+  .header-title {
+    font-size: 6rem;
+  }
+
+  .header-desc {
+    font-size: 18px;
+  }
+
+  .tabs-nav {
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .tab-btn {
+    padding: 24px 32px;
+  }
+
+  .tab-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .tab-icon :deep(svg) {
+    width: 28px;
+    height: 28px;
+  }
+
+  .tab-label {
+    font-size: 15px;
+  }
+
+  .service-panel {
+    padding: 48px;
+  }
+
+  .panel-title {
+    font-size: 2rem;
+  }
+
+  .panel-intro {
+    font-size: 16px;
+    max-width: 700px;
+  }
+
+  .features-grid {
+    gap: 24px;
+  }
+
+  .feature-card {
+    padding: 24px;
+  }
+
+  .feature-title {
+    font-size: 16px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+  }
+}
+
+/* ═══════════════════════════════════════
+   LARGE DESKTOP (min-width: 1280px)
+   ═══════════════════════════════════════ */
+@media (min-width: 1280px) {
+  .servicios-container {
+    max-width: 1400px;
+  }
+
+  .header-title {
+    font-size: 7rem;
+  }
+}
+
+/* ═══════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .servicios-header,
+  .services-wrapper,
+  .feature-card,
+  .benefits-list li {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+
+  .title-word {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .scroll-arrow {
+    animation: none;
+  }
+
+  .tab-btn,
+  .feature-card,
+  .cta-primary,
+  .cta-whatsapp,
+  .feature-icon {
+    transition: none;
+  }
+
+  .tab-fade-enter-active,
+  .tab-fade-leave-active {
+    transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════
+   PRINT STYLES
+   ═══════════════════════════════════════ */
+@media print {
+  .servicios {
+    background: white;
+    padding: 40px 20px;
+  }
+
+  .servicios-bg,
+  .tab-indicator,
+  .cta-whatsapp {
+    display: none;
+  }
+
+  .header-title,
+  .panel-title,
+  .feature-title {
+    color: #000;
+  }
+
+  .header-desc,
+  .panel-intro,
+  .feature-desc {
+    color: #333;
+  }
+
+  .service-panel {
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+}
+</style>

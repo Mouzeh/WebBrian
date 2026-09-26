@@ -1,0 +1,778 @@
+/* ══════════════════════════════════════════════════════
+   DESIGN SYSTEM — Construcciones Brian
+   Apple-Inspired Premium Design
+   ══════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Colores ─── */
+  --acento:        #2b5f00;
+  --acento-dark:   #1e4400;
+  --acento-light:  #3a7d00;
+  --acento-glow:   rgba(43, 95, 0, 0.4);
+
+  /* Fondos */
+  --fondo:         #F7F4EF;
+  --fondo-puro:    #FDFBF8;
+  --fondo-elevado: #FFFFFF;
+
+  /* Textos */
+  --texto:         #1C1A17;
+  --texto-suave:   #6B6355;
+  --texto-muted:   #9A9084;
+
+  /* Bordes */
+  --borde:         #E4DDD3;
+  --borde-medio:   #B8AFA3;
+
+  /* ─── Tipografías ─── */
+  --f-display:     'Barlow Condensed', sans-serif;
+  --f-body:        'DM Sans', sans-serif;
+
+  /* ─── Apple-style Easings ─── */
+  --ease-out:      cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring:   cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth:   cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─── Duraciones ─── */
+  --duration-instant: 80ms;
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  600ms;
+
+  /* ─── Espaciado ─── */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+
+  /* ─── Radios (Apple-style) ─── */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-2xl:  40px;
+  --radius-full: 9999px;
+
+  /* ─── Sombras (Premium) ─── */
+  --shadow-xs:   0 1px 2px rgba(0,0,0,0.03);
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-xl:   0 24px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06);
+  --shadow-2xl:  0 32px 80px rgba(0,0,0,0.16), 0 12px 32px rgba(0,0,0,0.08);
+  --shadow-glow: 0 0 60px var(--acento-glow);
+  --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+/* ══════════════════════════════════════════════════════
+   PRELOADER REVEAL TRANSITION
+   ══════════════════════════════════════════════════════ */
+
+body.preloader-done main,
+body.preloader-done nav,
+body.preloader-done footer {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+body.preloader-done main {
+  animation: mainReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.preloader-done nav {
+  animation: navReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.preloader-done footer {
+  animation: footerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+@keyframes mainReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes navReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes footerReveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body.preloader-done main,
+  body.preloader-done nav,
+  body.preloader-done footer {
+    animation: none;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   BASE
+   ══════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--fondo);
+  color: var(--texto);
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════════════
+   TIPOGRAFÍA
+   ══════════════════════════════════════════════════════ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--f-display);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.text-display {
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+
+/* ══════════════════════════════════════════════════════
+   BOTONES — Apple-Style Premium
+   ══════════════════════════════════════════════════════ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--f-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    box-shadow var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out);
+}
+
+/* Shimmer effect on hover */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  transition: transform var(--duration-slow) var(--ease-out);
+  z-index: 1;
+}
+
+.btn:hover::before {
+  transform: translateX(100%);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* ─── Botón Primario ─── */
+.btn-primary {
+  background: var(--texto);
+  color: var(--fondo);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: #2a2723;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: scale(0.96) translateY(0);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ─── Botón Secundario ─── */
+.btn-secondary {
+  background: transparent;
+  color: var(--texto);
+  border: 1.5px solid var(--texto);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: var(--texto);
+  color: var(--fondo);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.btn-secondary::before {
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 80%
+  );
+}
+
+/* ─── Botón Accent (Verde Premium) ─── */
+.btn-accent {
+  background: linear-gradient(135deg, var(--acento-light) 0%, var(--acento) 100%);
+  color: white;
+  box-shadow:
+    var(--shadow-md),
+    0 8px 32px var(--acento-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-accent:hover {
+  background: linear-gradient(135deg, var(--acento) 0%, var(--acento-dark) 100%);
+  box-shadow:
+    var(--shadow-lg),
+    0 12px 48px var(--acento-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.btn-accent:active {
+  transform: scale(0.96) translateY(0);
+  box-shadow:
+    var(--shadow-sm),
+    0 4px 16px var(--acento-glow);
+}
+
+/* ─── Botón Ghost ─── */
+.btn-ghost {
+  background: transparent;
+  color: var(--texto);
+  padding: 12px 20px;
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-ghost::before {
+  display: none;
+}
+
+/* ─── Botón WhatsApp ─── */
+.btn-whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  box-shadow:
+    var(--shadow-md),
+    0 8px 32px rgba(37, 211, 102, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background: linear-gradient(135deg, #20bd5a 0%, #0f7a6d 100%);
+  box-shadow:
+    var(--shadow-lg),
+    0 12px 48px rgba(37, 211, 102, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+}
+
+.btn-whatsapp:active {
+  transform: scale(0.96) translateY(0);
+}
+
+/* ─── Tamaños ─── */
+.btn-sm {
+  padding: 10px 20px;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.btn-lg {
+  padding: 18px 36px;
+  font-size: 15px;
+  gap: 12px;
+}
+
+.btn-xl {
+  padding: 22px 44px;
+  font-size: 16px;
+  gap: 14px;
+}
+
+/* ─── Íconos en botones ─── */
+.btn svg,
+.btn .icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.btn:hover svg,
+.btn:hover .icon {
+  transform: translateX(3px);
+}
+
+.btn-lg svg,
+.btn-lg .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ══════════════════════════════════════════════════════
+   CARDS — Premium Surfaces
+   ══════════════════════════════════════════════════════ */
+
+.card {
+  background: var(--fondo-elevado);
+  border: 1px solid var(--borde);
+  border-radius: var(--radius-lg);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+  border-color: transparent;
+}
+
+.card-interactive {
+  cursor: pointer;
+}
+
+.card-interactive:active {
+  transform: scale(0.98) translateY(-2px);
+}
+
+/* ══════════════════════════════════════════════════════
+   GLASS EFFECT — Apple Vibrancy
+   ══════════════════════════════════════════════════════ */
+
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+.glass-dark {
+  background: rgba(28, 26, 23, 0.75);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ══════════════════════════════════════════════════════
+   ANIMACIONES — Fluid Motion
+   ══════════════════════════════════════════════════════ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--acento-glow);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--acento-glow), 0 0 60px var(--acento-glow);
+  }
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity var(--duration-slower) var(--ease-out),
+    transform var(--duration-slower) var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.delay-1 { transition-delay: 0.08s; }
+.delay-2 { transition-delay: 0.16s; }
+.delay-3 { transition-delay: 0.24s; }
+.delay-4 { transition-delay: 0.32s; }
+.delay-5 { transition-delay: 0.4s; }
+
+/* ══════════════════════════════════════════════════════
+   LINKS
+   ══════════════════════════════════════════════════════ */
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--acento);
+  border-radius: var(--radius-full);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ══════════════════════════════════════════════════════
+   TAGS — Pill Style
+   ══════════════════════════════════════════════════════ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--fondo-puro);
+  border: 1px solid var(--borde);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--texto-suave);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-spring),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.tag:hover {
+  background: var(--fondo-elevado);
+  border-color: var(--acento);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.tag:active {
+  transform: scale(0.97);
+}
+
+.tag-filled {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: white;
+}
+
+.tag-filled:hover {
+  background: var(--acento-light);
+  border-color: var(--acento-light);
+}
+
+/* ══════════════════════════════════════════════════════
+   UTILIDADES DE LAYOUT
+   ══════════════════════════════════════════════════════ */
+
+.section {
+  padding: var(--space-3xl) 6vw;
+}
+
+.section-dark {
+  background: var(--texto);
+  color: var(--fondo);
+}
+
+.section-accent {
+  background: var(--acento);
+  color: white;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* ══════════════════════════════════════════════════════
+   INPUTS — Premium Style
+   ══════════════════════════════════════════════════════ */
+
+input, textarea, select {
+  font-family: var(--f-body);
+  font-size: 16px;
+  padding: 14px 18px;
+  background: var(--fondo-puro);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radius-md);
+  color: var(--texto);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+input:hover, textarea:hover, select:hover {
+  border-color: var(--borde-medio);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--acento);
+  background: var(--fondo-elevado);
+  box-shadow: 0 0 0 4px var(--acento-glow);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--texto-muted);
+}
+
+/* ══════════════════════════════════════════════════════
+   TRANSICIONES DE PÁGINA
+   ══════════════════════════════════════════════════════ */
+
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+/* ══════════════════════════════════════════════════════
+   REDUCED MOTION
+   ══════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .btn::before {
+    display: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   SCROLLBAR
+   ══════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fondo);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--borde-medio);
+  border-radius: var(--radius-full);
+  border: 3px solid var(--fondo);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--texto-suave);
+}
+
+/* ══════════════════════════════════════════════════════
+   SELECTION
+   ══════════════════════════════════════════════════════ */
+
+::selection {
+  background: var(--acento);
+  color: white;
+}
+
+/* ══════════════════════════════════════════════════════
+   FOCUS STYLES
+   ══════════════════════════════════════════════════════ */
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
