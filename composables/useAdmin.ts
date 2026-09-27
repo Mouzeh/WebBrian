@@ -48,3 +48,21 @@ export function urlArchivo(fileName: string) {
   const r2 = useRuntimeConfig().public.r2PublicUrl as string
   return `${r2}/${fileName}`
 }
+
+// Mensaje de error legible a partir de un error de Supabase (incluye el detalle real)
+export function mensajeErrorSupabase(error: { message?: string; code?: string; details?: string; hint?: string } | null, tabla: string) {
+  if (!error) return ''
+  const codigo = error.code || ''
+  let causa = ''
+  if (codigo === 'PGRST205' || codigo === '42P01' || /does not exist|could not find the table/i.test(error.message || '')) {
+    causa = `Supabase no encuentra la tabla "${tabla}". Revisa que la migración se haya ejecutado en el mismo proyecto que usa el sitio y sin errores.`
+  } else if (codigo === '42703' || codigo === 'PGRST204' || /column/i.test(error.message || '')) {
+    causa = `Falta una columna en "${tabla}" (puede existir una tabla anterior con otra estructura).`
+  } else if (codigo === '42501' || /permission|policy/i.test(error.message || '')) {
+    causa = `Supabase bloqueó el acceso a "${tabla}" por permisos (RLS).`
+  } else if (/fetch|network/i.test(error.message || '')) {
+    causa = 'No hay conexión con Supabase.'
+  }
+  const detalle = [error.message, codigo && `código ${codigo}`].filter(Boolean).join(' · ')
+  return `${causa ? `${causa} ` : ''}Detalle: ${detalle}`
+}

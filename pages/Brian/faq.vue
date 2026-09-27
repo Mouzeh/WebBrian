@@ -177,7 +177,8 @@ async function cargar() {
     .select('*')
     .order('orden', { ascending: true })
   if (error) {
-    mensaje.value = { tipo: 'error', texto: 'No se pudieron cargar las preguntas. ¿Ejecutaste la migración en Supabase?' }
+    console.error('Error cargando faqs:', error)
+    mensaje.value = { tipo: 'error', texto: `No se pudieron cargar los datos. ${mensajeErrorSupabase(error, 'faqs')}` }
     return
   }
   faqs.value = ((data ?? []) as Faq[]).map(f => ({

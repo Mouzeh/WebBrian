@@ -528,7 +528,8 @@ async function cargar() {
     .select('*')
     .order('created_at', { ascending: false })
   if (error) {
-    mensaje.value = { tipo: 'error', texto: 'No se pudieron cargar los artículos. ¿Ejecutaste la migración del blog en Supabase?' }
+    console.error('Error cargando blog_posts:', error)
+    mensaje.value = { tipo: 'error', texto: `No se pudieron cargar los datos. ${mensajeErrorSupabase(error, 'blog_posts')}` }
     return
   }
   posts.value = (data ?? []) as BlogPost[]
