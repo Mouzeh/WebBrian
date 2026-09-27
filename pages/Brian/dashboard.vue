@@ -13,17 +13,32 @@
           <h2>Proyectos</h2>
           <button @click="nuevoProyecto" class="btn-nuevo">+ Nuevo</button>
         </div>
+        <div class="categoria-filtros">
+          <button
+            v-for="f in filtrosCategoria"
+            :key="f.value"
+            type="button"
+            :class="['filtro-btn', { active: filtroCategoria === f.value }]"
+            @click="filtroCategoria = f.value"
+          >
+            {{ f.label }}
+            <span class="filtro-count">{{ contarCategoria(f.value) }}</span>
+          </button>
+        </div>
         <div class="proyectos-list">
           <div
-            v-for="p in proyectos"
+            v-for="p in proyectosFiltrados"
             :key="p.id"
             :class="['proyecto-item', { active: proyectoActual?.id === p.id }]"
             @click="editarProyecto(p)"
           >
-            <span class="p-titulo">{{ p.titulo }}</span>
+            <div class="p-info">
+              <span class="p-titulo">{{ p.titulo }}</span>
+              <span :class="['p-categoria', p.categoria]">{{ categoriaLabel(p.categoria) }}</span>
+            </div>
             <span :class="['p-status', p.status]">{{ p.status }}</span>
           </div>
-          <p v-if="!proyectos.length" class="empty">No hay proyectos</p>
+          <p v-if="!proyectosFiltrados.length" class="empty">No hay proyectos</p>
         </div>
       </aside>
 
@@ -45,6 +60,23 @@
           <!-- Warning si está en borrador -->
           <div v-if="form.status === 'draft'" class="draft-warning">
             ⚠️ Este proyecto está en <strong>Borrador</strong>. No será visible en la web hasta que lo publiques.
+          </div>
+
+          <!-- Categoría -->
+          <div class="field full">
+            <label>Categoría *</label>
+            <div class="categoria-selector">
+              <label :class="['categoria-opcion', { active: form.categoria === 'terminado' }]">
+                <input v-model="form.categoria" type="radio" value="terminado" />
+                <strong>Proyecto terminado</strong>
+                <small>Casa ya construida y entregada</small>
+              </label>
+              <label :class="['categoria-opcion', { active: form.categoria === 'construccion' }]">
+                <input v-model="form.categoria" type="radio" value="construccion" />
+                <strong>Proyecto para construcción</strong>
+                <small>Render / diseño de casa por construir</small>
+              </label>
+            </div>
           </div>
 
           <!-- Fila 1: Título y Slug -->
@@ -387,6 +419,7 @@ const formInicial = {
   destacado: false,
   cliente: '',
   pisos: '',
+  categoria: 'terminado' as 'terminado' | 'construccion',
   status: 'draft',
   // Plano arquitectónico
   plano_imagen: '',
@@ -442,6 +475,30 @@ function regenerateSlug() {
   slugManuallyEdited.value = false
 }
 
+// Filtro por categoría en la barra lateral
+type FiltroCategoria = 'todos' | 'terminado' | 'construccion'
+const filtroCategoria = ref<FiltroCategoria>('todos')
+const filtrosCategoria: { value: FiltroCategoria; label: string }[] = [
+  { value: 'todos', label: 'Todos' },
+  { value: 'terminado', label: 'Terminados' },
+  { value: 'construccion', label: 'Para construir' }
+]
+
+const proyectosFiltrados = computed(() =>
+  filtroCategoria.value === 'todos'
+    ? proyectos.value
+    : proyectos.value.filter(p => (p.categoria || 'terminado') === filtroCategoria.value)
+)
+
+function contarCategoria(cat: FiltroCategoria) {
+  if (cat === 'todos') return proyectos.value.length
+  return proyectos.value.filter(p => (p.categoria || 'terminado') === cat).length
+}
+
+function categoriaLabel(cat?: string) {
+  return cat === 'construccion' ? 'Para construir' : 'Terminado'
+}
+
 async function cargarProyectos() {
   const { data } = await supabase
     .from('proyectos')
@@ -455,6 +512,7 @@ function nuevoProyecto() {
   proyectoActual.value = null
   form.value = {
     ...formInicial,
+    categoria: filtroCategoria.value === 'construccion' ? 'construccion' : 'terminado',
     galeria: [],
     ambientes: [],
     especificaciones_tecnicas: { ...especificacionesIniciales }
@@ -479,6 +537,7 @@ function editarProyecto(p: any) {
     destacado: p.destacado || false,
     cliente: p.cliente || '',
     pisos: p.pisos || '',
+    categoria: p.categoria || 'terminado',
     status: p.status || 'draft',
     // Plano arquitectónico
     plano_imagen: p.plano_imagen || '',
@@ -625,6 +684,7 @@ async function guardarProyecto() {
     destacado: form.value.destacado,
     cliente: form.value.cliente || null,
     pisos: form.value.pisos || null,
+    categoria: form.value.categoria,
     status: form.value.status,
     // Plano arquitectónico
     plano_imagen: form.value.plano_imagen || null,
@@ -805,6 +865,97 @@ async function logout() {
 .p-titulo {
   font-size: 13px;
   font-weight: 500;
+}
+
+.p-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.p-categoria {
+  font-size: 10px;
+  color: #888;
+}
+
+.p-categoria.construccion {
+  color: #b86b00;
+}
+
+.proyecto-item.active .p-categoria {
+  color: rgba(255,255,255,0.7);
+}
+
+.categoria-filtros {
+  display: flex;
+  gap: 4px;
+  padding: 10px 10px 0;
+}
+
+.filtro-btn {
+  flex: 1;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.filtro-btn.active {
+  background: #2b5f00;
+  border-color: #2b5f00;
+  color: white;
+}
+
+.filtro-count {
+  opacity: 0.7;
+  margin-left: 2px;
+}
+
+.categoria-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.field .categoria-opcion {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+
+.categoria-opcion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 2px solid #e5e5e5;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.categoria-opcion input {
+  display: none;
+}
+
+.categoria-opcion strong {
+  font-size: 14px;
+  color: #333;
+}
+
+.categoria-opcion small {
+  font-size: 12px;
+  color: #888;
+}
+
+.categoria-opcion.active {
+  border-color: #2b5f00;
+  background: #f3f8ee;
 }
 
 .p-status {

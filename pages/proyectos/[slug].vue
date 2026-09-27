@@ -27,7 +27,7 @@
       <div class="hero-content">
         <div class="hero-badge">
           <span class="badge-dot"></span>
-          <span>{{ tipoLabel }} · {{ proyecto.anio }}</span>
+          <span>{{ proyecto.categoria === 'construccion' ? 'Proyecto para construir' : 'Proyecto terminado' }} · {{ tipoLabel }} · {{ proyecto.anio }}</span>
         </div>
 
         <h1 class="hero-title">

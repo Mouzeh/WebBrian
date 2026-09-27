@@ -55,6 +55,8 @@ export interface Proyecto {
   plano_subtitulo?: string
   ambientes?: Ambiente[]
   especificaciones_tecnicas?: EspecificacionesTecnicas
+  // 'terminado' = casa ya construida · 'construccion' = render / proyecto para construir
+  categoria: 'terminado' | 'construccion'
   status: 'published' | 'draft'
   created_at?: string
 }
@@ -100,7 +102,7 @@ export function useProyectos() {
   async function getProyectos(): Promise<Proyecto[]> {
     const { data, error } = await supabase
       .from('proyectos')
-      .select('id, slug, titulo, subtitulo, tipo, anio, ubicacion, superficie, descripcion, imagen_portada, destacado, status')
+      .select('id, slug, titulo, subtitulo, tipo, anio, ubicacion, superficie, descripcion, imagen_portada, destacado, categoria, status')
       .eq('status', 'published')
       .order('anio', { ascending: false })
       .order('created_at', { ascending: false })
@@ -133,7 +135,7 @@ export function useProyectos() {
   async function getProyectosDestacados(limit = 6): Promise<Proyecto[]> {
     const { data, error } = await supabase
       .from('proyectos')
-      .select('id, slug, titulo, tipo, anio, ubicacion, superficie, imagen_portada, destacado')
+      .select('id, slug, titulo, tipo, anio, ubicacion, superficie, imagen_portada, destacado, categoria')
       .eq('status', 'published')
       .eq('destacado', true)
       .order('anio', { ascending: false })

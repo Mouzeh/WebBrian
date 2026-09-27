@@ -29,6 +29,7 @@ CREATE TABLE proyectos (
   area TEXT,
   estacionamiento TEXT,
   patio_trasero TEXT,
+  categoria TEXT NOT NULL DEFAULT 'terminado' CHECK (categoria IN ('terminado', 'construccion')),
   status TEXT DEFAULT 'draft' CHECK (status IN ('published', 'draft')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -48,6 +49,7 @@ CREATE TABLE servicios (
 
 -- ── ÍNDICES para mejor performance ──
 CREATE INDEX idx_proyectos_status ON proyectos(status);
+CREATE INDEX idx_proyectos_categoria ON proyectos(categoria);
 CREATE INDEX idx_proyectos_destacado ON proyectos(destacado);
 CREATE INDEX idx_proyectos_slug ON proyectos(slug);
 CREATE INDEX idx_proyectos_anio ON proyectos(anio DESC);

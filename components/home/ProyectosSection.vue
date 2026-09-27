@@ -25,8 +25,8 @@
     <div class="tabs-container">
       <div class="tabs glass-tabs">
         <button
-          :class="['tab', { active: activeTab === 'venta' }]"
-          @click="activeTab = 'venta'"
+          :class="['tab', { active: activeTab === 'terminado' }]"
+          @click="activeTab = 'terminado'"
         >
           <span class="tab-icon">
             <svg viewBox="0 0 24 24" fill="none">
@@ -34,11 +34,11 @@
               <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
-          <span class="tab-label">En Venta</span>
+          <span class="tab-label">Terminados</span>
         </button>
         <button
-          :class="['tab', { active: activeTab === 'ejecutados' }]"
-          @click="activeTab = 'ejecutados'"
+          :class="['tab', { active: activeTab === 'construccion' }]"
+          @click="activeTab = 'construccion'"
         >
           <span class="tab-icon">
             <svg viewBox="0 0 24 24" fill="none">
@@ -46,16 +46,16 @@
               <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
             </svg>
           </span>
-          <span class="tab-label">Ejecutados</span>
+          <span class="tab-label">Para Construir</span>
         </button>
-        <div class="tab-indicator" :class="{ right: activeTab === 'ejecutados' }"></div>
+        <div class="tab-indicator" :class="{ right: activeTab === 'construccion' }"></div>
       </div>
     </div>
 
-    <!-- Proyectos en Venta -->
-    <div v-show="activeTab === 'venta'" class="proyectos-grid venta">
+    <!-- Proyectos Terminados -->
+    <div v-show="activeTab === 'terminado'" class="proyectos-grid venta">
       <NuxtLink
-        v-for="(p, i) in proyectosVenta"
+        v-for="(p, i) in proyectosTerminados"
         :key="p.id"
         :to="`/proyectos/${p.slug}`"
         :class="['proyecto-card', { featured: i === 0 }]"
@@ -73,7 +73,7 @@
 
         <div class="card-badge glass-badge">
           <span class="badge-pulse"></span>
-          <span>En Venta</span>
+          <span>Terminado</span>
         </div>
 
         <div class="card-content">
@@ -112,7 +112,7 @@
         </div>
       </NuxtLink>
 
-      <div v-if="!proyectosVenta.length" class="empty-state glass-card">
+      <div v-if="!proyectosTerminados.length" class="empty-state glass-card">
         <div class="empty-icon">
           <svg viewBox="0 0 64 64" fill="none">
             <rect x="8" y="16" width="48" height="40" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -120,19 +120,19 @@
             <path d="M32 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
-        <p class="empty-text">Próximamente proyectos en venta</p>
-        <p class="empty-subtext">Estamos preparando nuevas oportunidades para ti</p>
+        <p class="empty-text">Próximamente proyectos terminados</p>
+        <p class="empty-subtext">Estamos preparando nuestro portafolio</p>
       </div>
     </div>
 
-    <!-- Proyectos Ejecutados -->
-    <div v-show="activeTab === 'ejecutados'" class="proyectos-grid ejecutados">
-      <div
-        v-for="(p, i) in proyectosEjecutados"
+    <!-- Proyectos para Construcción (renders) -->
+    <div v-show="activeTab === 'construccion'" class="proyectos-grid ejecutados">
+      <NuxtLink
+        v-for="(p, i) in proyectosConstruccion"
         :key="p.id"
+        :to="`/proyectos/${p.slug}`"
         class="trabajo-card"
         :style="{ '--index': i }"
-        @click="openLightbox(i)"
       >
         <div class="trabajo-image">
           <NuxtImg
@@ -155,17 +155,17 @@
           <span class="trabajo-tipo">{{ p.tipo }}</span>
           <span class="trabajo-titulo">{{ p.titulo }}</span>
         </div>
-      </div>
+      </NuxtLink>
 
-      <div v-if="!proyectosEjecutados.length" class="empty-state glass-card">
+      <div v-if="!proyectosConstruccion.length" class="empty-state glass-card">
         <div class="empty-icon">
           <svg viewBox="0 0 64 64" fill="none">
             <path d="M32 56l-20-12V20l20-12 20 12v24l-20 12z" stroke="currentColor" stroke-width="2"/>
             <path d="M32 56V32M12 20l20 12M52 20l-20 12" stroke="currentColor" stroke-width="2"/>
           </svg>
         </div>
-        <p class="empty-text">Próximamente trabajos ejecutados</p>
-        <p class="empty-subtext">Nuestro portafolio está en construcción</p>
+        <p class="empty-text">Próximamente proyectos para construir</p>
+        <p class="empty-subtext">Estamos preparando nuevos diseños para ti</p>
       </div>
     </div>
 
@@ -190,7 +190,7 @@
 <script setup lang="ts">
 const { imgUrl, getProyectos } = useProyectos()
 
-const activeTab = ref<'venta' | 'ejecutados'>('venta')
+const activeTab = ref<'terminado' | 'construccion'>('terminado')
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
@@ -212,21 +212,17 @@ onMounted(() => {
 
 const { data: allProyectos } = await useAsyncData('proyectos-all', () => getProyectos())
 
-const proyectosVenta = computed(() => {
+const proyectosTerminados = computed(() => {
   return (allProyectos.value ?? []).filter(p =>
-    p.tipo === 'residencial' || p.tipo === 'comercial'
+    (p.categoria || 'terminado') === 'terminado'
   ).slice(0, 6)
 })
 
-const proyectosEjecutados = computed(() => {
+const proyectosConstruccion = computed(() => {
   return (allProyectos.value ?? []).filter(p =>
-    p.tipo === 'industrial' || p.tipo === 'remodelacion'
+    p.categoria === 'construccion'
   ).slice(0, 8)
 })
-
-function openLightbox(index: number) {
-  console.log('Open lightbox:', index)
-}
 </script>
 
 <style scoped>
@@ -695,9 +691,11 @@ function openLightbox(index: number) {
   color: white;
 }
 
-/* ─── Trabajo Card (Ejecutados) ─── */
+/* ─── Trabajo Card (Para construir) ─── */
 .trabajo-card {
   position: relative;
+  display: block;
+  text-decoration: none;
   aspect-ratio: 1;
   overflow: hidden;
   cursor: pointer;
