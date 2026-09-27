@@ -122,7 +122,9 @@ function alAbrir(i: number, e: Event) {
   transition: background 0.2s;
 }
 
-.faq-cta:hover { background: var(--acento); }
+@media (hover: hover) and (pointer: fine) {
+  .faq-cta:hover { background: var(--acento); }
+}
 
 svg {
   width: 18px;
@@ -208,7 +210,7 @@ svg {
 }
 
 @media (max-width: 900px) {
-  .faq { padding: 80px 20px; }
+  .faq { padding: 72px 20px; }
   .faq-container { grid-template-columns: 1fr; gap: 36px; }
   .faq-intro { position: static; }
   .faq-respuesta { padding: 0 20px 22px; }

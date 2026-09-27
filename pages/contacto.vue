@@ -30,7 +30,7 @@
             <div class="cinfo-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
             </div>
-            <div><div class="cinfo-lbl">Correo</div><div class="cinfo-val"><a href="mailto:inmobiliariayconstructoraryj@gmail.com">inmobiliariayconstructoraryj@gmail.com</a></div></div>
+            <div><div class="cinfo-lbl">Correo</div><div class="cinfo-val"><a href="mailto:inmobiliariayconstructoraryj@gmail.com">inmobiliariayconstructoraryj<span class="email-domain">@gmail.com</span></a></div></div>
           </div>
           <div class="cinfo-item">
             <div class="cinfo-icon">
@@ -166,7 +166,7 @@ async function handleSubmit() {
 
 <style scoped>
 .page-hero {
-  padding: 140px 6vw 80px;
+  padding: 112px 20px 56px;
   background: var(--texto);
   position: relative; overflow: hidden;
 }
@@ -178,37 +178,38 @@ async function handleSubmit() {
 .label-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .label-line { width: 30px; height: 2px; background: var(--acento); }
 .label-text.light { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--borde-medio); }
-.page-title { font-family: var(--f-display); font-size: clamp(48px, 6vw, 88px); font-weight: 900; text-transform: uppercase; color: white; line-height: 0.93; letter-spacing: -0.02em; margin-bottom: 18px; }
+.page-title { font-family: var(--f-display); font-size: clamp(40px, 6vw, 88px); font-weight: 900; text-transform: uppercase; color: white; line-height: 0.93; letter-spacing: -0.02em; margin-bottom: 18px; }
 .page-title em { font-style: normal; color: var(--acento); }
-.page-desc { font-size: 16px; color: var(--borde-medio); font-weight: 300; max-width: 480px; }
+.page-desc { font-size: 15px; color: var(--borde-medio); font-weight: 300; max-width: 480px; }
 
-.contacto-layout { display: grid; grid-template-columns: 1fr 1.2fr; min-height: 600px; }
+.contacto-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
 
-.contacto-left { background: var(--texto); padding: 72px 5vw; position: relative; overflow: hidden; }
+.contacto-left { background: var(--texto); padding: 48px 20px; position: relative; overflow: hidden; }
 .contacto-left::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.1); }
 .left-title { font-family: var(--f-display); font-size: clamp(32px, 4vw, 52px); font-weight: 900; text-transform: uppercase; color: white; line-height: 1; margin-bottom: 14px; position: relative; }
 .left-title em { font-style: normal; color: var(--acento); }
-.left-desc { font-size: 15px; color: var(--borde-medio); font-weight: 300; margin-bottom: 44px; position: relative; }
+.left-desc { font-size: 15px; color: var(--borde-medio); font-weight: 300; margin-bottom: 32px; position: relative; }
 .cinfo { display: flex; flex-direction: column; gap: 18px; position: relative; }
-.cinfo-item { display: flex; align-items: center; gap: 14px; }
+.cinfo-item { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .cinfo-icon { width: 40px; height: 40px; background: rgba(74, 124, 35, 0.15); border: 1px solid rgba(74, 124, 35, 0.25); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--acento); }
 .cinfo-icon svg { width: 18px; height: 18px; }
 .cinfo-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--borde-medio); margin-bottom: 3px; }
-.cinfo-val { font-size: 14px; color: rgba(247,244,239,0.8); font-weight: 300; }
+.cinfo-val { font-size: 14px; color: rgba(247,244,239,0.8); font-weight: 300; min-width: 0; overflow-wrap: anywhere; }
 .cinfo-val a { color: rgba(247,244,239,0.8); text-decoration: none; }
-.cinfo-val a:hover { color: var(--acento); }
+.email-domain { display: inline-block; }
+@media (hover: hover) and (pointer: fine) { .cinfo-val a:hover { color: var(--acento); } }
 
-.contacto-right { background: var(--fondo-puro); padding: 72px 5vw; }
-.form-title { font-family: var(--f-display); font-size: 30px; font-weight: 800; text-transform: uppercase; color: var(--texto); margin-bottom: 6px; }
+.contacto-right { background: var(--fondo-puro); padding: 48px 20px 56px; }
+.form-title { font-family: var(--f-display); font-size: 28px; font-weight: 800; text-transform: uppercase; color: var(--texto); margin-bottom: 6px; }
 .form-sub { font-size: 13px; color: var(--texto-suave); margin-bottom: 30px; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .fg { display: flex; flex-direction: column; gap: 5px; }
-.fg.full { grid-column: span 2; }
+.fg.full { grid-column: 1 / -1; }
 .flabel { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--texto-suave); }
 .finput, .fselect, .ftextarea {
   width: 100%; padding: 13px 14px;
   border: 1.5px solid var(--borde); background: var(--fondo);
-  font-family: var(--f-body); font-size: 14px; color: var(--texto);
+  font-family: var(--f-body); font-size: 16px; color: var(--texto); /* 16px evita el zoom automático de iOS al enfocar */
   outline: none; transition: border-color 0.2s; border-radius: 0; appearance: none;
 }
 .finput:focus, .fselect:focus, .ftextarea:focus { border-color: var(--acento); }
@@ -216,16 +217,17 @@ async function handleSubmit() {
 .fsel-wrap { position: relative; }
 .fsel-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--texto-suave); pointer-events: none; }
 .fcheck { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
-.fcheck input { width: 17px; height: 17px; accent-color: var(--acento); flex-shrink: 0; margin-top: 2px; }
+.fcheck input { width: 20px; height: 20px; padding: 0; accent-color: var(--acento); flex-shrink: 0; margin-top: 2px; }
 .fcheck span { font-size: 12px; color: var(--texto-suave); line-height: 1.5; }
 .btn-submit {
-  width: 100%; padding: 17px; background: var(--acento); border: none;
+  width: 100%; min-height: 56px; padding: 17px; background: var(--acento); border: none;
   font-family: var(--f-display); font-size: 16px; font-weight: 800;
   letter-spacing: 0.12em; text-transform: uppercase; color: white;
   cursor: pointer; transition: opacity 0.2s, transform 0.2s;
   display: flex; align-items: center; justify-content: center;
 }
-.btn-submit:hover:not(:disabled) { opacity: 0.85; transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) { .btn-submit:hover:not(:disabled) { opacity: 0.85; transform: translateY(-2px); } }
+.btn-submit:active:not(:disabled) { opacity: 0.85; }
 .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-inline { display: inline-flex; align-items: center; gap: 8px; }
 .form-error svg { vertical-align: -3px; margin-right: 4px; }
@@ -234,9 +236,22 @@ async function handleSubmit() {
 .fade-enter-active, .fade-leave-active { transition: opacity 0.4s, transform 0.4s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(8px); }
 
-@media (max-width: 960px) {
-  .contacto-layout { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .fg.full { grid-column: span 1; }
+/* ─── Tablet ─── */
+@media (min-width: 601px) {
+  .page-hero { padding: 140px 6vw 80px; }
+  .page-desc { font-size: 16px; }
+  .contacto-left, .contacto-right { padding: 72px 5vw; }
+  .left-desc { margin-bottom: 44px; }
+  .form-title { font-size: 30px; }
+  .cinfo-val { white-space: nowrap; overflow-wrap: normal; }
+  .email-domain { display: inline; }
+}
+/* ─── Escritorio ─── */
+@media (min-width: 961px) {
+  .contacto-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); min-height: 600px; }
+  .form-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .finput, .fselect, .ftextarea { font-size: 14px; }
+  .fcheck input { width: 17px; height: 17px; }
+  .btn-submit { min-height: 0; }
 }
 </style>

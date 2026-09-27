@@ -73,7 +73,7 @@
           </ul>
         </div>
 
-        <div class="footer-col">
+        <div class="footer-col footer-col-contact">
           <h4 class="col-title">Contacto</h4>
           <ul class="col-links contact-links">
             <li>
@@ -106,7 +106,7 @@
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/>
                   <path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="2"/>
                 </svg>
-                <span>inmobiliariayconstructoraryj@gmail.com</span>
+                <span>inmobiliariayconstructoraryj<span class="email-domain">@gmail.com</span></span>
               </a>
             </li>
             <li class="contact-item location">
@@ -184,21 +184,32 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
 }
 
 .footer-container {
-  padding: var(--space-2xl) 6vw var(--space-lg);
+  /* Móvil: espacio extra abajo para que el botón flotante de WhatsApp
+     no tape el copyright ni los enlaces legales */
+  padding:
+    var(--space-xl)
+    max(20px, env(safe-area-inset-right))
+    calc(88px + env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
 }
 
 /* ─── Grid ─── */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-  gap: var(--space-2xl);
-  padding-bottom: var(--space-2xl);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xl) var(--space-lg);
+  padding-bottom: var(--space-xl);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ─── Brand ─── */
 .footer-brand {
-  max-width: 320px;
+  grid-column: 1 / -1;
+}
+
+/* Contacto ocupa todo el ancho en móvil (el email es largo) */
+.footer-col-contact {
+  grid-column: 1 / -1;
 }
 
 .footer-logo {
@@ -209,9 +220,6 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-.footer-logo:hover {
-  opacity: 0.9;
-}
 
 .footer-logo:active {
   opacity: 0.8;
@@ -238,8 +246,8 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
 }
 
 .social-link {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -252,11 +260,6 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
     transform var(--duration-fast) var(--ease-out);
 }
 
-.social-link:hover {
-  background: var(--acento);
-  border-color: var(--acento);
-  color: white;
-}
 
 .social-link:active {
   transform: scale(0.95);
@@ -272,9 +275,6 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
   transition: fill 0.2s ease;
 }
 
-.social-link:hover svg path {
-  fill: white;
-}
 
 /* ─── Columns ─── */
 .col-title {
@@ -291,7 +291,7 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
 }
 
 .col-links a {
@@ -301,28 +301,31 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-.col-links a:hover {
-  color: var(--acento);
+
+/* Móvil: áreas táctiles de al menos 36px de alto */
+.col-links a:not(.contact-item) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
 }
 
 /* ─── Contact Links ─── */
 .contact-links {
-  gap: 14px;
+  gap: 4px;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  min-height: 36px;
   font-size: 14px;
   color: var(--borde-medio);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-a.contact-item:hover {
-  color: var(--acento);
-}
 
 .contact-item svg {
   width: 16px;
@@ -336,6 +339,16 @@ a.contact-item:hover {
   opacity: 1;
 }
 
+.contact-item span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Móvil: si el email no cabe, corta antes de la @ */
+.email-domain {
+  display: inline-block;
+}
+
 .contact-item.location {
   color: rgba(255, 255, 255, 0.4);
 }
@@ -343,27 +356,26 @@ a.contact-item:hover {
 /* ─── Bottom ─── */
 .footer-bottom {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
   padding-top: var(--space-lg);
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .footer-copy {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 /* ─── Warp Text Link ─── */
 .warp-text-link {
   text-decoration: none;
   display: inline-block;
+  order: -1;
   transition: transform 0.3s ease;
-}
-
-.warp-text-link:hover {
-  transform: scale(1.02);
 }
 
 .footer-legal {
@@ -379,52 +391,120 @@ a.contact-item:hover {
 }
 
 .footer-legal a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.45);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-.footer-legal a:hover {
-  color: var(--acento);
-}
 
-/* ─── Responsive ─── */
-@media (max-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-xl);
-  }
-
-  .footer-brand {
-    grid-column: span 2;
-    max-width: none;
-  }
-}
-
-@media (max-width: 640px) {
+/* ─── Responsive (mobile first) ─── */
+@media (min-width: 641px) {
   .footer-container {
-    padding: var(--space-xl) 5vw var(--space-md);
+    padding: var(--space-2xl) 6vw var(--space-lg);
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
     gap: var(--space-xl);
+    padding-bottom: var(--space-2xl);
   }
 
-  .footer-brand {
-    grid-column: span 1;
+  .footer-col-contact {
+    grid-column: auto;
+  }
+
+  .col-links {
+    gap: 12px;
+  }
+
+  .contact-links {
+    gap: 14px;
+  }
+
+  .col-links a:not(.contact-item) {
+    display: inline;
+    min-height: 0;
+  }
+
+  .contact-item,
+  .footer-legal a {
+    min-height: 0;
+  }
+
+  /* En escritorio el email va en una sola línea (como antes) */
+  .contact-item,
+  .contact-item span {
+    min-width: auto;
+  }
+
+  .contact-item span {
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  .email-domain {
+    display: inline;
+  }
+
+  .social-link {
+    width: 40px;
+    height: 40px;
   }
 
   .footer-bottom {
-    flex-direction: column;
-    gap: var(--space-sm);
-    text-align: center;
+    flex-direction: row;
+    text-align: left;
+    gap: var(--space-md);
   }
 
   .warp-text-link {
-    order: -1;
-    margin-bottom: var(--space-xs);
+    order: 0;
+  }
+
+  .footer-copy,
+  .footer-legal a {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+@media (min-width: 1025px) {
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: var(--space-2xl);
+  }
+
+  .footer-brand {
+    grid-column: auto;
+    max-width: 320px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .footer-logo:hover {
+    opacity: 0.9;
+  }
+
+  .social-link:hover {
+    background: var(--acento);
+    border-color: var(--acento);
+    color: white;
+  }
+
+  .social-link:hover svg path {
+    fill: white;
+  }
+
+  .col-links a:hover,
+  a.contact-item:hover,
+  .footer-legal a:hover {
+    color: var(--acento);
+  }
+
+  .warp-text-link:hover {
+    transform: scale(1.02);
   }
 }
 

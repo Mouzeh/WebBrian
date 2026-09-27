@@ -122,7 +122,9 @@ defineExpose({ open })
   transition: color 0.2s;
   line-height: 1;
 }
-.lb-close:hover { color: var(--acento); }
+@media (hover: hover) and (pointer: fine) {
+  .lb-close:hover { color: var(--acento); }
+}
 
 .lb-arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -131,7 +133,9 @@ defineExpose({ open })
   width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: background 0.2s, color 0.2s;
 }
-.lb-arrow:hover { background: var(--acento); border-color: var(--acento); }
+@media (hover: hover) and (pointer: fine) {
+  .lb-arrow:hover { background: var(--acento); border-color: var(--acento); }
+}
 .lb-prev { left: 20px; }
 .lb-next { right: 20px; }
 

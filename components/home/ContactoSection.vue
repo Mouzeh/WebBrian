@@ -46,7 +46,7 @@
               font-family="var(--f-display)"
               letter-spacing="-0.03em"
               :line-height="1"
-              :style="{ height: 'clamp(80px, 12vw, 140px)', width: '100%' }"
+              :style="{ height: 'clamp(80px, 12vw, 140px)', minHeight: 'clamp(96px, 22vw, 220px)', width: '100%' }"
             />
           </ClientOnly>
         </div>
@@ -200,7 +200,7 @@ const contactInfo = [
 <style scoped>
 .contacto {
   position: relative;
-  padding: var(--space-3xl) 6vw;
+  padding: var(--space-2xl) 20px;
   background: var(--acento);
   overflow: hidden;
 }
@@ -294,9 +294,11 @@ const contactInfo = [
   transform: translateY(0) scale(1);
 }
 
-.header-tag:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+@media (hover: hover) and (pointer: fine) {
+  .header-tag:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
 }
 
 .tag-icon {
@@ -306,8 +308,10 @@ const contactInfo = [
   transition: transform 0.3s ease;
 }
 
-.header-tag:hover .tag-icon {
-  transform: rotate(10deg) scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .header-tag:hover .tag-icon {
+    transform: rotate(10deg) scale(1.1);
+  }
 }
 
 .tag-icon svg {
@@ -452,8 +456,10 @@ const contactInfo = [
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
-.btn:hover .btn-arrow {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
 }
 
 /* ─── Social Section ─── */
@@ -508,12 +514,14 @@ const contactInfo = [
     box-shadow var(--duration-fast) var(--ease-out);
 }
 
-.glass-icon:hover {
-  transform: translateY(-4px);
-  background: var(--texto);
-  border-color: var(--texto);
-  color: var(--fondo);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) and (pointer: fine) {
+  .glass-icon:hover {
+    transform: translateY(-4px);
+    background: var(--texto);
+    border-color: var(--texto);
+    color: var(--fondo);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .icon-glow {
@@ -524,8 +532,10 @@ const contactInfo = [
   transition: opacity var(--duration-normal) var(--ease-out);
 }
 
-.glass-icon:hover .icon-glow {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .glass-icon:hover .icon-glow {
+    opacity: 1;
+  }
 }
 
 .glass-icon svg {
@@ -540,8 +550,10 @@ const contactInfo = [
   transition: fill 0.2s ease;
 }
 
-.glass-icon:hover svg path {
-  fill: #FFFCF5;
+@media (hover: hover) and (pointer: fine) {
+  .glass-icon:hover svg path {
+    fill: #FFFCF5;
+  }
 }
 
 /* ─── Info Grid - Compact Design ─── */
@@ -575,10 +587,12 @@ const contactInfo = [
   transform: translateY(0);
 }
 
-.info-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.12);
-  border-color: rgba(74, 124, 35, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.12);
+    border-color: rgba(74, 124, 35, 0.3);
+  }
 }
 
 /* Hidden elements - simplified design */
@@ -615,9 +629,11 @@ const contactInfo = [
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-.info-card:hover .info-icon {
-  background: var(--acento);
-  color: white;
+@media (hover: hover) and (pointer: fine) {
+  .info-card:hover .info-icon {
+    background: var(--acento);
+    color: white;
+  }
 }
 
 .info-icon svg {
@@ -654,8 +670,10 @@ const contactInfo = [
   text-overflow: ellipsis;
 }
 
-a.info-value:hover {
-  color: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  a.info-value:hover {
+    color: var(--acento);
+  }
 }
 
 .info-subtext {
@@ -665,9 +683,19 @@ a.info-value:hover {
 }
 
 /* ─── Responsive ─── */
+/* Móvil (base): tarjeta CTA apilada y datos en una columna */
 @media (max-width: 768px) {
-  .contacto {
-    padding: var(--space-2xl) 5vw;
+  .contacto-orb {
+    display: none; /* blur(100px) es muy costoso en GPUs móviles */
+  }
+
+  .contacto-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .cta-card {
+    padding: var(--space-lg) 20px;
+    margin-bottom: var(--space-xl);
   }
 
   .cta-content {
@@ -679,6 +707,14 @@ a.info-value:hover {
     text-align: center;
   }
 
+  .cta-content .btn {
+    width: 100%;
+  }
+
+  .social-section {
+    margin-bottom: var(--space-xl);
+  }
+
   .info-grid {
     grid-template-columns: 1fr;
     gap: var(--space-sm);
@@ -686,6 +722,16 @@ a.info-value:hover {
 
   .info-card {
     padding: 16px 14px;
+  }
+
+  .info-value {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (min-width: 769px) {
+  .contacto {
+    padding: var(--space-3xl) 6vw;
   }
 }
 

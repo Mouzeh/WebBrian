@@ -204,8 +204,10 @@ const lastUpdated = 'Septiembre 2024'
   transition: color 0.3s ease;
 }
 
-.back-link:hover {
-  color: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  .back-link:hover {
+    color: var(--acento);
+  }
 }
 
 .back-link svg {

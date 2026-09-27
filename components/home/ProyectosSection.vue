@@ -145,7 +145,7 @@ const proyectosTerminados = computed(() => {
 
 <style scoped>
 .proyectos {
-  padding: var(--space-3xl) 6vw;
+  padding: var(--space-2xl) 20px;
   background: var(--fondo-puro);
   position: relative;
   overflow: hidden;
@@ -296,7 +296,7 @@ const proyectosTerminados = computed(() => {
   gap: 8px;
   background: transparent;
   border: none;
-  padding: 12px 28px;
+  padding: 12px 20px;
   font-family: var(--f-display);
   font-size: 13px;
   font-weight: 700;
@@ -377,11 +377,13 @@ const proyectosTerminados = computed(() => {
 }
 
 .proyectos-grid.venta {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-md);
 }
 
 .proyectos-grid.ejecutados {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
 }
 
 /* ─── Proyecto Card (Venta) ─── */
@@ -396,13 +398,15 @@ const proyectosTerminados = computed(() => {
   transition: transform var(--duration-normal) var(--ease-spring);
 }
 
-.proyecto-card:hover {
-  transform: translateY(-8px);
+@media (hover: hover) and (pointer: fine) {
+  .proyecto-card:hover {
+    transform: translateY(-8px);
+  }
 }
 
 .proyecto-card.featured {
-  grid-column: span 2;
-  aspect-ratio: 16/9;
+  grid-column: span 1;
+  aspect-ratio: 4/3;
 }
 
 .card-image {
@@ -417,8 +421,10 @@ const proyectosTerminados = computed(() => {
   transition: transform var(--duration-slow) var(--ease-out);
 }
 
-.proyecto-card:hover .card-img {
-  transform: scale(1.08);
+@media (hover: hover) and (pointer: fine) {
+  .proyecto-card:hover .card-img {
+    transform: scale(1.08);
+  }
 }
 
 .card-overlay {
@@ -448,8 +454,10 @@ const proyectosTerminados = computed(() => {
   pointer-events: none;
 }
 
-.proyecto-card:hover .card-shine {
-  transform: translateX(100%) translateY(100%);
+@media (hover: hover) and (pointer: fine) {
+  .proyecto-card:hover .card-shine {
+    transform: translateX(100%) translateY(100%);
+  }
 }
 
 /* Badge */
@@ -539,7 +547,7 @@ const proyectosTerminados = computed(() => {
 }
 
 .proyecto-card.featured .card-title {
-  font-size: 32px;
+  font-size: 22px;
 }
 
 .card-details {
@@ -575,9 +583,19 @@ const proyectosTerminados = computed(() => {
     transform var(--duration-normal) var(--ease-out);
 }
 
-.proyecto-card:hover .card-cta {
-  opacity: 1;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .proyecto-card:hover .card-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* En táctil no hay hover: el CTA de la tarjeta queda siempre visible */
+@media (hover: none) {
+  .card-cta {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .cta-text {
@@ -599,8 +617,10 @@ const proyectosTerminados = computed(() => {
   transition: transform var(--duration-fast) var(--ease-spring);
 }
 
-.proyecto-card:hover .cta-arrow-wrapper {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .proyecto-card:hover .cta-arrow-wrapper {
+    transform: translateX(4px);
+  }
 }
 
 .cta-arrow {
@@ -621,8 +641,10 @@ const proyectosTerminados = computed(() => {
   transition: transform var(--duration-normal) var(--ease-spring);
 }
 
-.trabajo-card:hover {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .trabajo-card:hover {
+    transform: scale(1.03);
+  }
 }
 
 .trabajo-image {
@@ -637,8 +659,10 @@ const proyectosTerminados = computed(() => {
   transition: transform var(--duration-slow) var(--ease-out);
 }
 
-.trabajo-card:hover .trabajo-img {
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .trabajo-card:hover .trabajo-img {
+    transform: scale(1.1);
+  }
 }
 
 .trabajo-overlay {
@@ -652,8 +676,10 @@ const proyectosTerminados = computed(() => {
   transition: opacity var(--duration-normal) var(--ease-out);
 }
 
-.trabajo-card:hover .trabajo-overlay {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .trabajo-card:hover .trabajo-overlay {
+    opacity: 1;
+  }
 }
 
 .overlay-icon {
@@ -675,8 +701,10 @@ const proyectosTerminados = computed(() => {
   height: 24px;
 }
 
-.trabajo-card:hover .overlay-icon {
-  transform: scale(1);
+@media (hover: hover) and (pointer: fine) {
+  .trabajo-card:hover .overlay-icon {
+    transform: scale(1);
+  }
 }
 
 .trabajo-info {
@@ -781,8 +809,9 @@ const proyectosTerminados = computed(() => {
   z-index: 1;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  gap: var(--space-xl);
+  gap: var(--space-md);
   flex-wrap: wrap;
 }
 
@@ -798,68 +827,62 @@ const proyectosTerminados = computed(() => {
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
-.btn:hover .btn-icon {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn-icon {
+    transform: translateX(4px);
+  }
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
+  .tab-label {
+    display: none;
+  }
+}
+
+/* ─── Tablet (mobile first) ─── */
+@media (min-width: 769px) {
+  .proyectos {
+    padding: var(--space-3xl) 6vw;
+  }
+
+  .tab {
+    padding: 12px 28px;
+  }
+
   .proyectos-grid.venta {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
   }
 
   .proyectos-grid.ejecutados {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
   }
 
   .proyecto-card.featured {
     grid-column: span 2;
-  }
-}
-
-@media (max-width: 768px) {
-  .proyectos {
-    padding: var(--space-2xl) 5vw;
-  }
-
-  .tab-label {
-    display: none;
-  }
-
-  .tab {
-    padding: 12px 20px;
-  }
-
-  .proyectos-grid.venta {
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
-  }
-
-  .proyectos-grid.ejecutados {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-sm);
-  }
-
-  .proyecto-card.featured {
-    grid-column: span 1;
-    aspect-ratio: 4/3;
+    aspect-ratio: 16/9;
   }
 
   .proyecto-card.featured .card-title {
-    font-size: 22px;
-  }
-
-  .proyecto-card:hover {
-    transform: none;
-  }
-
-  .trabajo-card:hover {
-    transform: none;
+    font-size: 32px;
   }
 
   .cta-content {
-    flex-direction: column;
-    gap: var(--space-md);
+    flex-direction: row;
+    gap: var(--space-xl);
+  }
+}
+
+/* ─── Escritorio ─── */
+@media (min-width: 1025px) {
+  .proyectos-grid.venta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .proyectos-grid.ejecutados {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

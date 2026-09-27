@@ -338,17 +338,21 @@ onBeforeUnmount(() => {
   box-shadow: 0 10px 30px rgba(134, 217, 90, 0.25);
 }
 
-.btn-primario:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(134, 217, 90, 0.35);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primario:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(134, 217, 90, 0.35);
+  }
 }
 
 .btn-primario svg {
   transition: transform 0.3s var(--ease-hero);
 }
 
-.btn-primario:hover svg {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primario:hover svg {
+    transform: translateX(4px);
+  }
 }
 
 .btn-vidrio {
@@ -358,10 +362,12 @@ onBeforeUnmount(() => {
   color: white;
 }
 
-.btn-vidrio:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.14);
+@media (hover: hover) and (pointer: fine) {
+  .btn-vidrio:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.14);
+  }
 }
 
 /* ─── Parte inferior ─── */

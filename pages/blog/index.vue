@@ -188,7 +188,9 @@ const postsFiltrados = computed(() =>
   transition: all 0.2s;
 }
 
-.categoria:hover { border-color: var(--acento); color: var(--acento); }
+@media (hover: hover) and (pointer: fine) {
+  .categoria:hover { border-color: var(--acento); color: var(--acento); }
+}
 .categoria.active { background: var(--acento); border-color: var(--acento); color: white; }
 
 /* Tarjetas */
@@ -206,9 +208,11 @@ const postsFiltrados = computed(() =>
   transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
 }
 
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+@media (hover: hover) and (pointer: fine) {
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .post-card.destacado {
@@ -243,7 +247,9 @@ const postsFiltrados = computed(() =>
   transition: transform 0.7s var(--ease-out);
 }
 
-.post-card:hover .post-media img { transform: scale(1.05); }
+@media (hover: hover) and (pointer: fine) {
+  .post-card:hover .post-media img { transform: scale(1.05); }
+}
 
 .post-cat {
   position: absolute;
@@ -319,7 +325,9 @@ const postsFiltrados = computed(() =>
   transition: transform 0.3s;
 }
 
-.post-card:hover .post-more svg { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) {
+  .post-card:hover .post-more svg { transform: translateX(4px); }
+}
 
 .vacio {
   padding: 80px 20px;
@@ -368,7 +376,9 @@ const postsFiltrados = computed(() =>
   transition: all 0.2s;
 }
 
-.btn-cta:hover { border-color: white; }
+@media (hover: hover) and (pointer: fine) {
+  .btn-cta:hover { border-color: white; }
+}
 .btn-cta.primario { background: #86d95a; border-color: #86d95a; color: #10200a; }
 
 @media (max-width: 960px) {

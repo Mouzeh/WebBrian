@@ -101,14 +101,14 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 
 <style scoped>
 .modelos-section {
-  padding: 120px 6vw;
+  padding: 72px 20px;
   background: var(--fondo);
 }
 
 .modelos-header {
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 60px;
+  margin: 0 auto 40px;
 }
 
 .label-row {
@@ -135,7 +135,7 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 
 .section-title {
   font-family: var(--f-display);
-  font-size: clamp(46px, 5.5vw, 76px);
+  font-size: clamp(38px, 5.5vw, 76px);
   font-weight: 900;
   line-height: 0.93;
   text-transform: uppercase;
@@ -149,7 +149,7 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 }
 
 .modelos-intro {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
   color: var(--texto-suave);
   font-weight: 300;
@@ -158,8 +158,8 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 
 .modelos-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
 }
 
 .modelo-card {
@@ -171,10 +171,6 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.modelo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-}
 
 .modelo-image {
   position: relative;
@@ -188,9 +184,6 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
   transition: transform 0.5s var(--ease);
 }
 
-.modelo-card:hover .modelo-image img {
-  transform: scale(1.05);
-}
 
 .modelo-overlay {
   position: absolute;
@@ -203,9 +196,6 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
   transition: opacity 0.3s;
 }
 
-.modelo-card:hover .modelo-overlay {
-  opacity: 1;
-}
 
 .btn-ver {
   background: var(--acento);
@@ -221,12 +211,9 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
   transition: opacity 0.2s;
 }
 
-.btn-ver:hover {
-  opacity: 0.9;
-}
 
 .modelo-info {
-  padding: 28px;
+  padding: 22px 20px;
 }
 
 .modelo-nombre {
@@ -309,8 +296,8 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 
 .modelos-cta {
   text-align: center;
-  margin-top: 60px;
-  padding: 50px;
+  margin-top: 40px;
+  padding: 36px 20px;
   background: var(--texto);
 }
 
@@ -337,24 +324,65 @@ const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
   border: none;
 }
 
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 960px) {
-  .modelos-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
 @media (max-width: 600px) {
-  .modelos-grid {
-    grid-template-columns: 1fr;
-  }
   .modelo-specs {
     flex-wrap: wrap;
     gap: 12px;
+  }
+}
+
+@media (min-width: 601px) {
+  .modelos-section {
+    padding: 120px 6vw;
+  }
+
+  .modelos-header {
+    margin-bottom: 60px;
+  }
+
+  .modelos-intro {
+    font-size: 16px;
+  }
+
+  .modelos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .modelo-info {
+    padding: 28px;
+  }
+
+  .modelos-cta {
+    margin-top: 60px;
+    padding: 50px;
+  }
+}
+
+@media (min-width: 961px) {
+  .modelos-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modelo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  }
+  .modelo-card:hover .modelo-image img {
+    transform: scale(1.05);
+  }
+  .modelo-card:hover .modelo-overlay {
+    opacity: 1;
+  }
+  .btn-ver:hover {
+    opacity: 0.9;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
   }
 }
 </style>

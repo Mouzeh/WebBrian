@@ -286,7 +286,9 @@ svg {
 }
 
 .migas a { color: rgba(255, 255, 255, 0.75); text-decoration: none; }
-.migas a:hover { color: var(--verde-claro); }
+@media (hover: hover) and (pointer: fine) {
+  .migas a:hover { color: var(--verde-claro); }
+}
 .migas svg { width: 14px; height: 14px; }
 .migas span { color: var(--verde-claro); font-weight: 600; }
 
@@ -587,9 +589,13 @@ svg {
   transition: all 0.2s;
 }
 
-.btn:hover { border-color: white; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { border-color: white; }
+}
 .btn.primario { background: var(--verde-claro); border-color: var(--verde-claro); color: #10200a; }
-.btn.primario:hover { filter: brightness(1.05); }
+@media (hover: hover) and (pointer: fine) {
+  .btn.primario:hover { filter: brightness(1.05); }
+}
 
 /* ─── FAQ ─── */
 .post-faq { margin-top: 3em; }
@@ -711,7 +717,9 @@ svg {
   transition: all 0.2s;
 }
 
-.toc a:hover { color: var(--texto); }
+@media (hover: hover) and (pointer: fine) {
+  .toc a:hover { color: var(--texto); }
+}
 .toc a.activo { border-left-color: var(--acento); color: var(--acento); font-weight: 600; }
 
 .aside-cta {
@@ -771,7 +779,9 @@ svg {
   transition: transform 0.3s;
 }
 
-.rel-card:hover { transform: translateY(-3px); }
+@media (hover: hover) and (pointer: fine) {
+  .rel-card:hover { transform: translateY(-3px); }
+}
 .rel-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
 
 .rel-titulo {

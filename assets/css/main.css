@@ -95,6 +95,10 @@ body.preloader-done footer {
   animation: footerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
 }
 
+/* El estado final usa transform: none (y no translateY(0)): con
+   animation-fill-mode "forwards" un transform distinto de none convierte
+   a nav/main en el contenedor de sus hijos position: fixed, lo que
+   rompía el menú móvil y los overlays a pantalla completa. */
 @keyframes mainReveal {
   from {
     opacity: 0;
@@ -102,7 +106,7 @@ body.preloader-done footer {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -113,7 +117,7 @@ body.preloader-done footer {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -148,6 +152,10 @@ body.preloader-done footer {
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Compensa la navbar fija al saltar a anclas (#servicio) */
+  scroll-padding-top: 80px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -160,6 +168,27 @@ body {
   background: var(--fondo);
   color: var(--texto);
   overflow-x: hidden;
+}
+
+/* Ningún elemento decorativo (orbes, brillos, textos gigantes) debe
+   generar scroll horizontal en móvil. clip no crea contenedor de scroll,
+   así que position: sticky sigue funcionando. */
+main {
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+a,
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -223,9 +252,6 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
-.btn:hover::before {
-  transform: translateX(100%);
-}
 
 .btn:active {
   transform: scale(0.96);
@@ -238,11 +264,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-sm);
 }
 
-.btn-primary:hover {
-  background: #2a2723;
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
 
 .btn-primary:active {
   transform: scale(0.96) translateY(0);
@@ -257,12 +278,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: none;
 }
 
-.btn-secondary:hover {
-  background: var(--texto);
-  color: var(--fondo);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
 
 .btn-secondary::before {
   background: linear-gradient(
@@ -283,14 +298,6 @@ h1, h2, h3, h4, h5, h6 {
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.btn-accent:hover {
-  background: linear-gradient(135deg, var(--acento) 0%, var(--acento-dark) 100%);
-  box-shadow:
-    var(--shadow-lg),
-    0 12px 48px var(--acento-glow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transform: translateY(-3px);
-}
 
 .btn-accent:active {
   transform: scale(0.96) translateY(0);
@@ -325,14 +332,6 @@ h1, h2, h3, h4, h5, h6 {
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.btn-whatsapp:hover {
-  background: linear-gradient(135deg, #20bd5a 0%, #0f7a6d 100%);
-  box-shadow:
-    var(--shadow-lg),
-    0 12px 48px rgba(37, 211, 102, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transform: translateY(-3px);
-}
 
 .btn-whatsapp:active {
   transform: scale(0.96) translateY(0);
@@ -366,10 +365,6 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform var(--duration-fast) var(--ease-spring);
 }
 
-.btn:hover svg,
-.btn:hover .icon {
-  transform: translateX(3px);
-}
 
 .btn-lg svg,
 .btn-lg .icon {
@@ -391,11 +386,6 @@ h1, h2, h3, h4, h5, h6 {
     border-color var(--duration-fast) var(--ease-out);
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-xl);
-  border-color: transparent;
-}
 
 .card-interactive {
   cursor: pointer;
@@ -403,6 +393,80 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-interactive:active {
   transform: scale(0.98) translateY(-2px);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   HOVER — solo con puntero fino (en táctil el :hover queda "pegado")
+   ══════════════════════════════════════════════════════ */
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::before {
+    transform: translateX(100%);
+  }
+  .btn-primary:hover {
+    background: #2a2723;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .btn-secondary:hover {
+    background: var(--texto);
+    color: var(--fondo);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .btn-accent:hover {
+    background: linear-gradient(135deg, var(--acento) 0%, var(--acento-dark) 100%);
+    box-shadow:
+      var(--shadow-lg),
+      0 12px 48px var(--acento-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+  }
+  .btn-whatsapp:hover {
+    background: linear-gradient(135deg, #20bd5a 0%, #0f7a6d 100%);
+    box-shadow:
+      var(--shadow-lg),
+      0 12px 48px rgba(37, 211, 102, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+  }
+  .btn:hover svg,
+  .btn:hover .icon {
+    transform: translateX(3px);
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: transparent;
+  }
+  .tag:hover {
+    background: var(--fondo-elevado);
+    border-color: var(--acento);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Se repiten los :active para que sigan ganando sobre :hover */
+  .btn-primary:active {
+    transform: scale(0.96) translateY(0);
+    box-shadow: var(--shadow-xs);
+  }
+  .btn-accent:active {
+    transform: scale(0.96) translateY(0);
+    box-shadow:
+      var(--shadow-sm),
+      0 4px 16px var(--acento-glow);
+  }
+  .btn-whatsapp:active {
+    transform: scale(0.96) translateY(0);
+  }
+  .card-interactive:active {
+    transform: scale(0.98) translateY(-2px);
+  }
+  .tag:active {
+    transform: scale(0.97);
+  }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -607,12 +671,6 @@ a {
     box-shadow var(--duration-fast) var(--ease-out);
 }
 
-.tag:hover {
-  background: var(--fondo-elevado);
-  border-color: var(--acento);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
 
 .tag:active {
   transform: scale(0.97);
@@ -634,7 +692,13 @@ a {
    ══════════════════════════════════════════════════════ */
 
 .section {
-  padding: var(--space-3xl) 6vw;
+  padding: var(--space-2xl) 20px;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-3xl) 6vw;
+  }
 }
 
 .section-dark {

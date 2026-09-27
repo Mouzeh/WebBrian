@@ -3,6 +3,9 @@
 
 export default defineNuxtPlugin(() => {
   if (import.meta.server) return
+  // En pantallas táctiles no hay cursor: se omite para no gastar un
+  // requestAnimationFrame infinito ni desplazar elementos al tocar.
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
 
   let mx = 0, my = 0, rx = 0, ry = 0
   let rafId: number
@@ -11,6 +14,10 @@ export default defineNuxtPlugin(() => {
   const ring   = document.createElement('div')
   cursor.className = 'cursor'
   ring.className   = 'cursor-ring'
+  // Fuera del flujo del documento: nunca debe generar scroll horizontal
+  for (const el of [cursor, ring]) {
+    el.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none'
+  }
   document.body.appendChild(cursor)
   document.body.appendChild(ring)
 

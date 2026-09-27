@@ -143,7 +143,7 @@ const features = [
 
 <style scoped>
 .nosotros {
-  padding: var(--space-3xl) 6vw;
+  padding: var(--space-2xl) 20px;
   background: var(--fondo);
   position: relative;
   overflow: hidden;
@@ -151,6 +151,7 @@ const features = [
 
 /* ─── Background Orbs ─── */
 .bg-orb {
+  display: none; /* blur(120px) es costoso en móvil: solo desde tablet */
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
@@ -183,8 +184,8 @@ const features = [
 
 .nosotros-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3xl);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2xl);
   align-items: center;
   position: relative;
   z-index: 1;
@@ -285,10 +286,12 @@ const features = [
     border-color var(--duration-fast) var(--ease-out);
 }
 
-.feature-item:hover {
-  transform: translateX(8px);
-  background: rgba(43, 95, 0, 0.06);
-  border-color: rgba(43, 95, 0, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .feature-item:hover {
+    transform: translateX(8px);
+    background: rgba(43, 95, 0, 0.06);
+    border-color: rgba(43, 95, 0, 0.15);
+  }
 }
 
 .feature-check {
@@ -312,8 +315,10 @@ const features = [
   transition: transform var(--duration-fast) var(--ease-spring);
 }
 
-.feature-item:hover .check-inner {
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .feature-item:hover .check-inner {
+    transform: scale(1.1);
+  }
 }
 
 .check-inner svg {
@@ -336,13 +341,19 @@ const features = [
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
-.btn:hover .btn-arrow {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
 }
 
 /* ─── Visual ─── */
 .nosotros-visual {
   position: relative;
+  order: -1;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
   opacity: 0;
   transform: translateX(40px);
   transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
@@ -356,7 +367,7 @@ const features = [
 
 .visual-wrapper {
   position: relative;
-  padding: var(--space-xl);
+  padding: var(--space-md);
 }
 
 /* Glass Card base */
@@ -372,16 +383,21 @@ const features = [
 
 /* Stats Stack */
 .stats-stack {
-  position: absolute;
+  position: relative;
   top: 0;
-  left: -40px;
+  left: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
   z-index: 10;
 }
 
 .stat-card {
+  flex: 1;
+  min-width: 120px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -392,9 +408,11 @@ const features = [
     box-shadow var(--duration-normal) var(--ease-out);
 }
 
-.stat-card:hover {
-  transform: translateX(8px) scale(1.02);
-  box-shadow: var(--shadow-xl);
+@media (hover: hover) and (pointer: fine) {
+  .stat-card:hover {
+    transform: translateX(8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+  }
 }
 
 .stat-shine {
@@ -413,8 +431,10 @@ const features = [
   pointer-events: none;
 }
 
-.stat-card:hover .stat-shine {
-  transform: translateX(100%);
+@media (hover: hover) and (pointer: fine) {
+  .stat-card:hover .stat-shine {
+    transform: translateX(100%);
+  }
 }
 
 .stat-icon {
@@ -493,8 +513,10 @@ const features = [
   transition: transform var(--duration-slow) var(--ease-out);
 }
 
-.image-frame:hover .founder-image {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .image-frame:hover .founder-image {
+    transform: scale(1.03);
+  }
 }
 
 .placeholder {
@@ -531,8 +553,8 @@ const features = [
 /* Founder Badge */
 .founder-badge {
   position: absolute;
-  bottom: -16px;
-  right: 24px;
+  bottom: -12px;
+  right: 8px;
   z-index: 10;
 }
 
@@ -544,15 +566,17 @@ const features = [
   transition: opacity var(--duration-normal) var(--ease-out);
 }
 
-.founder-badge:hover .badge-glow {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .founder-badge:hover .badge-glow {
+    opacity: 1;
+  }
 }
 
 .badge-content {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 18px;
+  padding: 10px 14px;
   background: white;
   border: 1px solid rgba(43, 95, 0, 0.15);
   border-radius: var(--radius-lg);
@@ -562,14 +586,16 @@ const features = [
     box-shadow var(--duration-normal) var(--ease-out);
 }
 
-.founder-badge:hover .badge-content {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
+@media (hover: hover) and (pointer: fine) {
+  .founder-badge:hover .badge-content {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
 }
 
 .badge-avatar {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(135deg, var(--acento-light) 0%, var(--acento) 100%);
   border-radius: 50%;
   display: flex;
@@ -580,7 +606,7 @@ const features = [
 
 .badge-avatar span {
   font-family: var(--f-display);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 900;
   color: white;
 }
@@ -593,7 +619,7 @@ const features = [
 
 .badge-name {
   font-family: var(--f-display);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
   color: var(--texto);
@@ -610,6 +636,7 @@ const features = [
 
 /* Decorative Elements */
 .deco-ring {
+  display: none;
   position: absolute;
   top: 50%;
   right: -60px;
@@ -648,78 +675,79 @@ const features = [
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 1024px) {
-  .nosotros-container {
-    gap: var(--space-2xl);
-  }
-
-  .stats-stack {
-    left: -20px;
-  }
-}
-
-@media (max-width: 768px) {
+/* ─── Tablet (mobile first) ─── */
+@media (min-width: 769px) {
   .nosotros {
-    padding: var(--space-2xl) 5vw;
+    padding: var(--space-3xl) 6vw;
+  }
+
+  .bg-orb {
+    display: block;
   }
 
   .nosotros-container {
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .nosotros-visual {
-    order: -1;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  .stats-stack {
-    position: relative;
-    left: 0;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: var(--space-lg);
-  }
-
-  .stat-card {
-    flex: 1;
-    min-width: 120px;
+    order: 0;
+    max-width: none;
+    margin: 0;
   }
 
   .visual-wrapper {
-    padding: var(--space-md);
+    padding: var(--space-xl);
+  }
+
+  .stats-stack {
+    position: absolute;
+    left: -20px;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+  }
+
+  .stat-card {
+    flex: 0 1 auto;
+    min-width: auto;
   }
 
   .deco-ring {
-    display: none;
+    display: block;
   }
 
   .founder-badge {
-    right: 8px;
-    bottom: -12px;
+    right: 24px;
+    bottom: -16px;
   }
 
   .badge-content {
-    padding: 10px 14px;
+    padding: 12px 18px;
   }
 
   .badge-avatar {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
   }
 
   .badge-avatar span {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .badge-name {
-    font-size: 14px;
+    font-size: 16px;
+  }
+}
+
+/* ─── Escritorio ─── */
+@media (min-width: 1025px) {
+  .nosotros-container {
+    gap: var(--space-3xl);
   }
 
-  .feature-item:hover {
-    transform: none;
+  .stats-stack {
+    left: -40px;
   }
 }
 

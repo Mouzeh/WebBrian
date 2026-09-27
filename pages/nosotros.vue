@@ -94,54 +94,67 @@ const equipo = [
 </script>
 
 <style scoped>
-.page-hero { padding: 140px 6vw 80px; background: var(--texto); position: relative; overflow: hidden; }
+.page-hero { padding: 112px 20px 56px; background: var(--texto); position: relative; overflow: hidden; }
 .page-hero::before { content: 'NOSOTROS'; position: absolute; bottom: -20px; right: 4vw; font-family: var(--f-display); font-size: clamp(80px,12vw,160px); font-weight: 900; color: rgba(255,255,255,0.04); pointer-events: none; }
 .label-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .label-line { width: 30px; height: 2px; background: var(--acento); }
 .label-text { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--texto-suave); }
 .label-text.light { color: var(--borde-medio); }
-.page-title { font-family: var(--f-display); font-size: clamp(48px,6vw,88px); font-weight: 900; text-transform: uppercase; color: white; line-height: 0.93; margin-bottom: 18px; }
+.page-title { font-family: var(--f-display); font-size: clamp(40px,6vw,88px); font-weight: 900; text-transform: uppercase; color: white; line-height: 0.93; margin-bottom: 18px; }
 .page-title em { font-style: normal; color: var(--acento); }
-.page-desc { font-size: 16px; color: var(--borde-medio); font-weight: 300; max-width: 480px; }
-.section-title { font-family: var(--f-display); font-size: clamp(46px,5.5vw,76px); font-weight: 900; line-height: 0.93; text-transform: uppercase; letter-spacing: -0.02em; color: var(--texto); }
+.page-desc { font-size: 15px; color: var(--borde-medio); font-weight: 300; max-width: 480px; }
+.section-title { font-family: var(--f-display); font-size: clamp(38px,5.5vw,76px); font-weight: 900; line-height: 0.93; text-transform: uppercase; letter-spacing: -0.02em; color: var(--texto); }
 .section-title.light { color: var(--fondo); }
 .section-title em { font-style: normal; color: var(--acento); }
-.nosotros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.nosotros-body { font-size: 16px; line-height: 1.8; color: var(--texto-suave); font-weight: 300; }
+.nosotros-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: center; }
+.nosotros-body { font-size: 15px; line-height: 1.8; color: var(--texto-suave); font-weight: 300; }
 .nosotros-body p+p { margin-top: 16px; }
-.nosotros-img-wrap { position: relative; height: 500px; }
-.nosotros-badge { position: absolute; bottom: -24px; right: -24px; width: 136px; height: 136px; background: var(--acento); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.badge-num { font-family: var(--f-display); font-size: 50px; font-weight: 900; color: white; line-height: 1; }
+.nosotros-img-wrap { position: relative; height: auto; aspect-ratio: 4/3; margin-right: 12px; }
+.nosotros-badge { position: absolute; bottom: -16px; right: -12px; width: 104px; height: 104px; background: var(--acento); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.badge-num { font-family: var(--f-display); font-size: 40px; font-weight: 900; color: white; line-height: 1; }
 .badge-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 4px; }
-.btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--texto); color: var(--fondo); text-decoration: none; padding: 15px 28px; font-family: var(--f-display); font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s, transform 0.2s; }
-.btn-primary:hover { background: var(--acento); transform: translateY(-2px); }
-.valores-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--borde); }
-.valor-item { background: var(--fondo-puro); padding: 40px 32px; }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; background: var(--texto); color: var(--fondo); text-decoration: none; padding: 15px 28px; font-family: var(--f-display); font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s, transform 0.2s; }
+@media (hover: hover) and (pointer: fine) { .btn-primary:hover { background: var(--acento); transform: translateY(-2px); } }
+.valores-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; background: var(--borde); }
+.valor-item { background: var(--fondo-puro); padding: 28px 24px; }
 .valor-icon { width: 36px; height: 36px; color: var(--acento); margin-bottom: 18px; }
 .valor-icon svg { width: 100%; height: 100%; }
 .valor-title { font-family: var(--f-display); font-size: 24px; font-weight: 800; text-transform: uppercase; color: var(--texto); margin-bottom: 10px; }
 .valor-desc { font-size: 14px; line-height: 1.7; color: var(--texto-suave); font-weight: 300; }
-.section-dark { background: var(--texto); padding: 110px 6vw; }
-.founder-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1000px; }
-.founder-image { position: relative; }
+.section-dark { background: var(--texto); padding: 64px 20px 72px; }
+.founder-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: center; max-width: 500px; margin: 0 auto; }
+.founder-image { position: relative; order: -1; margin-left: 12px; }
 .founder-placeholder { aspect-ratio: 3/4; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
 .placeholder-icon { display: inline-flex; opacity: 0.3; }
 .placeholder-text { font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--borde-medio); }
 .founder-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
-.founder-badge { position: absolute; bottom: -20px; left: -20px; background: var(--acento); padding: 20px 28px; }
+.founder-badge { position: absolute; bottom: -16px; left: -12px; background: var(--acento); padding: 16px 22px; }
 .badge-title { font-family: var(--f-display); font-size: 24px; font-weight: 900; color: white; text-transform: uppercase; }
 .badge-sub { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 2px; }
-.founder-info p { font-size: 16px; line-height: 1.8; color: var(--borde-medio); font-weight: 300; margin-bottom: 16px; }
+.founder-info p { font-size: 15px; line-height: 1.8; color: var(--borde-medio); font-weight: 300; margin-bottom: 16px; }
 .founder-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
 .founder-features li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--fondo); }
 .feature-check { width: 24px; height: 24px; background: var(--acento); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-@media (max-width: 960px) {
-  .nosotros-grid { grid-template-columns: 1fr; }
+/* ─── Tablet ─── */
+@media (min-width: 601px) {
+  .page-hero { padding: 140px 6vw 80px; }
+  .page-desc { font-size: 16px; }
+  .nosotros-body, .founder-info p { font-size: 16px; }
   .valores-grid { grid-template-columns: 1fr 1fr; }
-  .founder-section { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-  .founder-image { order: -1; }
+  .valor-item { padding: 40px 32px; }
+  .section-dark { padding: 110px 6vw; }
+  .nosotros-img-wrap { margin-right: 24px; }
+  .nosotros-badge { bottom: -24px; right: -24px; width: 136px; height: 136px; }
+  .badge-num { font-size: 50px; }
+  .founder-image { margin-left: 20px; }
+  .founder-badge { bottom: -20px; left: -20px; padding: 20px 28px; }
 }
-@media (max-width: 600px) {
-  .valores-grid { grid-template-columns: 1fr; }
+/* ─── Escritorio ─── */
+@media (min-width: 961px) {
+  .nosotros-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 80px; }
+  .nosotros-img-wrap { height: 500px; aspect-ratio: auto; margin-right: 0; }
+  .valores-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .founder-section { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 60px; max-width: 1000px; margin: 0; }
+  .founder-image { order: 0; margin-left: 0; }
 }
 </style>

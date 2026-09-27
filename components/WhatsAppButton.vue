@@ -4,7 +4,9 @@
     target="_blank"
     class="whatsapp-fab"
     :class="{ visible: isVisible }"
+    rel="noopener"
     title="Contáctanos por WhatsApp"
+    aria-label="Contáctanos por WhatsApp"
     @mouseenter="showTooltip = true"
     @mouseleave="showTooltip = false"
   >
@@ -56,8 +58,8 @@ onMounted(() => {
 <style scoped>
 .whatsapp-fab {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: max(16px, calc(env(safe-area-inset-bottom) + 8px));
+  right: max(16px, env(safe-area-inset-right));
   z-index: 900;
   display: flex;
   align-items: center;
@@ -81,8 +83,8 @@ onMounted(() => {
 .fab-button {
   position: relative;
   z-index: 3;
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
   background: #25D366;
   border-radius: 50%;
   display: flex;
@@ -96,11 +98,13 @@ onMounted(() => {
     box-shadow var(--duration-normal) var(--ease-out);
 }
 
-.whatsapp-fab:hover .fab-button {
-  transform: scale(1.08);
-  box-shadow:
-    0 8px 28px rgba(37, 211, 102, 0.45),
-    0 4px 12px rgba(0, 0, 0, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .whatsapp-fab:hover .fab-button {
+    transform: scale(1.08);
+    box-shadow:
+      0 8px 28px rgba(37, 211, 102, 0.45),
+      0 4px 12px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .whatsapp-fab:active .fab-button {
@@ -111,8 +115,8 @@ onMounted(() => {
 }
 
 .fab-icon {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   color: white;
 }
 
@@ -142,11 +146,11 @@ onMounted(() => {
 
 /* ─── Tooltip ─── */
 .fab-tooltip {
+  display: none;
   position: absolute;
   right: calc(100% + 12px);
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
   align-items: center;
   pointer-events: none;
 }
@@ -190,24 +194,25 @@ onMounted(() => {
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 640px) {
+/* Mobile first: desde 641px se recupera el tamaño de escritorio */
+@media (min-width: 641px) {
   .whatsapp-fab {
-    bottom: 20px;
-    right: 20px;
+    bottom: 28px;
+    right: 28px;
   }
 
   .fab-button {
-    width: 54px;
-    height: 54px;
+    width: 60px;
+    height: 60px;
   }
 
   .fab-icon {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
   }
 
   .fab-tooltip {
-    display: none;
+    display: flex;
   }
 }
 

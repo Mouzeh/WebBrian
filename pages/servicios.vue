@@ -696,9 +696,11 @@ onMounted(() => {
   white-space: nowrap;
 }
 
-.cta-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px -10px rgba(74, 124, 35, 0.5);
+@media (hover: hover) and (pointer: fine) {
+  .cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px -10px rgba(74, 124, 35, 0.5);
+  }
 }
 
 .btn-arrow {
@@ -707,8 +709,10 @@ onMounted(() => {
   transition: transform 0.3s ease;
 }
 
-.cta-button:hover .btn-arrow {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .cta-button:hover .btn-arrow {
+    transform: translateX(4px);
+  }
 }
 
 .cta-decoration {

@@ -441,8 +441,10 @@ const servicios = SERVICIOS
   transition: color 0.3s ease;
 }
 
-.header-scroll:hover {
-  color: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  .header-scroll:hover {
+    color: var(--acento);
+  }
 }
 
 .header-scroll span {
@@ -517,14 +519,18 @@ const servicios = SERVICIOS
   transition: opacity 0.3s ease;
 }
 
-.tab-btn:hover::before {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .tab-btn:hover::before {
+    opacity: 1;
+  }
 }
 
-.tab-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(93, 214, 44, 0.3);
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .tab-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(93, 214, 44, 0.3);
+    transform: translateX(4px);
+  }
 }
 
 .tab-btn:focus-visible {
@@ -557,10 +563,12 @@ const servicios = SERVICIOS
   height: 24px;
 }
 
-.tab-btn:hover .tab-icon,
-.tab-btn.active .tab-icon {
-  color: var(--acento);
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .tab-btn:hover .tab-icon,
+  .tab-btn.active .tab-icon {
+    color: var(--acento);
+    transform: scale(1.1);
+  }
 }
 
 .tab-label {
@@ -570,9 +578,11 @@ const servicios = SERVICIOS
   transition: color 0.3s ease;
 }
 
-.tab-btn:hover .tab-label,
-.tab-btn.active .tab-label {
-  color: var(--fondo-puro);
+@media (hover: hover) and (pointer: fine) {
+  .tab-btn:hover .tab-label,
+  .tab-btn.active .tab-label {
+    color: var(--fondo-puro);
+  }
 }
 
 .tab-indicator {
@@ -669,11 +679,13 @@ const servicios = SERVICIOS
   }
 }
 
-.feature-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(93, 214, 44, 0.25);
-  transform: translateY(-4px) translateX(4px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(93, 214, 44, 0.25);
+    transform: translateY(-4px) translateX(4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .feature-icon {
@@ -690,9 +702,11 @@ const servicios = SERVICIOS
   transition: all 0.3s ease;
 }
 
-.feature-card:hover .feature-icon {
-  background: rgba(93, 214, 44, 0.2);
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover .feature-icon {
+    background: rgba(93, 214, 44, 0.2);
+    transform: scale(1.05);
+  }
 }
 
 .feature-icon svg {
@@ -712,8 +726,10 @@ const servicios = SERVICIOS
   transition: color 0.3s ease;
 }
 
-.feature-card:hover .feature-title {
-  color: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover .feature-title {
+    color: var(--acento);
+  }
 }
 
 .feature-desc {
@@ -805,9 +821,11 @@ const servicios = SERVICIOS
   transition: all 0.3s ease;
 }
 
-.cta-primary:hover {
-  background: var(--acento-dark);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .cta-primary:hover {
+    background: var(--acento-dark);
+    transform: translateY(-2px);
+  }
 }
 
 .cta-primary:focus-visible {
@@ -821,8 +839,10 @@ const servicios = SERVICIOS
   transition: transform 0.3s ease;
 }
 
-.cta-primary:hover svg {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .cta-primary:hover svg {
+    transform: translateX(4px);
+  }
 }
 
 .cta-whatsapp {
@@ -841,11 +861,13 @@ const servicios = SERVICIOS
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cta-whatsapp:hover {
-  background: rgba(37, 211, 102, 0.2);
-  border-color: #25D366;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .cta-whatsapp:hover {
+    background: rgba(37, 211, 102, 0.2);
+    border-color: #25D366;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
+  }
 }
 
 .cta-whatsapp:focus-visible {

@@ -762,8 +762,10 @@ onUnmounted(() => {
   z-index: 10;
 }
 
-.hero-back:hover {
-  color: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  .hero-back:hover {
+    color: var(--acento);
+  }
 }
 
 .hero-back svg {
@@ -1057,8 +1059,10 @@ onUnmounted(() => {
   transition: background 0.3s ease;
 }
 
-.spec-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) and (pointer: fine) {
+  .spec-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .spec-icon {
@@ -1192,9 +1196,11 @@ onUnmounted(() => {
   transition: all 0.3s ease;
 }
 
-.specs-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(93, 214, 44, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .specs-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(93, 214, 44, 0.3);
+  }
 }
 
 .specs-cta svg {
@@ -1203,8 +1209,10 @@ onUnmounted(() => {
   transition: transform 0.3s ease;
 }
 
-.specs-cta:hover svg {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .specs-cta:hover svg {
+    transform: translateX(4px);
+  }
 }
 
 /* ═══════════════════════════════════════
@@ -1281,7 +1289,9 @@ onUnmounted(() => {
   transition: opacity 0.2s, transform 0.2s;
 }
 .bp-zoom svg { width: 18px; height: 18px; }
-.blueprint:hover .bp-zoom { opacity: 1; transform: scale(1.08); }
+@media (hover: hover) and (pointer: fine) {
+  .blueprint:hover .bp-zoom { opacity: 1; transform: scale(1.08); }
+}
 
 .bp-caption {
   display: flex;
@@ -1478,9 +1488,11 @@ onUnmounted(() => {
   width: 100%;
 }
 
-.btn-download-plan:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(93, 214, 44, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .btn-download-plan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(93, 214, 44, 0.3);
+  }
 }
 
 .btn-download-plan svg {
@@ -1539,8 +1551,10 @@ onUnmounted(() => {
   transition: transform 0.6s var(--ease-out);
 }
 
-.gallery-item:hover .gallery-img {
-  transform: scale(1.08);
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover .gallery-img {
+    transform: scale(1.08);
+  }
 }
 
 .gallery-overlay {
@@ -1554,8 +1568,10 @@ onUnmounted(() => {
   transition: opacity 0.3s ease;
 }
 
-.gallery-item:hover .gallery-overlay {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+  }
 }
 
 .gallery-zoom {
@@ -1576,8 +1592,10 @@ onUnmounted(() => {
   height: 24px;
 }
 
-.gallery-item:hover .gallery-zoom {
-  transform: scale(1);
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover .gallery-zoom {
+    transform: scale(1);
+  }
 }
 
 /* ═══════════════════════════════════════
@@ -1644,8 +1662,10 @@ onUnmounted(() => {
   transition: transform 0.3s ease;
 }
 
-.btn:hover svg {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover svg {
+    transform: translateX(4px);
+  }
 }
 
 .btn-primary {
@@ -1653,9 +1673,11 @@ onUnmounted(() => {
   color: white;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(93, 214, 44, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(93, 214, 44, 0.3);
+  }
 }
 
 .btn-whatsapp {
@@ -1664,9 +1686,11 @@ onUnmounted(() => {
   color: #25D366;
 }
 
-.btn-whatsapp:hover {
-  background: rgba(37, 211, 102, 0.25);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .btn-whatsapp:hover {
+    background: rgba(37, 211, 102, 0.25);
+    transform: translateY(-2px);
+  }
 }
 
 /* Decoration */
@@ -1724,8 +1748,10 @@ onUnmounted(() => {
   z-index: 10;
 }
 
-.lb-close:hover {
-  background: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  .lb-close:hover {
+    background: var(--acento);
+  }
 }
 
 .lb-close svg {
@@ -1757,9 +1783,11 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.lb-arrow:hover {
-  background: var(--acento);
-  border-color: var(--acento);
+@media (hover: hover) and (pointer: fine) {
+  .lb-arrow:hover {
+    background: var(--acento);
+    border-color: var(--acento);
+  }
 }
 
 .lb-arrow svg {
@@ -1824,8 +1852,10 @@ onUnmounted(() => {
   border-color: var(--acento);
 }
 
-.lb-thumb:hover {
-  opacity: 0.8;
+@media (hover: hover) and (pointer: fine) {
+  .lb-thumb:hover {
+    opacity: 0.8;
+  }
 }
 
 .lb-thumb img {
