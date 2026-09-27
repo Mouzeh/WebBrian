@@ -27,7 +27,7 @@
           <span class="title-line accent">Servicios</span>
         </h1>
         <p class="hero-desc">
-          Soluciones integrales de construcción para proyectos residenciales, comerciales e industriales.
+          Proyectos sanitarios, regularizaciones, permisos de edificación, topografía, electricidad y construcción en la Región de Los Ríos.
         </p>
       </div>
       <div class="hero-scroll-indicator">
@@ -44,42 +44,45 @@
     <section class="services-section">
       <div class="services-grid">
         <article
-          v-for="(srv, i) in servicios"
-          :key="srv.num"
+          v-for="(srv, i) in SERVICIOS"
+          :id="srv.id"
+          :key="srv.id"
           class="service-card"
-          :style="{ '--delay': `${i * 0.1}s` }"
-          @mouseenter="activeCard = i"
-          @mouseleave="activeCard = null"
+          :style="{ '--delay': `${i * 0.08}s` }"
         >
-          <!-- Card Background Effect -->
-          <div class="card-bg"></div>
+          <!-- Fondo que se expande desde el ícono al pasar el cursor -->
+          <div class="card-bg" aria-hidden="true"><span class="card-grid"></span></div>
 
-          <!-- Number Badge -->
-          <div class="card-number">{{ srv.num }}</div>
+          <span class="card-number" aria-hidden="true">{{ srv.num }}</span>
 
-          <!-- Icon -->
-          <div class="card-icon" v-html="srv.icono"></div>
-
-          <!-- Content -->
-          <div class="card-content">
-            <h3 class="card-title">{{ srv.titulo }}</h3>
-            <p class="card-desc">{{ srv.desc }}</p>
-
-            <!-- Features List -->
-            <ul class="card-features">
-              <li v-for="(item, j) in srv.lista" :key="item" :style="{ '--item-delay': `${j * 0.05}s` }">
-                <span class="feature-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M5 12l5 5L20 7"/>
-                  </svg>
-                </span>
-                <span>{{ item }}</span>
-              </li>
-            </ul>
+          <div class="card-top">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" v-html="srv.icono" />
+            </div>
+            <span class="card-badge">{{ srv.badge }}</span>
           </div>
 
-          <!-- Hover Line -->
-          <div class="card-line"></div>
+          <h2 class="card-title">{{ srv.titulo }}</h2>
+          <p class="card-desc">{{ srv.desc }}</p>
+
+          <ul class="card-features">
+            <li v-for="(item, j) in srv.items" :key="item.titulo" :style="{ '--j': j }">
+              <span class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" /></svg>
+              </span>
+              <span class="feature-text">
+                <strong>{{ item.titulo }}</strong>
+                <small>{{ item.desc }}</small>
+              </span>
+            </li>
+          </ul>
+
+          <a :href="whatsapp(srv.titulo)" target="_blank" rel="noopener" class="card-cta">
+            <span>Cotizar este servicio</span>
+            <span class="card-cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </span>
+          </a>
         </article>
       </div>
 
@@ -111,55 +114,35 @@
 <script setup lang="ts">
 usePaginaSeo({
   titulo: 'Servicios de Construcción en Valdivia | R&J Constructora',
-  descripcion: 'Construcción de casas, instalaciones eléctricas SEC y sanitarias, permisos de edificación, regularizaciones y topografía en la Región de Los Ríos.'
+  descripcion: 'Proyectos sanitarios, regularizaciones Ley 20.898, permisos de edificación, topografía, electricidad y construcción en Valdivia y la Región de Los Ríos.'
 })
 
-const activeCard = ref<number | null>(null)
+// Servicios compartidos con el inicio y el pie de página (composables/servicios.ts)
+const whatsapp = (servicio: string) =>
+  `https://wa.me/${NEGOCIO.whatsapp}?text=${encodeURIComponent(`Hola, quiero cotizar el servicio de ${servicio}.`)}`
 
-const servicios = [
-  {
-    num: '01',
-    icono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
-    titulo: 'Servicios Eléctricos',
-    desc: 'Instalaciones eléctricas domiciliarias e industriales con certificación SEC.',
-    lista: ['Instalaciones nuevas', 'Ampliaciones eléctricas', 'Certificaciones TE1', 'Empalmes eléctricos']
-  },
-  {
-    num: '02',
-    icono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6m0 0a4 4 0 100 8 4 4 0 000-8zm-2 14h4m-2 0v4"/></svg>',
-    titulo: 'Servicios Sanitarios',
-    desc: 'Instalaciones de agua potable, alcantarillado y gas con los más altos estándares.',
-    lista: ['Agua potable', 'Alcantarillado', 'Instalaciones de gas', 'Reparaciones']
-  },
-  {
-    num: '03',
-    icono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>',
-    titulo: 'Ley del Mono',
-    desc: 'Regularización de construcciones existentes según la normativa vigente.',
-    lista: ['Regularización ampliaciones', 'Documentación técnica', 'Gestión municipal', 'Asesoría legal']
-  },
-  {
-    num: '04',
-    icono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8m8 4H8m2-8H8"/></svg>',
-    titulo: 'Permisos de Edificación',
-    desc: 'Gestión completa de permisos ante la Dirección de Obras Municipales.',
-    lista: ['Permisos de obra nueva', 'Permisos de ampliación', 'Recepciones finales', 'Subdivisiones']
-  },
-  {
-    num: '05',
-    icono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l7.07 17.07 2.51-7.39 7.39-2.51L4 4zM14 14l6 6"/></svg>',
-    titulo: 'Topografía',
-    desc: 'Levantamientos topográficos y estudios de terreno con equipos de precisión.',
-    lista: ['Levantamientos', 'Replanteos', 'Nivelaciones', 'Estudios de suelo']
-  },
-  {
-    num: '06',
-    icono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 20h20M5 20V10l7-5 7 5v10M9 20v-6h6v6"/></svg>',
-    titulo: 'Construcción General',
-    desc: 'Ejecución de obras completas, desde los cimientos hasta la entrega final.',
-    lista: ['Obras nuevas', 'Remodelaciones', 'Ampliaciones', 'Terminaciones']
-  },
-]
+useSchema(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Servicios de R&J Constructora',
+  itemListElement: SERVICIOS.map((srv, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: srv.titulo,
+      description: srv.desc,
+      url: urlAbsoluta(`/servicios#${srv.id}`),
+      areaServed: { '@type': 'AdministrativeArea', name: 'Región de Los Ríos' },
+      provider: { '@id': urlAbsoluta('/#negocio') },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: srv.titulo,
+        itemListElement: srv.items.map(it => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: it.titulo, description: it.desc } }))
+      }
+    }
+  }))
+}))
 
 // Intersection Observer for scroll animations
 onMounted(() => {
@@ -347,162 +330,309 @@ onMounted(() => {
 
 /* ─── Service Card ─── */
 .service-card {
+  --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
+  --verde-claro: #86d95a;
+
   position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 32px 30px;
+  border: 1px solid var(--borde);
+  border-radius: 20px;
   background: white;
-  border-radius: var(--card-radius);
-  padding: 40px 32px;
   overflow: hidden;
+  isolation: isolate;
+  scroll-margin-top: 100px;
   opacity: 0;
   transform: translateY(30px);
   transition:
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s ease;
+    transform 0.6s var(--ease-card),
+    box-shadow 0.6s var(--ease-card),
+    border-color 0.4s;
 }
 
 .service-card.visible {
   opacity: 1;
   transform: translateY(0);
-  animation: card-appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: card-appear 0.7s var(--ease-card) both;
   animation-delay: var(--delay);
 }
 
 @keyframes card-appear {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.15);
-}
-
+/* Fondo oscuro que crece desde el ícono */
 .card-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--acento), #6ba32a);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(134, 217, 90, 0.18), transparent 55%),
+    linear-gradient(160deg, #22201c 0%, #151411 100%);
+  clip-path: circle(0% at 60px 64px);
+  transition: clip-path 0.8s var(--ease-card);
 }
 
-.service-card:hover .card-bg {
-  transform: scaleX(1);
+.card-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, black, transparent 70%);
 }
 
 .card-number {
   position: absolute;
-  top: 20px;
-  right: 24px;
+  top: 18px;
+  right: 26px;
   font-family: var(--f-display);
-  font-size: 48px;
+  font-size: 72px;
   font-weight: 900;
-  color: var(--borde);
-  opacity: 0.3;
   line-height: 1;
-  transition: opacity 0.3s, color 0.3s;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--borde);
+  transition: -webkit-text-stroke-color 0.5s, transform 0.8s var(--ease-card);
 }
 
-.service-card:hover .card-number {
-  opacity: 0.15;
-  color: var(--acento);
+.card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
 }
 
 .card-icon {
-  width: 56px;
-  height: 56px;
-  background: var(--acento);
-  border-radius: 12px;
+  width: 58px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 16px;
+  background: var(--acento);
   color: white;
-  margin-bottom: 24px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+  transition: transform 0.7s var(--ease-card), background 0.4s, color 0.4s, box-shadow 0.4s;
 }
 
 .card-icon svg {
-  width: 26px;
-  height: 26px;
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.service-card:hover .card-icon {
-  transform: scale(1.1) rotate(-3deg);
+.card-badge {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #eef5e6;
+  color: var(--acento);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.4s, color 0.4s;
 }
 
 .card-title {
+  margin-bottom: 10px;
   font-family: var(--f-display);
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
+  line-height: 1.1;
   text-transform: uppercase;
   color: var(--texto);
-  margin-bottom: 12px;
-  line-height: 1.2;
+  transition: color 0.4s;
 }
 
 .card-desc {
-  font-size: 14px;
+  margin-bottom: 22px;
+  font-size: 14.5px;
   line-height: 1.7;
   color: var(--texto-suave);
-  margin-bottom: 20px;
+  transition: color 0.4s;
 }
 
 .card-features {
-  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
+  margin: 0 0 26px;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--borde);
+  list-style: none;
+  transition: border-color 0.4s;
 }
 
 .card-features li {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--texto-suave);
-  opacity: 0.8;
-  transition: opacity 0.3s, transform 0.3s;
-  transition-delay: var(--item-delay);
-}
-
-.service-card:hover .card-features li {
-  opacity: 1;
-  transform: translateX(4px);
+  align-items: flex-start;
+  gap: 12px;
+  transition: transform 0.5s var(--ease-card);
+  transition-delay: calc(var(--j) * 0.06s);
 }
 
 .feature-icon {
-  width: 16px;
-  height: 16px;
-  color: var(--acento);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: #eef5e6;
+  color: var(--acento);
+  transition: background 0.4s, color 0.4s, transform 0.5s var(--ease-card);
+  transition-delay: calc(var(--j) * 0.06s);
 }
 
 .feature-icon svg {
-  width: 100%;
-  height: 100%;
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.card-line {
-  position: absolute;
-  bottom: 0;
-  left: 32px;
-  right: 32px;
-  height: 1px;
-  background: var(--borde);
-  transform: scaleX(0);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.service-card:hover .card-line {
-  transform: scaleX(1);
+.feature-text strong {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--texto);
+  transition: color 0.4s;
+}
+
+.feature-text small {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--texto-suave);
+  transition: color 0.4s;
+}
+
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding: 14px 14px 14px 20px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--texto);
+  transition: background 0.4s, border-color 0.4s, color 0.4s;
+}
+
+.card-cta-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--acento);
+  color: white;
+  transition: transform 0.5s var(--ease-card), background 0.4s, color 0.4s;
+}
+
+.card-cta-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─── Estado hover / foco ─── */
+@media (hover: hover) {
+  .service-card:hover {
+    transform: translateY(-8px);
+    border-color: transparent;
+    box-shadow: 0 30px 70px -25px rgba(20, 19, 16, 0.55);
+  }
+
+  .service-card:hover .card-bg {
+    clip-path: circle(150% at 60px 64px);
+  }
+
+  .service-card:hover .card-number {
+    -webkit-text-stroke-color: rgba(134, 217, 90, 0.55);
+    transform: translateY(-4px) scale(1.08);
+  }
+
+  .service-card:hover .card-icon {
+    transform: rotate(-8deg) scale(1.08);
+    background: var(--verde-claro);
+    color: #10200a;
+    box-shadow: 0 10px 30px rgba(134, 217, 90, 0.35);
+  }
+
+  .service-card:hover .card-badge {
+    background: rgba(134, 217, 90, 0.14);
+    color: var(--verde-claro);
+  }
+
+  .service-card:hover .card-title,
+  .service-card:hover .feature-text strong {
+    color: white;
+  }
+
+  .service-card:hover .card-desc,
+  .service-card:hover .feature-text small {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .service-card:hover .card-features {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .service-card:hover .card-features li {
+    transform: translateX(6px);
+  }
+
+  .service-card:hover .feature-icon {
+    background: var(--verde-claro);
+    color: #10200a;
+    transform: scale(1.12);
+  }
+
+  .service-card:hover .card-cta {
+    background: var(--verde-claro);
+    border-color: var(--verde-claro);
+    color: #10200a;
+  }
+
+  .service-card:hover .card-cta-icon {
+    background: #10200a;
+    color: var(--verde-claro);
+    transform: rotate(-45deg);
+  }
+}
+
+.card-cta:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
 }
 
 /* ─── CTA Section ─── */
@@ -640,7 +770,11 @@ onMounted(() => {
   }
 
   .service-card {
-    padding: 32px 24px;
+    padding: 30px 22px 24px;
+  }
+
+  .card-number {
+    font-size: 56px;
   }
 
   .cta-section {
@@ -681,6 +815,14 @@ onMounted(() => {
 
   .service-card:hover {
     transform: none;
+  }
+
+  .card-bg,
+  .card-icon,
+  .card-features li,
+  .feature-icon,
+  .card-cta-icon {
+    transition: none;
   }
 
   .decoration-circle {

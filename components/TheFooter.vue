@@ -56,8 +56,8 @@
         <div class="footer-col">
           <h4 class="col-title">Servicios</h4>
           <ul class="col-links">
-            <li v-for="service in services" :key="service">
-              <NuxtLink to="/servicios">{{ service }}</NuxtLink>
+            <li v-for="service in services" :key="service.id">
+              <NuxtLink :to="`/servicios#${service.id}`">{{ service.corto }}</NuxtLink>
             </li>
           </ul>
         </div>
@@ -168,13 +168,7 @@
 const currentYear = new Date().getFullYear()
 const { data: config } = useConfiguracion()
 
-const services = [
-  'Eléctricos',
-  'Sanitarios',
-  'Ley del Mono',
-  'Permisos',
-  'Topografía'
-]
+const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
 
 </script>
 

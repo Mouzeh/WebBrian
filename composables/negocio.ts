@@ -24,11 +24,14 @@ export const NEGOCIO = {
   logo: '/images/logosinfondo.png',
   servicios: [
     'Construcción de casas',
-    'Modelos de casas prefabricadas y a medida',
-    'Instalaciones eléctricas',
-    'Instalaciones sanitarias',
-    'Permisos de edificación y regularizaciones',
-    'Topografía'
+    'Proyectos de agua potable y alcantarillado',
+    'Instalaciones de gas',
+    'Gestión de proyectos ante empresas sanitarias (Suralis, Aguas Décima) y Servicio de Salud',
+    'Certificados de dotación sanitaria',
+    'Regularización de construcciones (Ley 20.898)',
+    'Permisos de edificación, obra menor y recepción final',
+    'Topografía: curvas de nivel, subdivisiones, rectificación de deslindes y replanteos',
+    'Instalaciones eléctricas y certificación TE1'
   ]
 }
 

@@ -42,7 +42,7 @@
 
         <!-- Subtitle -->
         <p class="header-desc">
-          <span class="desc-highlight">Profesionales certificados</span> en instalaciones sanitarias, eléctricas y regularización de propiedades en la Región de Los Ríos.
+          <span class="desc-highlight">Profesionales certificados</span> en proyectos sanitarios, electricidad, regularizaciones, permisos de edificación y topografía en la Región de Los Ríos.
         </p>
 
         <!-- Scroll indicator -->
@@ -237,109 +237,19 @@ onMounted(() => {
   }
 })
 
-const servicios = [
-  {
-    id: 'sanitario',
-    shortTitle: 'Sanitarios',
-    badge: 'Proyectos Sanitarios',
-    title: 'Proyectos e Instalaciones Sanitarias',
-    intro: '¿Necesitas construir y/o regularizar tus instalaciones sanitarias? Nuestra empresa cuenta con los profesionales competentes para el desarrollo, gestión y aprobación de tu proyecto sanitario, tanto en zonas rurales como urbanas.',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M12 2v6M12 22v-6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M22 12h-6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/>
-      <circle cx="12" cy="12" r="3"/>
-    </svg>`,
-    features: [
-      {
-        title: 'Diseño de Proyectos',
-        desc: 'Elaboramos diseños de proyectos de agua potable y alcantarillado (sistemas de impulsión de agua, alcantarillados particulares, etc.) adaptados a sectores rurales y urbanos.'
-      },
-      {
-        title: 'Levantamientos Técnicos',
-        desc: 'Realizamos levantamientos de artefactos y/o arquitectura de construcciones, lo cual incluye levantamiento topográfico profesional.'
-      },
-      {
-        title: 'Gestión y Tramitación',
-        desc: 'Gestionamos el ingreso y la aprobación de proyectos ante las Empresas Sanitarias (Suralis, Aguas Décimas, etc.) y/o el Servicio de Salud respectivo.'
-      }
-    ],
-    benefits: [
-      'Profesionales certificados en el área',
-      'Cobertura en zonas rurales y urbanas',
-      'Gestión completa ante entidades sanitarias',
-      'Plazos claros y cumplimiento garantizado'
-    ]
-  },
-  {
-    id: 'electrico',
-    shortTitle: 'Eléctricos',
-    badge: 'Certificación SEC',
-    title: 'Servicios e Instalaciones Eléctricas',
-    intro: '¿Necesitas instalaciones eléctricas nuevas para tu vivienda o construcción, o buscas mejorar, renovar y ampliar tu red eléctrica? Entregamos servicios eléctricos con seguridad, respaldo y calidad técnica para tu construcción en la Región de Los Ríos.',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`,
-    features: [
-      {
-        title: 'Instalaciones Completas',
-        desc: 'Ejecutamos instalaciones eléctricas, empalmes, tableros, proyectos y servicios normados según la legislación vigente.'
-      },
-      {
-        title: 'Seguridad Garantizada',
-        desc: 'Todas nuestras obras cumplen con la normativa chilena vigente, asegurando la protección de tu familia y propiedad.'
-      },
-      {
-        title: 'Respaldo Profesional',
-        desc: 'Contamos con profesionales y/o técnicos autorizados por la SEC (Superintendencia de Electricidad y Combustibles).'
-      },
-      {
-        title: 'Calidad Técnica',
-        desc: 'Entregamos trabajos con garantía, respaldo y alta calidad en cada proyecto realizado.'
-      }
-    ],
-    benefits: [
-      'Certificación TE1 incluida',
-      'Profesionales autorizados SEC',
-      'Garantía en todos los trabajos',
-      'Materiales de primera calidad'
-    ]
-  },
-  {
-    id: 'mono',
-    shortTitle: 'Ley del Mono',
-    badge: 'Ley N° 20.898',
-    title: 'Regularización de Propiedades',
-    intro: '¿Necesitas regularizar tu vivienda, ampliaciones, local comercial y/o recintos sociales? Estamos para ayudarte a obtener seguridad jurídica y tranquilidad para tu familia.',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke-linecap="round"/>
-      <rect x="9" y="3" width="6" height="4" rx="1"/>
-      <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`,
-    features: [
-      {
-        title: 'Trámite Único y Rápido',
-        desc: 'La Ley del Mono permite obtener, en un solo trámite simplificado, el permiso de edificación y la recepción definitiva de tu propiedad.'
-      },
-      {
-        title: 'Prevención de Sanciones',
-        desc: 'Pone al día las construcciones o ampliaciones ejecutadas sin permiso municipal previo, evitando multas u órdenes de demolición.'
-      },
-      {
-        title: 'Menor Burocracia',
-        desc: 'Exige menos documentos técnicos que una regularización tradicional, requiriendo principalmente un plano firmado y/o certificación profesional.'
-      },
-      {
-        title: 'Ahorro Económico',
-        desc: 'Otorga importantes descuentos en los pagos municipales según la tasación del bien raíz, alcanzando hasta un 75% de rebaja en propiedades de menor avalúo.'
-      }
-    ],
-    benefits: [
-      'Rebaja de hasta 75% en derechos municipales',
-      'Un solo trámite simplificado',
-      'Evita multas y demoliciones',
-      'Seguridad jurídica para tu familia'
-    ]
-  }
-]
+// Servicios desde composables/servicios.ts (misma fuente que /servicios y el footer)
+const servicios = SERVICIOS
+  .filter(srv => srv.id !== 'construccion')
+  .map(srv => ({
+    id: srv.id,
+    shortTitle: srv.corto,
+    badge: srv.badge,
+    title: srv.titulo,
+    intro: srv.intro,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${srv.icono}</svg>`,
+    features: srv.items.map(item => ({ title: item.titulo, desc: item.desc })),
+    benefits: srv.beneficios
+  }))
 </script>
 
 <style scoped>
