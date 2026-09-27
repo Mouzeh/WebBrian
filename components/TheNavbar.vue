@@ -104,12 +104,14 @@
 const isScrolled = ref(false)
 const menuOpen = ref(false)
 
-const navLinks = [
+const { data: config } = useConfiguracion()
+
+const navLinks = computed(() => [
   { path: '/', label: 'Inicio' },
   { path: '/servicios', label: 'Servicios' },
   { path: '/nosotros', label: 'Nosotros' },
-  { path: '/proyectos/', label: 'Proyectos' }
-]
+  { path: '/proyectos/', label: config.value.mostrar_terminados ? 'Proyectos' : 'Modelos' }
+])
 
 const route = useRoute()
 watch(() => route.path, () => {

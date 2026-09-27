@@ -57,6 +57,7 @@ export interface Proyecto {
   especificaciones_tecnicas?: EspecificacionesTecnicas
   // 'terminado' = casa ya construida · 'construccion' = render / proyecto para construir
   categoria: 'terminado' | 'construccion'
+  precio?: string
   status: 'published' | 'draft'
   created_at?: string
 }
@@ -163,5 +164,55 @@ export function useProyectos() {
     return data ?? []
   }
 
-  return { imgUrl, getProyectos, getProyecto, getProyectosDestacados, getServicios }
+  // Obtener modelos de casas (proyectos para construcción / renders)
+  async function getModelos(): Promise<Proyecto[]> {
+    const { data, error } = await supabase
+      .from('proyectos')
+      .select('id, slug, titulo, tipo, anio, ubicacion, superficie, descripcion, imagen_portada, destacado, categoria, precio, habitaciones, banos, especificaciones_tecnicas, status')
+      .eq('status', 'published')
+      .eq('categoria', 'construccion')
+      .order('destacado', { ascending: false })
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching modelos:', error)
+      return []
+    }
+    return data ?? []
+  }
+
+  return { imgUrl, getProyectos, getProyecto, getProyectosDestacados, getModelos, getServicios }
+}
+
+// Configuración general del sitio (tabla `configuracion`)
+export interface ConfiguracionSitio {
+  // Muestra la sección "Proyectos que hablan solos" (casas terminadas)
+  mostrar_terminados: boolean
+}
+
+export const configuracionPorDefecto: ConfiguracionSitio = {
+  mostrar_terminados: false
+}
+
+export function useConfiguracion() {
+  const supabase = useSupabaseClient()
+
+  return useAsyncData('configuracion-sitio', async () => {
+    const { data, error } = await supabase
+      .from('configuracion')
+      .select('clave, valor')
+
+    if (error) {
+      console.error('Error fetching configuracion:', error)
+      return { ...configuracionPorDefecto }
+    }
+
+    const config = { ...configuracionPorDefecto }
+    for (const row of data ?? []) {
+      if (row.clave in config) {
+        (config as any)[row.clave] = row.valor
+      }
+    }
+    return config
+  }, { default: () => ({ ...configuracionPorDefecto }) })
 }

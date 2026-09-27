@@ -1,14 +1,21 @@
 <template>
   <div>
     <div class="page-hero">
-      <div class="label-row"><div class="label-line"></div><span class="label-text light">Nuestro Trabajo</span></div>
-      <h1 class="page-title">Proyectos que<br><em>Hablan</em> Solos</h1>
-      <p class="page-desc">Conoce nuestra trayectoria a traves de los proyectos que hemos realizado.</p>
+      <template v-if="config.mostrar_terminados">
+        <div class="label-row"><div class="label-line"></div><span class="label-text light">Nuestro Trabajo</span></div>
+        <h1 class="page-title">Proyectos que<br><em>Hablan</em> Solos</h1>
+        <p class="page-desc">Conoce nuestra trayectoria a través de los proyectos que hemos realizado.</p>
+      </template>
+      <template v-else>
+        <div class="label-row"><div class="label-line"></div><span class="label-text light">Diseños Exclusivos</span></div>
+        <h1 class="page-title">Modelos de<br><em>Casas</em></h1>
+        <p class="page-desc">Descubre nuestros diseños de casas listas para construir.</p>
+      </template>
     </div>
 
     <section class="section">
-      <!-- Tabs -->
-      <div class="tabs reveal">
+      <!-- Tabs (solo si la sección de proyectos terminados está activa) -->
+      <div v-if="config.mostrar_terminados" class="tabs reveal">
         <button
           :class="['tab', { active: activeTab === 'terminado' }]"
           @click="activeTab = 'terminado'"
@@ -23,7 +30,7 @@
         </button>
       </div>
 
-      <p class="tab-desc">
+      <p v-if="config.mostrar_terminados" class="tab-desc">
         {{ activeTab === 'terminado'
           ? 'Casas que ya construimos y entregamos a nuestros clientes.'
           : 'Diseños y renders de casas listas para construir. Elige tu modelo y lo hacemos realidad.' }}
@@ -76,15 +83,26 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Proyectos - Construcciones Brian' })
+const { data: config } = await useConfiguracion()
+
+useHead({
+  title: computed(() => config.value.mostrar_terminados
+    ? 'Proyectos - Construcciones Brian'
+    : 'Modelos de Casas - Construcciones Brian')
+})
 
 const { initReveal } = useReveal()
 const { imgUrl, getProyectos } = useProyectos()
 
 const route = useRoute()
 const activeTab = ref<'terminado' | 'construccion'>(
-  route.query.categoria === 'construccion' ? 'construccion' : 'terminado'
+  route.query.categoria === 'construccion' || !config.value.mostrar_terminados ? 'construccion' : 'terminado'
 )
+
+// Si se oculta la sección de terminados, forzar la pestaña de modelos
+watch(() => config.value.mostrar_terminados, (mostrar) => {
+  if (!mostrar) activeTab.value = 'construccion'
+})
 
 const { data: allProyectos } = await useAsyncData('proyectos-all', () => getProyectos())
 

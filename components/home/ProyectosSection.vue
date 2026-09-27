@@ -17,43 +17,12 @@
       </h2>
 
       <p class="proyectos-subtitle">
-        Explora nuestra selección de trabajos y descubre la calidad que entregamos.
+        Casas que ya construimos y entregamos. Descubre la calidad que entregamos.
       </p>
     </div>
 
-    <!-- Tabs -->
-    <div class="tabs-container">
-      <div class="tabs glass-tabs">
-        <button
-          :class="['tab', { active: activeTab === 'terminado' }]"
-          @click="activeTab = 'terminado'"
-        >
-          <span class="tab-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M3 21V7l9-4 9 4v14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="tab-label">Terminados</span>
-        </button>
-        <button
-          :class="['tab', { active: activeTab === 'construccion' }]"
-          @click="activeTab = 'construccion'"
-        >
-          <span class="tab-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </span>
-          <span class="tab-label">Para Construir</span>
-        </button>
-        <div class="tab-indicator" :class="{ right: activeTab === 'construccion' }"></div>
-      </div>
-    </div>
-
     <!-- Proyectos Terminados -->
-    <div v-show="activeTab === 'terminado'" class="proyectos-grid venta">
+    <div class="proyectos-grid venta">
       <NuxtLink
         v-for="(p, i) in proyectosTerminados"
         :key="p.id"
@@ -125,50 +94,6 @@
       </div>
     </div>
 
-    <!-- Proyectos para Construcción (renders) -->
-    <div v-show="activeTab === 'construccion'" class="proyectos-grid ejecutados">
-      <NuxtLink
-        v-for="(p, i) in proyectosConstruccion"
-        :key="p.id"
-        :to="`/proyectos/${p.slug}`"
-        class="trabajo-card"
-        :style="{ '--index': i }"
-      >
-        <div class="trabajo-image">
-          <NuxtImg
-            :src="p.imagen_portada.startsWith('http') ? p.imagen_portada : imgUrl(p.imagen_portada)"
-            :alt="p.titulo"
-            class="trabajo-img"
-          />
-          <div class="trabajo-overlay">
-            <div class="overlay-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M11 8v6M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="trabajo-info">
-          <span class="trabajo-tipo">{{ p.tipo }}</span>
-          <span class="trabajo-titulo">{{ p.titulo }}</span>
-        </div>
-      </NuxtLink>
-
-      <div v-if="!proyectosConstruccion.length" class="empty-state glass-card">
-        <div class="empty-icon">
-          <svg viewBox="0 0 64 64" fill="none">
-            <path d="M32 56l-20-12V20l20-12 20 12v24l-20 12z" stroke="currentColor" stroke-width="2"/>
-            <path d="M32 56V32M12 20l20 12M52 20l-20 12" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
-        <p class="empty-text">Próximamente proyectos para construir</p>
-        <p class="empty-subtext">Estamos preparando nuevos diseños para ti</p>
-      </div>
-    </div>
-
     <!-- CTA -->
     <div class="proyectos-cta">
       <div class="cta-card glass-card">
@@ -190,7 +115,6 @@
 <script setup lang="ts">
 const { imgUrl, getProyectos } = useProyectos()
 
-const activeTab = ref<'terminado' | 'construccion'>('terminado')
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
@@ -216,12 +140,6 @@ const proyectosTerminados = computed(() => {
   return (allProyectos.value ?? []).filter(p =>
     (p.categoria || 'terminado') === 'terminado'
   ).slice(0, 6)
-})
-
-const proyectosConstruccion = computed(() => {
-  return (allProyectos.value ?? []).filter(p =>
-    p.categoria === 'construccion'
-  ).slice(0, 8)
 })
 </script>
 

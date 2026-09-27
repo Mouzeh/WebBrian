@@ -9,8 +9,8 @@
     <!-- Servicios -->
     <HomeServiciosSection />
 
-    <!-- Proyectos -->
-    <HomeProyectosSection />
+    <!-- Proyectos terminados (se activa desde el panel de administrador) -->
+    <HomeProyectosSection v-if="config.mostrar_terminados" />
 
     <!-- Modelos de Casas -->
     <HomeModelosSection />
@@ -35,6 +35,7 @@ useHead({
 })
 
 const { initReveal } = useReveal()
+const { data: config } = await useConfiguracion()
 
 onMounted(() => nextTick(initReveal))
 </script>

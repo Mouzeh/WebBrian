@@ -1,5 +1,5 @@
 <template>
-  <section class="modelos-section">
+  <section id="modelos" class="modelos-section">
     <div class="modelos-header">
       <div class="label-row reveal">
         <div class="label-line"></div>
@@ -14,38 +14,37 @@
       </p>
     </div>
 
-    <div class="modelos-grid">
-      <div
+    <div v-if="modelos.length" class="modelos-grid">
+      <NuxtLink
         v-for="(modelo, i) in modelos"
-        :key="modelo.nombre"
+        :key="modelo.id"
+        :to="`/proyectos/${modelo.slug}`"
         :class="['modelo-card reveal', `delay-${i % 3}`]"
       >
         <div class="modelo-image">
           <NuxtImg
-            :src="modelo.imagen"
-            :alt="modelo.nombre"
+            :src="imgUrl(modelo.imagen_portada)"
+            :alt="modelo.titulo"
             width="600"
             height="400"
           />
           <div class="modelo-overlay">
-            <button class="btn-ver" @click="verModelo(modelo)">
-              Ver Planos
-            </button>
+            <span class="btn-ver">Ver Planos</span>
           </div>
         </div>
         <div class="modelo-info">
-          <h3 class="modelo-nombre">{{ modelo.nombre }}</h3>
+          <h3 class="modelo-nombre">{{ modelo.titulo }}</h3>
           <div class="modelo-specs">
-            <div class="spec">
+            <div v-if="superficie(modelo)" class="spec">
               <span class="spec-icon">
                 <svg viewBox="0 0 24 24" fill="none">
                   <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
                   <path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="spec-value">{{ modelo.superficie }}</span>
+              <span class="spec-value">{{ superficie(modelo) }}</span>
             </div>
-            <div class="spec">
+            <div v-if="habitaciones(modelo)" class="spec">
               <span class="spec-icon">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14" stroke="currentColor" stroke-width="2"/>
@@ -53,9 +52,9 @@
                   <path d="M7 15V9h4v6M13 15V9h4v6" stroke="currentColor" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="spec-value">{{ modelo.habitaciones }} Hab.</span>
+              <span class="spec-value">{{ habitaciones(modelo) }} Hab.</span>
             </div>
-            <div class="spec">
+            <div v-if="banos(modelo)" class="spec">
               <span class="spec-icon">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M4 12V7a2 2 0 012-2h12a2 2 0 012 2v5" stroke="currentColor" stroke-width="2"/>
@@ -63,17 +62,19 @@
                   <path d="M6 12V9a2 2 0 012-2h8a2 2 0 012 2v3" stroke="currentColor" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="spec-value">{{ modelo.banos }} Banos</span>
+              <span class="spec-value">{{ banos(modelo) }} Baños</span>
             </div>
           </div>
           <p class="modelo-desc">{{ modelo.descripcion }}</p>
-          <div class="modelo-price">
+          <div v-if="modelo.precio" class="modelo-price">
             <span class="price-label">Desde</span>
             <span class="price-value">{{ modelo.precio }}</span>
           </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
+
+    <p v-else class="modelos-empty reveal">Próximamente nuevos modelos de casas.</p>
 
     <div class="modelos-cta reveal">
       <p class="cta-text">¿Tienes tu propio diseño? También construimos proyectos personalizados</p>
@@ -86,40 +87,16 @@
 </template>
 
 <script setup lang="ts">
-const modelos = [
-  {
-    nombre: 'Casa Modelo A',
-    superficie: '85 m²',
-    habitaciones: 3,
-    banos: 2,
-    descripcion: 'Diseño moderno de un piso, ideal para familias pequeñas. Living comedor integrado y cocina americana.',
-    precio: 'UF 1.800',
-    imagen: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80'
-  },
-  {
-    nombre: 'Casa Modelo B',
-    superficie: '120 m²',
-    habitaciones: 4,
-    banos: 3,
-    descripcion: 'Casa de dos pisos con amplios espacios. Suite principal en segundo piso con walking closet.',
-    precio: 'UF 2.500',
-    imagen: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80'
-  },
-  {
-    nombre: 'Casa Modelo C',
-    superficie: '150 m²',
-    habitaciones: 5,
-    banos: 3,
-    descripcion: 'Diseño premium con quincho integrado. Ideal para terrenos amplios. Estacionamiento para 2 vehículos.',
-    precio: 'UF 3.200',
-    imagen: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80'
-  }
-]
+import type { Proyecto } from '~/composables/useSupabase'
 
-function verModelo(modelo: typeof modelos[0]) {
-  // TODO: Abrir modal con planos del modelo
-  console.log('Ver modelo:', modelo.nombre)
-}
+// Los modelos son los proyectos marcados como "Para construcción" en el panel
+const { imgUrl, getModelos } = useProyectos()
+const { data } = await useAsyncData('modelos-casas', () => getModelos())
+const modelos = computed(() => data.value ?? [])
+
+const superficie = (m: Proyecto) => m.superficie || m.especificaciones_tecnicas?.superficie_desde
+const habitaciones = (m: Proyecto) => m.habitaciones || m.especificaciones_tecnicas?.dormitorios
+const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 </script>
 
 <style scoped>
@@ -186,6 +163,8 @@ function verModelo(modelo: typeof modelos[0]) {
 }
 
 .modelo-card {
+  display: block;
+  text-decoration: none;
   background: var(--fondo-puro);
   border: 1px solid var(--borde);
   overflow: hidden;
@@ -317,6 +296,15 @@ function verModelo(modelo: typeof modelos[0]) {
   font-size: 28px;
   font-weight: 900;
   color: var(--acento);
+}
+
+.modelos-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--texto-suave);
+  font-size: 16px;
+  background: var(--fondo-puro);
+  border: 1px solid var(--borde);
 }
 
 .modelos-cta {

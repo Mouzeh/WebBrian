@@ -9,6 +9,25 @@
     <div class="admin-content">
       <!-- Sidebar: Lista de proyectos -->
       <aside class="sidebar">
+        <!-- Configuración del sitio -->
+        <div class="config-sitio">
+          <h2>Configuración del sitio</h2>
+          <label class="switch-field">
+            <input
+              type="checkbox"
+              :checked="mostrarTerminados"
+              :disabled="guardandoConfig"
+              @change="toggleTerminados(($event.target as HTMLInputElement).checked)"
+            />
+            <span class="switch"></span>
+            <span class="switch-label">
+              Mostrar "Proyectos que hablan solos"
+              <small>{{ mostrarTerminados ? 'Visible: casas terminadas en inicio y /proyectos' : 'Oculto: solo se muestran los modelos para construir' }}</small>
+            </span>
+          </label>
+          <p v-if="errorConfig" class="config-error">{{ errorConfig }}</p>
+        </div>
+
         <div class="sidebar-header">
           <h2>Proyectos</h2>
           <button @click="nuevoProyecto" class="btn-nuevo">+ Nuevo</button>
@@ -124,6 +143,13 @@
               <label>Superficie</label>
               <input v-model="form.superficie" type="text" placeholder="1,200 m²" />
             </div>
+          </div>
+
+          <!-- Precio (solo modelos para construir) -->
+          <div v-if="form.categoria === 'construccion'" class="field full">
+            <label>Precio desde</label>
+            <input v-model="form.precio" type="text" placeholder="UF 1.800" />
+            <small class="field-hint">Se muestra en la sección "Modelos de Casas". Déjalo vacío para no mostrar precio.</small>
           </div>
 
           <!-- Descripción corta -->
@@ -420,6 +446,7 @@ const formInicial = {
   cliente: '',
   pisos: '',
   categoria: 'terminado' as 'terminado' | 'construccion',
+  precio: '',
   status: 'draft',
   // Plano arquitectónico
   plano_imagen: '',
@@ -440,7 +467,38 @@ onMounted(async () => {
     return
   }
   cargarProyectos()
+  cargarConfiguracion()
 })
+
+// Configuración del sitio
+const mostrarTerminados = ref(false)
+const guardandoConfig = ref(false)
+const errorConfig = ref('')
+
+async function cargarConfiguracion() {
+  const { data } = await supabase
+    .from('configuracion')
+    .select('valor')
+    .eq('clave', 'mostrar_terminados')
+    .maybeSingle()
+
+  mostrarTerminados.value = data?.valor === true
+}
+
+async function toggleTerminados(valor: boolean) {
+  guardandoConfig.value = true
+  errorConfig.value = ''
+  const { error } = await supabase
+    .from('configuracion')
+    .upsert({ clave: 'mostrar_terminados', valor, updated_at: new Date().toISOString() })
+
+  if (error) {
+    errorConfig.value = 'No se pudo guardar la configuración'
+  } else {
+    mostrarTerminados.value = valor
+  }
+  guardandoConfig.value = false
+}
 
 function getImageUrl(fileName: string) {
   if (!fileName) return ''
@@ -538,6 +596,7 @@ function editarProyecto(p: any) {
     cliente: p.cliente || '',
     pisos: p.pisos || '',
     categoria: p.categoria || 'terminado',
+    precio: p.precio || '',
     status: p.status || 'draft',
     // Plano arquitectónico
     plano_imagen: p.plano_imagen || '',
@@ -685,6 +744,7 @@ async function guardarProyecto() {
     cliente: form.value.cliente || null,
     pisos: form.value.pisos || null,
     categoria: form.value.categoria,
+    precio: form.value.categoria === 'construccion' ? (form.value.precio || null) : null,
     status: form.value.status,
     // Plano arquitectónico
     plano_imagen: form.value.plano_imagen || null,
@@ -808,6 +868,92 @@ async function logout() {
   background: white;
   border-right: 1px solid #e5e5e5;
   overflow-y: auto;
+}
+
+.config-sitio {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.config-sitio h2 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.switch-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.switch-field input {
+  display: none;
+}
+
+.switch {
+  flex-shrink: 0;
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.switch-field input:checked + .switch {
+  background: #2b5f00;
+}
+
+.switch-field input:checked + .switch::after {
+  transform: translateX(16px);
+}
+
+.switch-field input:disabled + .switch {
+  opacity: 0.5;
+}
+
+.switch-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.switch-label small {
+  font-size: 11px;
+  font-weight: 400;
+  color: #888;
+}
+
+.config-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #c00;
+}
+
+.field-hint {
+  font-size: 11px;
+  color: #888;
 }
 
 .sidebar-header {

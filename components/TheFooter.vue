@@ -67,7 +67,7 @@
           <ul class="col-links">
             <li><NuxtLink to="/">Inicio</NuxtLink></li>
             <li><NuxtLink to="/nosotros">Nosotros</NuxtLink></li>
-            <li><NuxtLink to="/proyectos/">Proyectos</NuxtLink></li>
+            <li><NuxtLink to="/proyectos/">{{ config.mostrar_terminados ? 'Proyectos' : 'Modelos' }}</NuxtLink></li>
             <li><NuxtLink to="/contacto">Contacto</NuxtLink></li>
           </ul>
         </div>
@@ -165,6 +165,7 @@
 
 <script setup lang="ts">
 const currentYear = new Date().getFullYear()
+const { data: config } = useConfiguracion()
 
 const services = [
   'Eléctricos',

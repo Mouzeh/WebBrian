@@ -29,6 +29,7 @@ CREATE TABLE proyectos (
   area TEXT,
   estacionamiento TEXT,
   patio_trasero TEXT,
+  precio TEXT,                            -- Precio de modelos para construir (ej: "UF 1.800")
   categoria TEXT NOT NULL DEFAULT 'terminado' CHECK (categoria IN ('terminado', 'construccion')),
   status TEXT DEFAULT 'draft' CHECK (status IN ('published', 'draft')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -45,6 +46,13 @@ CREATE TABLE servicios (
   lista TEXT[] DEFAULT '{}',
   status TEXT DEFAULT 'draft' CHECK (status IN ('published', 'draft')),
   created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ── TABLA: configuracion (ajustes del sitio, ej: mostrar_terminados) ──
+CREATE TABLE configuracion (
+  clave TEXT PRIMARY KEY,
+  valor JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- ── ÍNDICES para mejor performance ──
@@ -76,6 +84,7 @@ CREATE TRIGGER proyectos_updated_at
 
 ALTER TABLE proyectos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE servicios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE configuracion ENABLE ROW LEVEL SECURITY;
 
 -- Lectura pública (anon puede leer proyectos publicados)
 CREATE POLICY "Proyectos publicados son públicos"
@@ -102,6 +111,20 @@ CREATE POLICY "Solo admins pueden eliminar proyectos"
   TO authenticated
   USING (true);
 
+CREATE POLICY "Configuración es pública"
+  ON configuracion FOR SELECT
+  USING (true);
+
+CREATE POLICY "Solo admins pueden insertar configuración"
+  ON configuracion FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+CREATE POLICY "Solo admins pueden actualizar configuración"
+  ON configuracion FOR UPDATE
+  TO authenticated
+  USING (true);
+
 CREATE POLICY "Solo admins pueden insertar servicios"
   ON servicios FOR INSERT
   TO authenticated
@@ -125,6 +148,9 @@ INSERT INTO proyectos (slug, titulo, tipo, anio, ubicacion, descripcion, imagen_
 VALUES
   ('torres-del-sur', 'Torres del Sur', 'residencial', 2024, 'Santiago, Chile', 'Complejo residencial de 3 torres con áreas verdes.', 'torres-del-sur.jpg', true, 'published'),
   ('centro-comercial-aurora', 'Centro Comercial Aurora', 'comercial', 2023, 'Viña del Mar, Chile', 'Moderno centro comercial con 50 locales.', 'aurora-mall.jpg', true, 'published');
+
+INSERT INTO configuracion (clave, valor)
+VALUES ('mostrar_terminados', 'false');
 
 INSERT INTO servicios (numero, icono, titulo, descripcion, status)
 VALUES
