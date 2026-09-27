@@ -46,20 +46,20 @@
         </p>
 
         <!-- Scroll indicator -->
-        <div class="header-scroll">
+        <button type="button" class="header-scroll" @click="scrollToServices">
           <span>Explorar servicios</span>
           <div class="scroll-arrow">
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M12 5v14M19 12l-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-        </div>
+        </button>
       </header>
 
       <!-- Services Tabs -->
-      <div class="services-wrapper">
-        <!-- Tab Navigation -->
-        <nav class="tabs-nav" role="tablist" aria-label="Categorías de servicios">
+      <div ref="wrapperRef" class="services-wrapper">
+        <!-- Tab Navigation (fija al hacer scroll para cambiar sin subir) -->
+        <nav ref="tabsNavRef" class="tabs-nav" role="tablist" aria-label="Categorías de servicios">
           <button
             v-for="(servicio, index) in servicios"
             :key="servicio.id"
@@ -70,7 +70,7 @@
             :aria-selected="activeTab === index"
             :aria-controls="`panel-${servicio.id}`"
             :tabindex="activeTab === index ? 0 : -1"
-            @click="activeTab = index"
+            @click="selectTab(index)"
             @keydown="handleTabKeydown($event, index)"
           >
             <span class="tab-icon" v-html="servicio.icon" aria-hidden="true"></span>
@@ -80,7 +80,7 @@
         </nav>
 
         <!-- Tab Content -->
-        <div class="tabs-content">
+        <div ref="contentRef" class="tabs-content">
           <TransitionGroup name="tab-fade">
             <article
               v-for="(servicio, index) in servicios"
@@ -179,6 +179,53 @@
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 const activeTab = ref(0)
+const wrapperRef = ref<HTMLElement | null>(null)
+const tabsNavRef = ref<HTMLElement | null>(null)
+const contentRef = ref<HTMLElement | null>(null)
+
+const scrollBehavior = (): ScrollBehavior =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+
+// Altura ocupada arriba por el navbar fijo + las pestañas fijas
+const stickyOffset = () => {
+  const navH = document.querySelector('.navbar')?.getBoundingClientRect().height ?? 0
+  const tabsH = tabsNavRef.value?.getBoundingClientRect().height ?? 0
+  return navH + tabsH + 12
+}
+
+// Lleva la vista al inicio del contenido del servicio seleccionado
+const scrollToContent = () => {
+  const el = contentRef.value
+  if (!el) return
+  const target = el.getBoundingClientRect().top + window.scrollY - stickyOffset()
+  if (Math.abs(window.scrollY - target) < 4) return
+  window.scrollTo({ top: target, behavior: scrollBehavior() })
+}
+
+// Mantiene visible la pestaña activa en la tira horizontal (móvil)
+const revealTab = (index: number) => {
+  const nav = tabsNavRef.value
+  const tab = document.getElementById(`tab-${servicios[index].id}`)
+  if (!nav || !tab || nav.scrollWidth <= nav.clientWidth) return
+  const left = tab.offsetLeft - (nav.clientWidth - tab.offsetWidth) / 2
+  nav.scrollTo({ left, behavior: scrollBehavior() })
+}
+
+const selectTab = (index: number) => {
+  activeTab.value = index
+  nextTick(() => {
+    revealTab(index)
+    scrollToContent()
+  })
+}
+
+const scrollToServices = () => {
+  const el = wrapperRef.value
+  if (!el) return
+  const navH = document.querySelector('.navbar')?.getBoundingClientRect().height ?? 0
+  const top = el.getBoundingClientRect().top + window.scrollY - navH - 12
+  window.scrollTo({ top, behavior: scrollBehavior() })
+}
 
 // WhatsApp link generator
 const whatsappLink = (servicio: string) => {
@@ -218,7 +265,8 @@ const handleTabKeydown = (event: KeyboardEvent, currentIndex: number) => {
   // Focus the new tab
   nextTick(() => {
     const newTab = document.getElementById(`tab-${servicios[newIndex].id}`)
-    newTab?.focus()
+    newTab?.focus({ preventScroll: true })
+    revealTab(newIndex)
   })
 }
 
@@ -261,6 +309,8 @@ const servicios = SERVICIOS
   padding: 80px 5vw;
   background: var(--texto);
   overflow: hidden;
+  /* clip (no hidden) para que las pestañas sticky funcionen */
+  overflow: clip;
 }
 
 /* ═══════════════════════════════════════
@@ -436,6 +486,10 @@ const servicios = SERVICIOS
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.4);
   transition: color 0.3s ease;
@@ -490,17 +544,34 @@ const servicios = SERVICIOS
 }
 
 .tabs-nav {
+  position: sticky;
+  top: 64px;
+  z-index: 5;
   display: flex;
-  flex-direction: column;
   gap: 8px;
-  margin-bottom: 32px;
+  margin: 0 -5vw 24px;
+  padding: 10px 5vw;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tabs-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 8px;
+  padding: 10px 16px;
+  scroll-snap-align: center;
+  white-space: nowrap;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
@@ -529,7 +600,7 @@ const servicios = SERVICIOS
   .tab-btn:hover {
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(93, 214, 44, 0.3);
-    transform: translateX(4px);
+    transform: translateY(-2px);
   }
 }
 
@@ -548,9 +619,17 @@ const servicios = SERVICIOS
   opacity: 1;
 }
 
+.tab-btn.active .tab-icon {
+  color: var(--acento);
+}
+
+.tab-btn.active .tab-label {
+  color: var(--fondo-puro);
+}
+
 .tab-icon {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -559,8 +638,8 @@ const servicios = SERVICIOS
 }
 
 .tab-icon :deep(svg) {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -572,7 +651,7 @@ const servicios = SERVICIOS
 }
 
 .tab-label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
   transition: color 0.3s ease;
@@ -588,17 +667,17 @@ const servicios = SERVICIOS
 .tab-indicator {
   position: absolute;
   left: 0;
-  top: 0;
+  right: 0;
   bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, var(--acento) 0%, rgba(93, 214, 44, 0.5) 100%);
-  border-radius: 0 3px 3px 0;
-  transform: scaleY(0);
+  height: 3px;
+  background: linear-gradient(90deg, var(--acento) 0%, rgba(93, 214, 44, 0.5) 100%);
+  border-radius: 3px 3px 0 0;
+  transform: scaleX(0);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-btn.active .tab-indicator {
-  transform: scaleY(1);
+  transform: scaleX(1);
 }
 
 /* ═══════════════════════════════════════
@@ -607,6 +686,7 @@ const servicios = SERVICIOS
 .tabs-content {
   position: relative;
   min-height: 400px;
+  scroll-margin-top: 140px;
 }
 
 .service-panel {
@@ -917,35 +997,18 @@ const servicios = SERVICIOS
   }
 
   .tabs-nav {
-    flex-direction: row;
+    top: 72px;
     gap: 12px;
+    margin: 0 -6vw 32px;
+    padding: 12px 6vw;
   }
 
   .tab-btn {
-    flex: 1;
+    flex: 1 0 auto;
     flex-direction: column;
+    justify-content: center;
     text-align: center;
-    padding: 20px;
-  }
-
-  .tab-btn:hover {
-    transform: translateY(-2px);
-  }
-
-  .tab-indicator {
-    left: 0;
-    right: 0;
-    top: auto;
-    bottom: 0;
-    width: auto;
-    height: 3px;
-    border-radius: 3px 3px 0 0;
-    transform: scaleX(0);
-    background: linear-gradient(90deg, var(--acento) 0%, rgba(93, 214, 44, 0.5) 100%);
-  }
-
-  .tab-btn.active .tab-indicator {
-    transform: scaleX(1);
+    padding: 14px 16px;
   }
 
   .service-panel {
@@ -998,12 +1061,12 @@ const servicios = SERVICIOS
   }
 
   .tab-btn {
-    padding: 24px 32px;
+    padding: 18px 24px;
   }
 
   .tab-icon {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
   }
 
   .tab-icon :deep(svg) {

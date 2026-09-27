@@ -3,7 +3,7 @@
     <div class="navbar-container">
       <!-- Logo -->
       <NuxtLink to="/" class="navbar-logo">
-        <NuxtImg src="/images/logosinfondo.png" alt="R&J SPA" class="logo-img" width="160" height="48" />
+        <NuxtImg src="/images/logo-horizontal.png" alt="R&J SPA" class="logo-img" width="150" height="56" />
       </NuxtLink>
 
       <!-- Desktop Navigation -->
@@ -234,7 +234,7 @@ watch(menuOpen, (open) => {
 }
 
 .logo-img {
-  height: 40px;
+  height: 46px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -639,7 +639,7 @@ watch(menuOpen, (open) => {
 /* Móviles pequeños (≤ 360px) */
 @media (max-width: 360px) {
   .logo-img {
-    height: 34px;
+    height: 40px;
   }
 
   .mobile-link-text {
@@ -675,7 +675,7 @@ watch(menuOpen, (open) => {
   }
 
   .logo-img {
-    height: 48px;
+    height: 56px;
   }
 
   .mobile-menu {

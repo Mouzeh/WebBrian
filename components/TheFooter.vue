@@ -9,7 +9,7 @@
         <!-- Brand Column -->
         <div class="footer-brand">
           <NuxtLink to="/" class="footer-logo">
-            <NuxtImg src="/images/logosinfondo.png" alt="R&J SPA" class="logo-img" width="180" height="50" />
+            <NuxtImg src="/images/logo-horizontal.png" alt="R&J SPA" class="logo-img" width="200" height="75" />
           </NuxtLink>
 
           <p class="footer-tagline">
@@ -226,7 +226,8 @@ const services = SERVICIOS.filter(srv => srv.id !== 'construccion')
 }
 
 .footer-logo .logo-img {
-  height: 50px;
+  height: 72px;
+  max-width: 100%;
   width: auto;
   object-fit: contain;
   filter: brightness(1.1);
