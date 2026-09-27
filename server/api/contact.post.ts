@@ -5,6 +5,11 @@
 
 import { Resend } from 'resend'
 
+// Escapa el texto del usuario antes de insertarlo en el HTML del correo
+const esc = (v: string) =>
+  v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+   .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+
 interface ContactBody {
   nombre:   string
   telefono: string
@@ -29,14 +34,33 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Correo electrónico inválido.' })
   }
 
+  // ── Configuración ──
+  if (!config.resendApiKey || !config.contactEmail) {
+    console.error('Formulario de contacto: falta RESEND_API_KEY o CONTACT_EMAIL en las variables de entorno')
+    throw createError({ statusCode: 500, message: 'El formulario no está disponible. Escríbenos por WhatsApp.' })
+  }
+
+  // Sanitiza lo que el usuario escribió antes de armar el HTML
+  const d = {
+    nombre:   esc(body.nombre.trim()),
+    telefono: esc(body.telefono.trim()),
+    email:    esc(body.email.trim()),
+    tipo:     esc(body.tipo.trim()),
+    ciudad:   body.ciudad?.trim() ? esc(body.ciudad.trim()) : '',
+    mensaje:  esc(body.mensaje.trim()).replace(/\n/g, '<br>'),
+  }
+
   // ── Enviar con Resend ──
+  // El remitente DEBE ser de un dominio verificado en Resend.
+  // Sin dominio propio solo funciona onboarding@resend.dev, y en ese caso
+  // Resend solo entrega a la dirección con la que se creó la cuenta.
   const resend = new Resend(config.resendApiKey)
 
   const { error } = await resend.emails.send({
-    from:    'Formulario Web <noreply@constructora.cl>',   // ← cambiar por dominio verificado en Resend
+    from:    config.resendFrom,
     to:      [config.contactEmail],
-    replyTo: body.email,
-    subject: `Nueva solicitud de cotización — ${body.tipo}`,
+    replyTo: body.email.trim(),
+    subject: `Nueva solicitud de cotización — ${body.tipo.trim()}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: #f7f4ef; padding: 32px; border-radius: 4px;">
         <div style="background: #1C1A17; padding: 20px 28px; border-radius: 4px 4px 0 0;">
@@ -48,33 +72,33 @@ export default defineEventHandler(async (event) => {
           <table style="width: 100%; border-collapse: collapse;">
             <tr>
               <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; color: #6b6355; font-size: 13px; width: 140px;">Nombre</td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-weight: 600; font-size: 14px;">${body.nombre}</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-weight: 600; font-size: 14px;">${d.nombre}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; color: #6b6355; font-size: 13px;">Teléfono</td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-weight: 600; font-size: 14px;">${body.telefono}</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-weight: 600; font-size: 14px;">${d.telefono}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; color: #6b6355; font-size: 13px;">Correo</td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-size: 14px;"><a href="mailto:${body.email}" style="color: #C8862A;">${body.email}</a></td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-size: 14px;"><a href="mailto:${d.email}" style="color: #C8862A;">${d.email}</a></td>
             </tr>
             <tr>
               <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; color: #6b6355; font-size: 13px;">Tipo de proyecto</td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-weight: 600; font-size: 14px; color: #C8862A;">${body.tipo}</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-weight: 600; font-size: 14px; color: #C8862A;">${d.tipo}</td>
             </tr>
-            ${body.ciudad ? `
+            ${d.ciudad ? `
             <tr>
               <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; color: #6b6355; font-size: 13px;">Ciudad</td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-size: 14px;">${body.ciudad}</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #e4ddd3; font-size: 14px;">${d.ciudad}</td>
             </tr>` : ''}
             <tr>
               <td style="padding: 10px 0; color: #6b6355; font-size: 13px; vertical-align: top;">Mensaje</td>
-              <td style="padding: 10px 0; font-size: 14px; line-height: 1.6;">${body.mensaje.replace(/\n/g, '<br>')}</td>
+              <td style="padding: 10px 0; font-size: 14px; line-height: 1.6;">${d.mensaje}</td>
             </tr>
           </table>
         </div>
         <p style="font-size: 11px; color: #b8afa3; margin-top: 16px; text-align: center;">
-          Enviado desde el formulario de contacto de constructora.cl
+          Enviado desde el formulario de contacto del sitio web
         </p>
       </div>
     `,

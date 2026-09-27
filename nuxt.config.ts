@@ -28,6 +28,8 @@ export default defineNuxtConfig({
     // Solo server-side (privadas)
     resendApiKey: process.env.RESEND_API_KEY,
     contactEmail: process.env.CONTACT_EMAIL,
+    // Remitente: debe ser de un dominio verificado en Resend
+    resendFrom: process.env.RESEND_FROM || 'Formulario Web <onboarding@resend.dev>',
     // Cloudflare R2 (privadas - solo server)
     r2Endpoint: process.env.R2_ENDPOINT,
     r2AccessKeyId: process.env.R2_ACCESS_KEY_ID,
