@@ -14,6 +14,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  AdminTopbar: typeof import("../../components/AdminTopbar.vue")['default']
   BlockEditor: typeof import("../../components/BlockEditor.vue")['default']
   IconArrow: typeof import("../../components/IconArrow.vue")['default']
   Lightbox: typeof import("../../components/Lightbox.vue")['default']
@@ -25,6 +26,7 @@ interface _GlobalComponents {
   WarpText: typeof import("../../components/WarpText.vue")['default']
   WhatsAppButton: typeof import("../../components/WhatsAppButton.vue")['default']
   HomeContactoSection: typeof import("../../components/home/ContactoSection.vue")['default']
+  HomeFaqSection: typeof import("../../components/home/FaqSection.vue")['default']
   HomeHeroSection: typeof import("../../components/home/HeroSection.vue")['default']
   HomeModelosSection: typeof import("../../components/home/ModelosSection.vue")['default']
   HomeNosotrosSection: typeof import("../../components/home/NosotrosSection.vue")['default']
@@ -53,6 +55,7 @@ interface _GlobalComponents {
   Html: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Html']
   Body: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Body']
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+  LazyAdminTopbar: LazyComponent<typeof import("../../components/AdminTopbar.vue")['default']>
   LazyBlockEditor: LazyComponent<typeof import("../../components/BlockEditor.vue")['default']>
   LazyIconArrow: LazyComponent<typeof import("../../components/IconArrow.vue")['default']>
   LazyLightbox: LazyComponent<typeof import("../../components/Lightbox.vue")['default']>
@@ -64,6 +67,7 @@ interface _GlobalComponents {
   LazyWarpText: LazyComponent<typeof import("../../components/WarpText.vue")['default']>
   LazyWhatsAppButton: LazyComponent<typeof import("../../components/WhatsAppButton.vue")['default']>
   LazyHomeContactoSection: LazyComponent<typeof import("../../components/home/ContactoSection.vue")['default']>
+  LazyHomeFaqSection: LazyComponent<typeof import("../../components/home/FaqSection.vue")['default']>
   LazyHomeHeroSection: LazyComponent<typeof import("../../components/home/HeroSection.vue")['default']>
   LazyHomeModelosSection: LazyComponent<typeof import("../../components/home/ModelosSection.vue")['default']>
   LazyHomeNosotrosSection: LazyComponent<typeof import("../../components/home/NosotrosSection.vue")['default']>

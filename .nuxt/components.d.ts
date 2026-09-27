@@ -14,6 +14,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
+export const AdminTopbar: typeof import("../components/AdminTopbar.vue")['default']
 export const BlockEditor: typeof import("../components/BlockEditor.vue")['default']
 export const IconArrow: typeof import("../components/IconArrow.vue")['default']
 export const Lightbox: typeof import("../components/Lightbox.vue")['default']
@@ -25,6 +26,7 @@ export const ThePreloader: typeof import("../components/ThePreloader.vue")['defa
 export const WarpText: typeof import("../components/WarpText.vue")['default']
 export const WhatsAppButton: typeof import("../components/WhatsAppButton.vue")['default']
 export const HomeContactoSection: typeof import("../components/home/ContactoSection.vue")['default']
+export const HomeFaqSection: typeof import("../components/home/FaqSection.vue")['default']
 export const HomeHeroSection: typeof import("../components/home/HeroSection.vue")['default']
 export const HomeModelosSection: typeof import("../components/home/ModelosSection.vue")['default']
 export const HomeNosotrosSection: typeof import("../components/home/NosotrosSection.vue")['default']
@@ -53,6 +55,7 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+export const LazyAdminTopbar: LazyComponent<typeof import("../components/AdminTopbar.vue")['default']>
 export const LazyBlockEditor: LazyComponent<typeof import("../components/BlockEditor.vue")['default']>
 export const LazyIconArrow: LazyComponent<typeof import("../components/IconArrow.vue")['default']>
 export const LazyLightbox: LazyComponent<typeof import("../components/Lightbox.vue")['default']>
@@ -64,6 +67,7 @@ export const LazyThePreloader: LazyComponent<typeof import("../components/ThePre
 export const LazyWarpText: LazyComponent<typeof import("../components/WarpText.vue")['default']>
 export const LazyWhatsAppButton: LazyComponent<typeof import("../components/WhatsAppButton.vue")['default']>
 export const LazyHomeContactoSection: LazyComponent<typeof import("../components/home/ContactoSection.vue")['default']>
+export const LazyHomeFaqSection: LazyComponent<typeof import("../components/home/FaqSection.vue")['default']>
 export const LazyHomeHeroSection: LazyComponent<typeof import("../components/home/HeroSection.vue")['default']>
 export const LazyHomeModelosSection: LazyComponent<typeof import("../components/home/ModelosSection.vue")['default']>
 export const LazyHomeNosotrosSection: LazyComponent<typeof import("../components/home/NosotrosSection.vue")['default']>

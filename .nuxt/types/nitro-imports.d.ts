@@ -83,8 +83,10 @@ declare global {
   const lazyEventHandler: typeof import('../../node_modules/h3').lazyEventHandler
   const nitroPlugin: typeof import('../../node_modules/nitropack/dist/runtime/internal/plugin').nitroPlugin
   const parseCookies: typeof import('../../node_modules/h3').parseCookies
+  const postsPublicados: typeof import('../../server/utils/contenidoPublico').postsPublicados
   const promisifyNodeListener: typeof import('../../node_modules/h3').promisifyNodeListener
   const proxyRequest: typeof import('../../node_modules/h3').proxyRequest
+  const proyectosPublicados: typeof import('../../server/utils/contenidoPublico').proyectosPublicados
   const readBody: typeof import('../../node_modules/h3').readBody
   const readFormData: typeof import('../../node_modules/h3').readFormData
   const readMultipartFormData: typeof import('../../node_modules/h3').readMultipartFormData
@@ -118,6 +120,7 @@ declare global {
   const toWebRequest: typeof import('../../node_modules/h3').toWebRequest
   const unsealSession: typeof import('../../node_modules/h3').unsealSession
   const updateSession: typeof import('../../node_modules/h3').updateSession
+  const urlSitio: typeof import('../../server/utils/contenidoPublico').urlSitio
   const useAppConfig: typeof import('../../node_modules/nitropack/dist/runtime/internal/config').useAppConfig
   const useBase: typeof import('../../node_modules/h3').useBase
   const useEvent: typeof import('../../node_modules/nitropack/dist/runtime/internal/context').useEvent
@@ -149,3 +152,4 @@ export { defineNitroErrorHandler } from 'nitropack/runtime/internal/error/utils'
 export { buildAssetsURL as __buildAssetsURL, publicAssetsURL as __publicAssetsURL } from '/Users/mouzeh/Documents/constructora-nuxt/node_modules/@nuxt/nitro-server/dist/runtime/utils/paths';
 export { defineAppConfig } from '/Users/mouzeh/Documents/constructora-nuxt/node_modules/@nuxt/nitro-server/dist/runtime/utils/config';
 export { useImage } from '/Users/mouzeh/Documents/constructora-nuxt/node_modules/@nuxt/image/dist/runtime/server/utils/image';
+export { proyectosPublicados, postsPublicados, urlSitio } from '/Users/mouzeh/Documents/constructora-nuxt/server/utils/contenidoPublico';

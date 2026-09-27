@@ -1,5 +1,5 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};import { tmpdir } from 'node:os';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, readMultipartFormData, getResponseStatusText } from 'file:///Users/mouzeh/Documents/constructora-nuxt/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, readMultipartFormData, setHeader, getResponseStatusText } from 'file:///Users/mouzeh/Documents/constructora-nuxt/node_modules/h3/dist/index.mjs';
 import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
@@ -2060,7 +2060,7 @@ const _U2_yXgB1mWTJ61BotfQSH45gD9aGiHsj7GgMrVtPWqc = (function(nitro) {
 
 const rootDir = "/Users/mouzeh/Documents/constructora-nuxt";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"Más de 20 años construyendo proyectos residenciales y comerciales en Chile con los más altos estándares de calidad."},{"name":"theme-color","content":"#0F0F0F"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"}],"style":[{"innerHTML":"\n            body:not(.preloader-done) main,\n            body:not(.preloader-done) nav,\n            body:not(.preloader-done) footer {\n              opacity: 0 !important;\n              visibility: hidden;\n              pointer-events: none;\n            }\n          "}],"script":[{"innerHTML":"\n            if (sessionStorage.getItem('siteLoaded')) {\n              document.body.classList.add('preloader-done');\n            }\n          ","tagPosition":"bodyOpen"}],"noscript":[],"htmlAttrs":{"lang":"es"},"title":"Constructora — Edificamos el Futuro"};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"Inmobiliaria y constructora en la Región de Los Ríos, Chile. Construcción de casas, modelos listos para construir, permisos y regularizaciones."},{"name":"theme-color","content":"#0F0F0F"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"}],"style":[{"innerHTML":"\n            body:not(.preloader-done) main,\n            body:not(.preloader-done) nav,\n            body:not(.preloader-done) footer {\n              opacity: 0 !important;\n              visibility: hidden;\n              pointer-events: none;\n            }\n          "}],"script":[{"innerHTML":"\n            if (sessionStorage.getItem('siteLoaded')) {\n              document.body.classList.add('preloader-done');\n            }\n          ","tagPosition":"bodyOpen"}],"noscript":[],"htmlAttrs":{"lang":"es-CL"},"title":"R&J Constructora | Construcción de casas en Los Ríos"};
 
 const appRootTag = "div";
 
@@ -2686,6 +2686,31 @@ async function runTask(name, {
   }
 }
 
+async function consultar(tabla, select) {
+  const config = useRuntimeConfig();
+  const url = config.public.supabaseUrl;
+  const key = config.public.supabaseAnonKey;
+  if (!url || !key) return [];
+  try {
+    return await $fetch(`${url}/rest/v1/${tabla}`, {
+      query: { select, status: "eq.published" },
+      headers: { apikey: key, Authorization: `Bearer ${key}` }
+    });
+  } catch (err) {
+    console.error(`No se pudo leer ${tabla}:`, err);
+    return [];
+  }
+}
+function proyectosPublicados() {
+  return consultar("proyectos", "slug,titulo,descripcion,categoria,ubicacion,precio,updated_at,created_at");
+}
+function postsPublicados() {
+  return consultar("blog_posts", "slug,titulo,resumen,meta_descripcion,updated_at,publicado_at");
+}
+function urlSitio() {
+  return (useRuntimeConfig().public.siteUrl || "").replace(/\/$/, "");
+}
+
 const _GT53oq = lazyEventHandler(() => {
   const opts = useRuntimeConfig().ipx || {};
   const fsDir = opts?.fs?.dir ? (Array.isArray(opts.fs.dir) ? opts.fs.dir : [opts.fs.dir]).map((dir) => isAbsolute(dir) ? dir : fileURLToPath(new URL(dir, globalThis._importMeta_.url))) : void 0;
@@ -2706,12 +2731,18 @@ const _GT53oq = lazyEventHandler(() => {
 
 const _lazy_4SS4TV = () => Promise.resolve().then(function () { return contact_post$1; });
 const _lazy_EHowWG = () => Promise.resolve().then(function () { return upload_post$1; });
+const _lazy_SJ1c87 = () => Promise.resolve().then(function () { return llms_txt$1; });
+const _lazy_Ky44P9 = () => Promise.resolve().then(function () { return robots_txt$1; });
+const _lazy_7WHFGD = () => Promise.resolve().then(function () { return sitemap_xml$1; });
 const _lazy_qnn2Cw = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _oK5WG2, lazy: false, middleware: true, method: undefined },
   { route: '/api/contact', handler: _lazy_4SS4TV, lazy: true, middleware: false, method: "post" },
   { route: '/api/upload', handler: _lazy_EHowWG, lazy: true, middleware: false, method: "post" },
+  { route: '/llms.txt', handler: _lazy_SJ1c87, lazy: true, middleware: false, method: undefined },
+  { route: '/robots.txt', handler: _lazy_Ky44P9, lazy: true, middleware: false, method: undefined },
+  { route: '/sitemap.xml', handler: _lazy_7WHFGD, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_qnn2Cw, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/_ipx/**', handler: _GT53oq, lazy: false, middleware: false, method: undefined },
@@ -3053,8 +3084,33 @@ const contact_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProp
   default: contact_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const NEGOCIO = {
+  nombre: "Inmobiliaria y Constructora R&J SPA",
+  descripcion: "Inmobiliaria y constructora en la Regi\xF3n de Los R\xEDos, Chile. Construimos casas a medida y modelos de casas listos para construir, con acompa\xF1amiento desde el dise\xF1o y los permisos hasta la entrega.",
+  telefono: "+56959266213",
+  email: "inmobiliariayconstructoraryj@gmail.com",
+  ciudad: "Valdivia",
+  region: "Regi\xF3n de Los R\xEDos",
+  areaServida: ["Regi\xF3n de Los R\xEDos", "Valdivia", "Regi\xF3n de Los Lagos"],
+  horario: { abre: "09:00", cierra: "18:00" },
+  servicios: [
+    "Construcci\xF3n de casas",
+    "Proyectos de agua potable y alcantarillado",
+    "Instalaciones de gas",
+    "Gesti\xF3n de proyectos ante empresas sanitarias (Suralis, Aguas D\xE9cima) y Servicio de Salud",
+    "Certificados de dotaci\xF3n sanitaria",
+    "Regularizaci\xF3n de construcciones (Ley 20.898)",
+    "Permisos de edificaci\xF3n, obra menor y recepci\xF3n final",
+    "Topograf\xEDa: curvas de nivel, subdivisiones, rectificaci\xF3n de deslindes y replanteos",
+    "Instalaciones el\xE9ctricas y certificaci\xF3n TE1"
+  ]
+};
+function slugificar(texto) {
+  return (texto || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ñ/g, "n").replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+}
+
 const upload_post = defineEventHandler(async (event) => {
-  var _a;
+  var _a, _b, _c;
   const config = useRuntimeConfig();
   const formData = await readMultipartFormData(event);
   const file = formData == null ? void 0 : formData.find((f) => f.name === "file");
@@ -3064,10 +3120,11 @@ const upload_post = defineEventHandler(async (event) => {
       message: "No se recibi\xF3 ning\xFAn archivo"
     });
   }
-  const ext = ((_a = file.filename) == null ? void 0 : _a.split(".").pop()) || "jpg";
-  const timestamp = Date.now();
-  const randomStr = Math.random().toString(36).substring(2, 8);
-  const fileName = `${timestamp}-${randomStr}.${ext}`;
+  const ext = (((_a = file.filename) == null ? void 0 : _a.split(".").pop()) || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+  const nombreCampo = (_c = (_b = formData == null ? void 0 : formData.find((f) => f.name === "nombre")) == null ? void 0 : _b.data) == null ? void 0 : _c.toString("utf8");
+  const base = slugificar(nombreCampo || (file.filename || "").replace(/\.[^.]+$/, "")).slice(0, 80) || "imagen";
+  const randomStr = Math.random().toString(36).substring(2, 6);
+  const fileName = `${base}-${randomStr}.${ext}`;
   const s3 = new S3Client({
     region: "auto",
     endpoint: config.r2Endpoint,
@@ -3096,6 +3153,115 @@ const upload_post = defineEventHandler(async (event) => {
 const upload_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: upload_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const llms_txt = defineEventHandler(async (event) => {
+  const site = urlSitio();
+  const [proyectos, posts] = await Promise.all([proyectosPublicados(), postsPublicados()]);
+  const modelos = proyectos.filter((p) => p.categoria === "construccion");
+  const terminados = proyectos.filter((p) => p.categoria !== "construccion");
+  const linea = (titulo, url, desc) => `- [${titulo}](${url})${desc ? `: ${desc.replace(/\s+/g, " ").trim()}` : ""}`;
+  const partes = [
+    `# ${NEGOCIO.nombre}`,
+    "",
+    `> ${NEGOCIO.descripcion}`,
+    "",
+    `Ubicaci\xF3n: ${NEGOCIO.ciudad}, ${NEGOCIO.region}, Chile. Zona de trabajo: ${NEGOCIO.areaServida.join(", ")}.`,
+    `Contacto: tel\xE9fono/WhatsApp ${NEGOCIO.telefono}, correo ${NEGOCIO.email}. Horario: lunes a viernes de ${NEGOCIO.horario.abre} a ${NEGOCIO.horario.cierra}.`,
+    `Servicios: ${NEGOCIO.servicios.join(", ")}.`,
+    "",
+    "## P\xE1ginas principales",
+    linea("Inicio", `${site}/`, "Presentaci\xF3n de la constructora, modelos destacados y preguntas frecuentes"),
+    linea("Modelos de casas y proyectos", `${site}/proyectos`, "Cat\xE1logo de modelos para construir y casas terminadas"),
+    linea("Servicios", `${site}/servicios`, "Construcci\xF3n, instalaciones el\xE9ctricas y sanitarias, permisos, regularizaciones y topograf\xEDa"),
+    linea("Blog", `${site}/blog`, "Gu\xEDas sobre construcci\xF3n de casas en el sur de Chile"),
+    linea("Nosotros", `${site}/nosotros`),
+    linea("Contacto y cotizaci\xF3n", `${site}/contacto`)
+  ];
+  if (modelos.length) {
+    partes.push("", "## Modelos de casas para construir");
+    modelos.forEach((p) => {
+      var _a;
+      return partes.push(linea(p.titulo, `${site}/proyectos/${p.slug}`, [(_a = p.descripcion) == null ? void 0 : _a.replace(/\.\s*$/, ""), p.precio ? `Precio desde ${p.precio}` : ""].filter(Boolean).join(". ")));
+    });
+  }
+  if (terminados.length) {
+    partes.push("", "## Proyectos terminados");
+    terminados.forEach((p) => partes.push(linea(p.titulo, `${site}/proyectos/${p.slug}`, p.descripcion)));
+  }
+  if (posts.length) {
+    partes.push("", "## Art\xEDculos del blog");
+    posts.forEach((p) => partes.push(linea(p.titulo, `${site}/blog/${p.slug}`, p.meta_descripcion || p.resumen)));
+  }
+  partes.push("", "## Opcional", linea("Pol\xEDtica de privacidad", `${site}/privacidad`), linea("T\xE9rminos y condiciones", `${site}/terminos`), "");
+  setHeader(event, "Content-Type", "text/plain; charset=utf-8");
+  setHeader(event, "Cache-Control", "public, max-age=3600");
+  return partes.join("\n");
+});
+
+const llms_txt$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: llms_txt
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const robots_txt = defineEventHandler((event) => {
+  const site = urlSitio();
+  setHeader(event, "Content-Type", "text/plain; charset=utf-8");
+  return [
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /Brian",
+    "Disallow: /brian",
+    "Disallow: /api/",
+    "",
+    `Sitemap: ${site}/sitemap.xml`,
+    ""
+  ].join("\n");
+});
+
+const robots_txt$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: robots_txt
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const PAGINAS_FIJAS = [
+  { ruta: "/", prioridad: "1.0", frecuencia: "weekly" },
+  { ruta: "/proyectos", prioridad: "0.9", frecuencia: "weekly" },
+  { ruta: "/blog", prioridad: "0.8", frecuencia: "weekly" },
+  { ruta: "/servicios", prioridad: "0.8", frecuencia: "monthly" },
+  { ruta: "/nosotros", prioridad: "0.6", frecuencia: "monthly" },
+  { ruta: "/contacto", prioridad: "0.7", frecuencia: "monthly" },
+  { ruta: "/privacidad", prioridad: "0.2", frecuencia: "yearly" },
+  { ruta: "/terminos", prioridad: "0.2", frecuencia: "yearly" }
+];
+const escapar = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const fecha = (f) => f ? new Date(f).toISOString().slice(0, 10) : void 0;
+const sitemap_xml = defineEventHandler(async (event) => {
+  const site = urlSitio();
+  const [proyectos, posts] = await Promise.all([proyectosPublicados(), postsPublicados()]);
+  const urls = [
+    ...PAGINAS_FIJAS.map((p) => ({ loc: `${site}${p.ruta}`, prioridad: p.prioridad, frecuencia: p.frecuencia, lastmod: void 0 })),
+    ...proyectos.map((p) => ({ loc: `${site}/proyectos/${p.slug}`, prioridad: "0.8", frecuencia: "monthly", lastmod: fecha(p.updated_at || p.created_at) })),
+    ...posts.map((p) => ({ loc: `${site}/blog/${p.slug}`, prioridad: "0.7", frecuencia: "monthly", lastmod: fecha(p.updated_at || p.publicado_at) }))
+  ];
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url>
+    <loc>${escapar(u.loc)}</loc>${u.lastmod ? `
+    <lastmod>${u.lastmod}</lastmod>` : ""}
+    <changefreq>${u.frecuencia}</changefreq>
+    <priority>${u.prioridad}</priority>
+  </url>`).join("\n")}
+</urlset>
+`;
+  setHeader(event, "Content-Type", "application/xml; charset=utf-8");
+  setHeader(event, "Cache-Control", "public, max-age=3600");
+  return xml;
+});
+
+const sitemap_xml$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: sitemap_xml
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {
