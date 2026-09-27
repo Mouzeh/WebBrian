@@ -117,7 +117,7 @@ const blocks = computed(() => parsedContent.value.blocks)
 .block-editor ul, .block-editor ol { padding-left: 22px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 7px; }
 .block-editor ul { list-style: none; padding-left: 0; }
 .block-editor ul li { padding-left: 18px; position: relative; }
-.block-editor ul li::before { content: '→'; position: absolute; left: 0; color: var(--acento); font-size: 13px; }
+.block-editor ul li::before { content: ''; position: absolute; left: 0; top: 0.45em; width: 13px; height: 13px; background: var(--acento); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8H13M13 8L8 3M13 8L8 13' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8H13M13 8L8 3M13 8L8 13' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
 .block-editor ul ul { margin-top: 7px; padding-left: 18px; }
 .block-editor ol { list-style: decimal; }
 .block-editor blockquote { border-left: 3px solid var(--acento); padding: 16px 24px; margin: 24px 0; background: rgba(200,134,42,0.05); }

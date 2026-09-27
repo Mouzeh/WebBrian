@@ -37,7 +37,7 @@
       <h2 class="section-title reveal delay-1" style="margin-bottom:40px">Nuestros<br><em>Valores</em></h2>
       <div class="valores-grid">
         <div v-for="(v, i) in valores" :key="v.titulo" :class="`valor-item reveal delay-${i}`">
-          <div class="valor-icon">{{ v.icono }}</div>
+          <div class="valor-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="v.icono" /></div>
           <div class="valor-title">{{ v.titulo }}</div>
           <p class="valor-desc">{{ v.desc }}</p>
         </div>
@@ -51,7 +51,7 @@
       <div class="founder-section">
         <div class="founder-image reveal">
           <div v-if="!equipo[0].foto" class="founder-placeholder">
-            <span class="placeholder-icon">&#128100;</span>
+            <span class="placeholder-icon"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
             <span class="placeholder-text">Foto de Brian</span>
           </div>
           <NuxtImg v-else :src="equipo[0].foto" :alt="equipo[0].nombre" width="400" height="520" class="founder-img" />
@@ -64,10 +64,10 @@
           <p>Con una vasta experiencia en el rubro de la construccion, Brian ha liderado proyectos residenciales y comerciales a lo largo de Chile.</p>
           <p>Su compromiso con la calidad y la atencion al detalle ha permitido a Construcciones Brian consolidarse como una empresa de confianza en el mercado.</p>
           <ul class="founder-features">
-            <li><span class="feature-check">✓</span> Profesional certificado con experiencia</li>
-            <li><span class="feature-check">✓</span> Cumplimiento de normativas SEC y DOM</li>
-            <li><span class="feature-check">✓</span> Garantia en todos los trabajos</li>
-            <li><span class="feature-check">✓</span> Presupuestos transparentes</li>
+            <li><span class="feature-check"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span> Profesional certificado con experiencia</li>
+            <li><span class="feature-check"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span> Cumplimiento de normativas SEC y DOM</li>
+            <li><span class="feature-check"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span> Garantia en todos los trabajos</li>
+            <li><span class="feature-check"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span> Presupuestos transparentes</li>
           </ul>
         </div>
       </div>
@@ -81,9 +81,9 @@ const { initReveal } = useReveal()
 onMounted(() => nextTick(initReveal))
 
 const valores = [
-  { icono: '🏆', titulo: 'Excelencia',    desc: 'Cada detalle importa. Nos exigimos al máximo en cada proyecto, desde los cimientos hasta los acabados.' },
-  { icono: '🤝', titulo: 'Compromiso',    desc: 'Cumplimos lo que prometemos. Plazos, presupuestos y calidad acordados son nuestro contrato.' },
-  { icono: '🔍', titulo: 'Transparencia', desc: 'Comunicación clara y honesta en cada etapa. Sin sorpresas, sin letra pequeña.' },
+  { icono: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/>', titulo: 'Excelencia',    desc: 'Cada detalle importa. Nos exigimos al máximo en cada proyecto, desde los cimientos hasta los acabados.' },
+  { icono: '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>', titulo: 'Compromiso',    desc: 'Cumplimos lo que prometemos. Plazos, presupuestos y calidad acordados son nuestro contrato.' },
+  { icono: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>', titulo: 'Transparencia', desc: 'Comunicación clara y honesta en cada etapa. Sin sorpresas, sin letra pequeña.' },
 ]
 const equipo = [
   { nombre: 'Brian',  cargo: 'Fundador & Director',      foto: '' },
@@ -114,14 +114,15 @@ const equipo = [
 .btn-primary:hover { background: var(--acento); transform: translateY(-2px); }
 .valores-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--borde); }
 .valor-item { background: var(--fondo-puro); padding: 40px 32px; }
-.valor-icon { font-size: 32px; margin-bottom: 18px; }
+.valor-icon { width: 36px; height: 36px; color: var(--acento); margin-bottom: 18px; }
+.valor-icon svg { width: 100%; height: 100%; }
 .valor-title { font-family: var(--f-display); font-size: 24px; font-weight: 800; text-transform: uppercase; color: var(--texto); margin-bottom: 10px; }
 .valor-desc { font-size: 14px; line-height: 1.7; color: var(--texto-suave); font-weight: 300; }
 .section-dark { background: var(--texto); padding: 110px 6vw; }
 .founder-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1000px; }
 .founder-image { position: relative; }
 .founder-placeholder { aspect-ratio: 3/4; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-.placeholder-icon { font-size: 64px; opacity: 0.3; }
+.placeholder-icon { display: inline-flex; opacity: 0.3; }
 .placeholder-text { font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--borde-medio); }
 .founder-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
 .founder-badge { position: absolute; bottom: -20px; left: -20px; background: var(--acento); padding: 20px 28px; }

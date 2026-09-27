@@ -29,6 +29,7 @@ CREATE TABLE proyectos (
   area TEXT,
   estacionamiento TEXT,
   patio_trasero TEXT,
+  plano_descargable BOOLEAN NOT NULL DEFAULT true, -- Muestra el botón "Descargar plano"
   precio TEXT,                            -- Precio de modelos para construir (ej: "UF 1.800")
   categoria TEXT NOT NULL DEFAULT 'terminado' CHECK (categoria IN ('terminado', 'construccion')),
   status TEXT DEFAULT 'draft' CHECK (status IN ('published', 'draft')),

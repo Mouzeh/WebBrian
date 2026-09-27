@@ -13,6 +13,7 @@ export interface Ambiente {
 // Especificaciones técnicas detalladas
 export interface EspecificacionesTecnicas {
   superficie_desde?: string
+  superficie_terreno?: string
   terraza?: string
   dormitorios?: string
   banos?: string
@@ -20,6 +21,7 @@ export interface EspecificacionesTecnicas {
   cocina_tipo?: string
   walk_in_closet?: string
   estructura?: string
+  estacionamientos?: string
   [key: string]: string | undefined // Para campos dinámicos adicionales
 }
 
@@ -53,6 +55,7 @@ export interface Proyecto {
   plano_pdf?: string
   plano_titulo?: string
   plano_subtitulo?: string
+  plano_descargable?: boolean
   ambientes?: Ambiente[]
   especificaciones_tecnicas?: EspecificacionesTecnicas
   // 'terminado' = casa ya construida · 'construccion' = render / proyecto para construir
@@ -70,6 +73,13 @@ export interface Servicio {
   descripcion: string
   lista?: string[]
   status: 'published' | 'draft'
+}
+
+// Agrega " m²" cuando el valor es solo un número (ej: "1200" → "1200 m²")
+export function conM2(valor?: string | null): string {
+  if (!valor) return ''
+  const v = String(valor).trim()
+  return /^\d+([.,]\d+)?$/.test(v) ? `${v} m²` : v
 }
 
 let supabaseClient: SupabaseClient | null = null

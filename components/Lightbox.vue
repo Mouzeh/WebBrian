@@ -10,7 +10,7 @@
       <div v-if="visible" class="lb-overlay" @click.self="close" @keydown.esc="close" tabindex="0" ref="overlay">
 
         <!-- Cerrar -->
-        <button class="lb-close" @click="close">✕</button>
+        <button class="lb-close" aria-label="Cerrar" @click="close"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
 
         <!-- Imagen activa -->
         <div class="lb-img-wrap">
@@ -24,8 +24,8 @@
         </div>
 
         <!-- Flechas -->
-        <button v-if="images.length > 1" class="lb-arrow lb-prev" @click.stop="prev">‹</button>
-        <button v-if="images.length > 1" class="lb-arrow lb-next" @click.stop="next">›</button>
+        <button v-if="images.length > 1" class="lb-arrow lb-prev" aria-label="Anterior" @click.stop="prev"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button v-if="images.length > 1" class="lb-arrow lb-next" aria-label="Siguiente" @click.stop="next"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
 
         <!-- Contador -->
         <div class="lb-counter">{{ current + 1 }} / {{ images.length }}</div>

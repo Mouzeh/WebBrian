@@ -25,9 +25,19 @@
 
       <!-- Hero content -->
       <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          <span>{{ proyecto.categoria === 'construccion' ? 'Proyecto para construir' : 'Proyecto terminado' }} · {{ tipoLabel }} · {{ proyecto.anio }}</span>
+        <!-- Eyebrow: línea que crece + textos que suben uno a uno -->
+        <div class="hero-eyebrow">
+          <span class="eyebrow-line"></span>
+          <template v-for="(item, i) in heroEyebrow" :key="item.text">
+            <svg v-if="i > 0" class="eyebrow-sep" :style="{ '--d': `${0.5 + i * 0.15}s` }" viewBox="0 0 8 8" aria-hidden="true">
+              <rect x="1.5" y="1.5" width="5" height="5" transform="rotate(45 4 4)" fill="currentColor" />
+            </svg>
+            <span class="eyebrow-mask">
+              <span :class="['eyebrow-text', { accent: item.accent }]" :style="{ '--d': `${0.45 + i * 0.15}s` }">
+                {{ item.text }}
+              </span>
+            </span>
+          </template>
         </div>
 
         <h1 class="hero-title">
@@ -40,20 +50,13 @@
 
         <!-- Stats bar -->
         <div class="stats-bar">
-          <div class="stat-item" v-if="proyecto.area">
-            <span class="stat-value">{{ proyecto.area }}</span>
-            <span class="stat-label">Superficie</span>
-          </div>
-          <div class="stat-divider" v-if="proyecto.area && proyecto.habitaciones"></div>
-          <div class="stat-item" v-if="proyecto.habitaciones">
-            <span class="stat-value">{{ proyecto.habitaciones }} / {{ proyecto.banos || '—' }}</span>
-            <span class="stat-label">Dorm. / Baños</span>
-          </div>
-          <div class="stat-divider" v-if="(proyecto.habitaciones || proyecto.area) && proyecto.ubicacion"></div>
-          <div class="stat-item">
-            <span class="stat-value">{{ proyecto.ubicacion }}</span>
-            <span class="stat-label">Ubicación</span>
-          </div>
+          <template v-for="(st, i) in heroStats" :key="st.label">
+            <div v-if="i > 0" class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value">{{ st.value }}</span>
+              <span class="stat-label">{{ st.label }}</span>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -92,94 +95,37 @@
               <span>Especificaciones</span>
             </div>
 
-            <div class="specs-grid">
-              <div v-if="proyecto.area" class="spec-item">
-                <div class="spec-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-                    <path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                </div>
-                <div class="spec-info">
-                  <span class="spec-value">{{ proyecto.area }}</span>
-                  <span class="spec-label">Área construida</span>
-                </div>
-              </div>
+            <!-- Superficie destacada -->
+            <div v-if="superficieDisplay" class="specs-highlight">
+              <span class="highlight-value">{{ superficieDisplay }}</span>
+              <span class="highlight-label">Superficie construida{{ proyecto.especificaciones_tecnicas?.superficie_desde ? ' desde' : '' }}</span>
+            </div>
 
-              <div v-if="proyecto.habitaciones" class="spec-item">
+            <div v-if="specItems.length" class="specs-grid">
+              <div v-for="item in specItems" :key="item.key" class="spec-item">
                 <div class="spec-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14" stroke="currentColor" stroke-width="2"/>
-                    <path d="M3 11h18" stroke="currentColor" stroke-width="2"/>
-                    <rect x="7" y="11" width="4" height="5" stroke="currentColor" stroke-width="2"/>
-                  </svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    v-html="SPEC_ICONS[item.icon]"
+                  />
                 </div>
                 <div class="spec-info">
-                  <span class="spec-value">{{ proyecto.habitaciones }}</span>
-                  <span class="spec-label">Habitaciones</span>
-                </div>
-              </div>
-
-              <div v-if="proyecto.banos" class="spec-item">
-                <div class="spec-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M4 12h16a1 1 0 011 1v3a4 4 0 01-4 4H7a4 4 0 01-4-4v-3a1 1 0 011-1z" stroke="currentColor" stroke-width="2"/>
-                    <path d="M6 12V5a2 2 0 012-2h1" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                </div>
-                <div class="spec-info">
-                  <span class="spec-value">{{ proyecto.banos }}</span>
-                  <span class="spec-label">Baños</span>
-                </div>
-              </div>
-
-              <div v-if="proyecto.estacionamiento" class="spec-item">
-                <div class="spec-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="8" width="18" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="7.5" cy="15.5" r="1.5" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="16.5" cy="15.5" r="1.5" stroke="currentColor" stroke-width="2"/>
-                    <path d="M5 8l2-4h10l2 4" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                </div>
-                <div class="spec-info">
-                  <span class="spec-value">{{ proyecto.estacionamiento }}</span>
-                  <span class="spec-label">Estacionamiento</span>
-                </div>
-              </div>
-
-              <div v-if="proyecto.pisos" class="spec-item">
-                <div class="spec-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M3 21h18M5 21V7l7-4 7 4v14" stroke="currentColor" stroke-width="2"/>
-                    <path d="M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <div class="spec-info">
-                  <span class="spec-value">{{ proyecto.pisos }}</span>
-                  <span class="spec-label">Pisos</span>
-                </div>
-              </div>
-
-              <div v-if="proyecto.patio_trasero" class="spec-item">
-                <div class="spec-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M8 8l4-4 4 4M8 16l4 4 4-4M4 8l-1 4 1 4M20 8l1 4-1 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <div class="spec-info">
-                  <span class="spec-value">{{ proyecto.patio_trasero }}</span>
-                  <span class="spec-label">Patio trasero</span>
+                  <span class="spec-value">{{ item.value }}</span>
+                  <span class="spec-label">{{ item.label }}</span>
                 </div>
               </div>
             </div>
 
             <!-- Ficha técnica -->
             <div class="tech-sheet">
-              <div v-if="proyecto.cliente" class="tech-row">
-                <span class="tech-label">Cliente</span>
-                <span class="tech-value">{{ proyecto.cliente }}</span>
+              <div class="tech-row">
+                <span class="tech-label">Proyecto</span>
+                <span class="tech-value">{{ proyecto.categoria === 'construccion' ? 'Para construir' : 'Terminado' }}</span>
               </div>
               <div class="tech-row">
                 <span class="tech-label">Tipo</span>
@@ -189,6 +135,14 @@
                 <span class="tech-label">Año</span>
                 <span class="tech-value">{{ proyecto.anio }}</span>
               </div>
+              <div v-if="proyecto.ubicacion" class="tech-row">
+                <span class="tech-label">Ubicación</span>
+                <span class="tech-value">{{ proyecto.ubicacion }}</span>
+              </div>
+              <div v-if="proyecto.cliente" class="tech-row">
+                <span class="tech-label">Cliente</span>
+                <span class="tech-value">{{ proyecto.cliente }}</span>
+              </div>
               <div v-if="proyecto.inicio_obra" class="tech-row">
                 <span class="tech-label">Inicio obra</span>
                 <span class="tech-value">{{ proyecto.inicio_obra }}</span>
@@ -197,10 +151,11 @@
                 <span class="tech-label">Entrega</span>
                 <span class="tech-value">{{ proyecto.entrega }}</span>
               </div>
-              <div v-if="proyecto.estructura" class="tech-row">
-                <span class="tech-label">Estructura</span>
-                <span class="tech-value">{{ proyecto.estructura }}</span>
-              </div>
+            </div>
+
+            <div v-if="proyecto.precio" class="specs-price">
+              <span class="price-label">Precio desde</span>
+              <span class="price-value">{{ proyecto.precio }}</span>
             </div>
 
             <!-- CTA -->
@@ -218,87 +173,94 @@
     <!-- ═══════════════════════════════════════
          FLOOR PLAN SECTION
          ═══════════════════════════════════════ -->
-    <section v-if="proyecto.plano_imagen || hasAmbientes || hasEspecificaciones" class="floorplan reveal">
+    <section v-if="proyecto.plano_imagen || hasAmbientes" class="floorplan reveal">
       <div class="floorplan-container">
-        <!-- Left: Floor plan image -->
-        <div class="floorplan-visual" v-if="proyecto.plano_imagen">
-          <div class="floorplan-image-wrapper">
+        <!-- Izquierda: plano -->
+        <div v-if="proyecto.plano_imagen" class="floorplan-visual">
+          <a
+            :href="imgUrl(proyecto.plano_imagen)"
+            target="_blank"
+            rel="noopener"
+            class="blueprint"
+            title="Ver plano en tamaño completo"
+          >
+            <span class="bp-corner tl"></span>
+            <span class="bp-corner tr"></span>
+            <span class="bp-corner bl"></span>
+            <span class="bp-corner br"></span>
             <NuxtImg
               :src="imgUrl(proyecto.plano_imagen)"
               :alt="`Plano de ${proyecto.titulo}`"
               class="floorplan-image"
               loading="lazy"
             />
+            <span class="bp-zoom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+              </svg>
+            </span>
+          </a>
+          <div class="bp-caption">
+            <span>Planta de arquitectura</span>
+            <span>{{ proyecto.titulo }}</span>
+            <span>Imagen referencial</span>
           </div>
         </div>
 
-        <!-- Right: Info -->
+        <!-- Derecha: distribución -->
         <div class="floorplan-info">
           <div class="floorplan-header">
+            <div class="section-tag light">
+              <div class="tag-line"></div>
+              <span>{{ proyecto.plano_subtitulo || 'Distribución' }}</span>
+            </div>
             <h2 class="floorplan-title">
               {{ proyecto.plano_titulo || 'El plano que define el hogar' }}
             </h2>
-            <div class="floorplan-surface" v-if="superficieDisplay">
-              <span class="surface-value">{{ superficieDisplay }}</span>
-              <span class="surface-label">SUP. CONSTRUIDA DESDE</span>
-            </div>
-            <div class="floorplan-badge" v-if="proyecto.plano_subtitulo">
-              {{ proyecto.plano_subtitulo }}
+          </div>
+
+          <!-- Resumen del plano -->
+          <div v-if="planoResumen.length" class="plan-summary">
+            <div v-for="r in planoResumen" :key="r.label" class="summary-item">
+              <span class="summary-value">{{ r.value }}</span>
+              <span class="summary-label">{{ r.label }}</span>
             </div>
           </div>
 
-          <!-- Tabs -->
-          <div class="floorplan-tabs">
-            <button
-              :class="['tab-btn', { active: activeTab === 'ambientes' }]"
-              @click="activeTab = 'ambientes'"
-            >
-              Ambientes
-            </button>
-            <button
-              :class="['tab-btn', { active: activeTab === 'especificaciones' }]"
-              @click="activeTab = 'especificaciones'"
-            >
-              Especificaciones Técnicas
-            </button>
-          </div>
-
-          <!-- Tab content: Ambientes -->
-          <div v-if="activeTab === 'ambientes'" class="tab-content ambientes-grid">
-            <div
-              v-for="(amb, i) in proyecto.ambientes"
-              :key="i"
-              class="ambiente-card"
-            >
-              <span class="amb-nombre">{{ amb.nombre }}</span>
-              <span class="amb-area">{{ amb.area }}</span>
+          <!-- Ambientes -->
+          <div v-if="hasAmbientes" class="ambientes">
+            <div class="ambientes-head">
+              <span>Ambientes</span>
+              <span>{{ ambientesDisplay.length }} espacios</span>
             </div>
-            <p v-if="!hasAmbientes" class="no-data">
-              No hay información de ambientes disponible.
-            </p>
-          </div>
 
-          <!-- Tab content: Especificaciones -->
-          <div v-if="activeTab === 'especificaciones'" class="tab-content specs-list">
-            <div
-              v-for="(value, key) in especificacionesDisplay"
-              :key="key"
-              class="spec-row"
-            >
-              <span class="spec-key">{{ formatSpecKey(key) }}</span>
-              <span class="spec-val">{{ value }}</span>
+            <ol class="ambientes-list">
+              <li v-for="(amb, i) in ambientesDisplay" :key="i" class="ambiente-row">
+                <span class="amb-num">{{ String(i + 1).padStart(2, '0') }}</span>
+                <div class="amb-body">
+                  <div class="amb-line">
+                    <span class="amb-nombre">{{ amb.nombre }}</span>
+                    <span class="amb-dots"></span>
+                    <span class="amb-area">{{ amb.area }}</span>
+                  </div>
+                  <div v-if="amb.pct" class="amb-bar"><span :style="{ width: `${amb.pct}%` }"></span></div>
+                </div>
+              </li>
+            </ol>
+
+            <div v-if="totalAmbientes" class="ambientes-total">
+              <span>Total ambientes detallados</span>
+              <span>{{ totalAmbientes }}</span>
             </div>
-            <p v-if="!hasEspecificaciones" class="no-data">
-              No hay especificaciones técnicas disponibles.
-            </p>
           </div>
 
-          <!-- Download button -->
+          <!-- Descargar plano (se activa desde el panel) -->
           <a
-            v-if="proyecto.plano_pdf"
-            :href="imgUrl(proyecto.plano_pdf)"
+            v-if="planoDescarga"
+            :href="planoDescarga.url"
             target="_blank"
             rel="noopener"
+            download
             class="btn-download-plan"
           >
             <svg viewBox="0 0 24 24" fill="none">
@@ -306,7 +268,7 @@
               <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span>Descargar Plano</span>
+            <span>Descargar plano {{ planoDescarga.tipo }}</span>
           </a>
         </div>
       </div>
@@ -483,6 +445,16 @@ useHead({
 })
 
 // Computed
+const heroEyebrow = computed(() => {
+  const p = proyecto.value
+  if (!p) return []
+  return [
+    { text: p.categoria === 'construccion' ? 'Proyecto para construir' : 'Proyecto terminado', accent: true },
+    { text: tipoLabel.value ?? '', accent: false },
+    { text: String(p.anio ?? ''), accent: false }
+  ].filter(i => i.text)
+})
+
 const tituloWords = computed(() => proyecto.value?.titulo?.split(' ') ?? [])
 
 const tipoLabel = computed(() => {
@@ -505,43 +477,112 @@ const whatsappLink = computed(() => {
   return `https://wa.me/56959266213?text=${message}`
 })
 
-// Floor plan
-const activeTab = ref<'ambientes' | 'especificaciones'>('ambientes')
+// ── Especificaciones ──
+const specs = computed(() => proyecto.value?.especificaciones_tecnicas ?? {})
 
-const hasAmbientes = computed(() => {
-  return proyecto.value?.ambientes && proyecto.value.ambientes.length > 0
-})
+const superficieDisplay = computed(() =>
+  conM2(specs.value.superficie_desde || proyecto.value?.area || proyecto.value?.superficie)
+)
 
-const hasEspecificaciones = computed(() => {
-  const specs = proyecto.value?.especificaciones_tecnicas
-  return specs && Object.keys(specs).some(k => specs[k])
-})
-
-const superficieDisplay = computed(() => {
-  return proyecto.value?.especificaciones_tecnicas?.superficie_desde || proyecto.value?.area || proyecto.value?.superficie
-})
-
-const especificacionesDisplay = computed(() => {
-  const specs = proyecto.value?.especificaciones_tecnicas
-  if (!specs) return {}
-  return Object.fromEntries(
-    Object.entries(specs).filter(([_, v]) => v)
-  )
-})
-
-function formatSpecKey(key: string): string {
-  const labels: Record<string, string> = {
-    superficie_desde: 'Superficie desde',
-    terraza: 'Terraza',
-    dormitorios: 'Dormitorios',
-    banos: 'Baños',
-    altillo: 'Altillo',
-    cocina_tipo: 'Cocina',
-    walk_in_closet: 'Walk-in Closet',
-    estructura: 'Estructura'
-  }
-  return labels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+// Íconos (trazos SVG 24x24)
+const SPEC_ICONS: Record<string, string> = {
+  bed: '<path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"/><path d="M3 16h18"/><path d="M6 10V6a1 1 0 011-1h4a1 1 0 011 1v4"/><path d="M3 20v1M21 20v1"/>',
+  bath: '<path d="M4 12h16a1 1 0 011 1v3a4 4 0 01-4 4H7a4 4 0 01-4-4v-3a1 1 0 011-1z"/><path d="M6 12V5a2 2 0 012-2h1"/>',
+  floors: '<path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M5 14h14"/>',
+  terrace: '<path d="M3 11l9-6 9 6"/><path d="M5 11v9M19 11v9M3 20h18"/><path d="M9 20v-5h6v5"/>',
+  car: '<rect x="3" y="8" width="18" height="10" rx="2"/><circle cx="7.5" cy="14.5" r="1.5"/><circle cx="16.5" cy="14.5" r="1.5"/><path d="M5 8l2-4h10l2 4"/>',
+  attic: '<path d="M2 12l10-9 10 9"/><path d="M5 10v11h14V10"/><path d="M9 12h6v4H9z"/>',
+  closet: '<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18M10 12h.01M14 12h.01"/>',
+  kitchen: '<path d="M4 21V10h16v11"/><path d="M2 10h20"/><path d="M8 6c0-1.5 1-3 1-3M12 6c0-1.5 1-3 1-3M16 6c0-1.5 1-3 1-3"/>',
+  structure: '<path d="M3 21h18M4 21V9l8-6 8 6v12"/><path d="M4 9l16 12M20 9L4 21"/>',
+  land: '<path d="M3 17l6-6 4 4 8-8"/><path d="M3 21h18"/>',
+  yard: '<path d="M12 22v-7"/><path d="M12 15a5 5 0 100-10 5 5 0 000 10z"/><path d="M4 22h16"/>'
 }
+
+interface SpecItem { key: string; label: string; value: string; icon: string }
+
+const specItems = computed<SpecItem[]>(() => {
+  const p = proyecto.value
+  if (!p) return []
+  const e = specs.value
+  const items: (SpecItem | null)[] = [
+    { key: 'dormitorios', label: 'Dormitorios', icon: 'bed', value: e.dormitorios || p.habitaciones || '' },
+    { key: 'banos', label: 'Baños', icon: 'bath', value: e.banos || p.banos || '' },
+    { key: 'pisos', label: 'Pisos', icon: 'floors', value: p.pisos || '' },
+    { key: 'terraza', label: 'Terraza', icon: 'terrace', value: conM2(e.terraza) },
+    { key: 'estacionamientos', label: 'Estacionamientos', icon: 'car', value: e.estacionamientos || p.estacionamiento || '' },
+    { key: 'altillo', label: 'Altillo', icon: 'attic', value: e.altillo || '' },
+    { key: 'walk_in_closet', label: 'Walk-in closet', icon: 'closet', value: e.walk_in_closet || '' },
+    { key: 'cocina_tipo', label: 'Cocina', icon: 'kitchen', value: e.cocina_tipo || '' },
+    { key: 'estructura', label: 'Estructura', icon: 'structure', value: e.estructura || p.estructura || '' },
+    { key: 'superficie_terreno', label: 'Terreno', icon: 'land', value: conM2(e.superficie_terreno) },
+    { key: 'patio_trasero', label: 'Patio', icon: 'yard', value: conM2(p.patio_trasero) }
+  ]
+  return items.filter((i): i is SpecItem => !!i && !!String(i.value).trim())
+})
+
+// Datos rápidos del hero
+const heroStats = computed(() => {
+  const stats: { label: string; value: string }[] = []
+  if (superficieDisplay.value) stats.push({ label: 'Superficie', value: superficieDisplay.value })
+  const dorm = specs.value.dormitorios || proyecto.value?.habitaciones
+  const banos = specs.value.banos || proyecto.value?.banos
+  if (dorm) stats.push({ label: 'Dorm. / Baños', value: `${dorm} / ${banos || '—'}` })
+  if (proyecto.value?.ubicacion) stats.push({ label: 'Ubicación', value: proyecto.value.ubicacion })
+  return stats
+})
+
+// ── Plano ──
+const hasAmbientes = computed(() => !!proyecto.value?.ambientes?.length)
+
+// Número de un área escrita como "22 m²", "22,5", "22.5 m2"
+function areaNum(area?: string): number | null {
+  if (!area) return null
+  const m = String(area).replace(',', '.').match(/\d+(\.\d+)?/)
+  return m ? parseFloat(m[0]) : null
+}
+
+const ambientesDisplay = computed(() => {
+  const list = proyecto.value?.ambientes ?? []
+  const max = Math.max(0, ...list.map(a => areaNum(a.area) ?? 0))
+  return list.map(a => {
+    const n = areaNum(a.area)
+    return {
+      nombre: a.nombre,
+      area: conM2(a.area),
+      pct: n && max ? Math.max(6, Math.round((n / max) * 100)) : 0
+    }
+  })
+})
+
+const totalAmbientes = computed(() => {
+  const list = proyecto.value?.ambientes ?? []
+  if (list.length < 2) return ''
+  const nums = list.map(a => areaNum(a.area))
+  if (nums.some(n => n === null)) return ''
+  const total = (nums as number[]).reduce((acc, n) => acc + n, 0)
+  return `${Number.isInteger(total) ? total : total.toFixed(1)} m²`
+})
+
+const planoResumen = computed(() => {
+  const r: { label: string; value: string }[] = []
+  if (superficieDisplay.value) r.push({ label: 'Sup. construida', value: superficieDisplay.value })
+  if (specs.value.terraza) r.push({ label: 'Terraza', value: conM2(specs.value.terraza) })
+  const dorm = specs.value.dormitorios || proyecto.value?.habitaciones
+  if (dorm) r.push({ label: 'Dormitorios', value: String(dorm) })
+  const banos = specs.value.banos || proyecto.value?.banos
+  if (banos) r.push({ label: 'Baños', value: String(banos) })
+  return r
+})
+
+// Descarga habilitada desde el panel (plano_descargable); PDF o, si no hay, la imagen
+const planoDescarga = computed(() => {
+  const p = proyecto.value
+  if (!p || p.plano_descargable === false) return null
+  if (p.plano_pdf) return { url: imgUrl(p.plano_pdf), tipo: '(PDF)' }
+  if (p.plano_imagen) return { url: imgUrl(p.plano_imagen), tipo: '' }
+  return null
+})
 
 // Gallery class for asymmetric grid
 function getGalleryClass(index: number): string {
@@ -612,6 +653,7 @@ onUnmounted(() => {
    CSS VARIABLES
    ═══════════════════════════════════════ */
 .proyecto-page {
+  --acento-claro: #86d95a;
   --hero-height: 100vh;
   --section-padding: clamp(80px, 12vw, 140px);
   --container-max: 1400px;
@@ -704,38 +746,64 @@ onUnmounted(() => {
   max-width: 900px;
 }
 
-.hero-badge {
-  display: inline-flex;
+/* Eyebrow del hero */
+.hero-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  background: rgba(93, 214, 44, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(93, 214, 44, 0.3);
-  padding: 10px 20px;
-  border-radius: 100px;
+  gap: 10px 14px;
   margin-bottom: 24px;
 }
 
-.badge-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--acento);
-  border-radius: 50%;
-  box-shadow: 0 0 12px var(--acento);
-  animation: pulse 2s ease-in-out infinite;
+.eyebrow-line {
+  width: 48px;
+  height: 2px;
+  background: var(--acento-claro);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: eyebrowLine 0.7s var(--ease-out) 0.2s forwards;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+.eyebrow-mask {
+  display: inline-block;
+  overflow: hidden;
+  padding: 2px 0;
 }
 
-.hero-badge span:last-child {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+.eyebrow-text {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--acento);
+  color: rgba(255, 255, 255, 0.78);
+  transform: translateY(110%);
+  animation: eyebrowUp 0.8s var(--ease-out) var(--d, 0s) forwards;
+}
+
+.eyebrow-text.accent {
+  color: var(--acento-claro);
+  font-weight: 800;
+}
+
+.eyebrow-sep {
+  width: 7px;
+  height: 7px;
+  color: var(--acento-claro);
+  opacity: 0;
+  animation: eyebrowFade 0.5s ease var(--d, 0s) forwards;
+}
+
+@keyframes eyebrowLine {
+  to { transform: scaleX(1); }
+}
+
+@keyframes eyebrowUp {
+  to { transform: translateY(0); }
+}
+
+@keyframes eyebrowFade {
+  to { opacity: 0.8; }
 }
 
 .hero-title {
@@ -752,6 +820,7 @@ onUnmounted(() => {
 
 .title-word {
   display: inline-block;
+  margin-right: 0.22em;
   opacity: 0;
   transform: translateY(100%);
   animation: titleReveal 1s var(--ease-out) forwards;
@@ -974,7 +1043,7 @@ onUnmounted(() => {
 .spec-icon svg {
   width: 20px;
   height: 20px;
-  color: var(--acento);
+  color: var(--acento-claro);
 }
 
 .spec-info {
@@ -994,6 +1063,55 @@ onUnmounted(() => {
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Superficie destacada */
+.specs-highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: rgba(93, 214, 44, 0.1);
+  border: 1px solid rgba(93, 214, 44, 0.25);
+}
+
+.highlight-value {
+  font-family: var(--f-display);
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--acento-claro);
+}
+
+.highlight-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Precio */
+.specs-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 0 24px;
+}
+.specs-price .price-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.specs-price .price-value {
+  font-family: var(--f-display);
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--acento-claro);
 }
 
 /* Tech sheet */
@@ -1080,26 +1198,83 @@ onUnmounted(() => {
   top: 100px;
 }
 
-.floorplan-image-wrapper {
+/* Plano estilo lámina de arquitectura */
+.blueprint {
   position: relative;
+  display: block;
+  padding: 28px;
   border-radius: 16px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
+  background-color: #f7f6f2;
+  background-image:
+    linear-gradient(rgba(28, 26, 23, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 26, 23, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: zoom-in;
 }
+
+.bp-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--acento-claro);
+  border-style: solid;
+  border-width: 0;
+}
+.bp-corner.tl { top: 10px; left: 10px; border-top-width: 2px; border-left-width: 2px; }
+.bp-corner.tr { top: 10px; right: 10px; border-top-width: 2px; border-right-width: 2px; }
+.bp-corner.bl { bottom: 10px; left: 10px; border-bottom-width: 2px; border-left-width: 2px; }
+.bp-corner.br { bottom: 10px; right: 10px; border-bottom-width: 2px; border-right-width: 2px; }
 
 .floorplan-image {
   width: 100%;
   height: auto;
   display: block;
+  mix-blend-mode: multiply;
+}
+
+.bp-zoom {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--texto);
+  color: white;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.bp-zoom svg { width: 18px; height: 18px; }
+.blueprint:hover .bp-zoom { opacity: 1; transform: scale(1.08); }
+
+.bp-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .floorplan-info {
-  padding: 20px 0;
+  padding: 8px 0;
 }
 
 .floorplan-header {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+}
+
+.section-tag.light span {
+  color: var(--acento-claro);
 }
 
 .floorplan-title {
@@ -1107,159 +1282,148 @@ onUnmounted(() => {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 24px;
   color: white;
 }
 
-.floorplan-surface {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 16px;
+/* Resumen del plano */
+.plan-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 32px;
+  overflow: hidden;
 }
 
-.surface-value {
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+.summary-item:last-child { border-right: none; }
+
+.summary-value {
   font-family: var(--f-display);
-  font-size: 48px;
+  font-size: 24px;
   font-weight: 900;
-  color: var(--acento);
+  color: var(--acento-claro);
   line-height: 1;
 }
 
-.surface-label {
-  font-size: 11px;
+.summary-label {
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
 }
 
-.floorplan-badge {
-  display: inline-block;
-  padding: 8px 16px;
-  background: rgba(93, 214, 44, 0.15);
-  border: 1px solid rgba(93, 214, 44, 0.3);
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--acento);
-}
-
-/* Tabs */
-.floorplan-tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 24px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px;
-  border-radius: 12px;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 14px 20px;
-  background: transparent;
-  border: none;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 10px;
-}
-
-.tab-btn:hover {
-  color: white;
-}
-
-.tab-btn.active {
-  background: var(--acento);
-  color: white;
-}
-
-/* Tab content */
-.tab-content {
-  min-height: 200px;
-}
-
-.no-data {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 14px;
-  text-align: center;
-  padding: 40px 0;
-}
-
-/* Ambientes grid */
-.ambientes-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.ambiente-card {
+/* Ambientes */
+.ambientes-head {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  transition: all 0.3s ease;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--acento-claro);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.ambientes-head span:last-child {
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  text-transform: none;
+  font-weight: 500;
 }
 
-.ambiente-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(93, 214, 44, 0.3);
+.ambientes-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ambiente-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.amb-num {
+  font-family: var(--f-display);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--acento-claro);
+  min-width: 22px;
+  padding-top: 3px;
+}
+
+.amb-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.amb-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
 }
 
 .amb-nombre {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: white;
+}
+
+.amb-dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
 }
 
 .amb-area {
   font-family: var(--f-display);
   font-size: 16px;
   font-weight: 800;
-  color: var(--acento);
+  color: white;
+  white-space: nowrap;
 }
 
-/* Specs list */
-.specs-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.amb-bar {
+  height: 3px;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.amb-bar span {
+  display: block;
+  height: 100%;
+  background: var(--acento-claro);
+  opacity: 0.7;
+  border-radius: 2px;
 }
 
-.spec-row {
+.ambientes-total {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.spec-row:last-child {
-  border-bottom: none;
-}
-
-.spec-key {
-  font-size: 13px;
-  font-weight: 600;
+  padding: 16px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
 }
-
-.spec-val {
-  font-size: 15px;
-  font-weight: 600;
-  color: white;
+.ambientes-total span:last-child {
+  text-transform: none;
+  font-family: var(--f-display);
+  font-size: 18px;
+  letter-spacing: 0;
+  color: var(--acento-claro);
 }
 
 /* Download button */
@@ -1775,8 +1939,13 @@ onUnmounted(() => {
     display: none;
   }
 
-  .hero-badge {
-    padding: 8px 14px;
+  .eyebrow-line {
+    width: 28px;
+  }
+
+  .eyebrow-text {
+    font-size: 10px;
+    letter-spacing: 0.16em;
   }
 
   .stats-bar {
@@ -1813,17 +1982,14 @@ onUnmounted(() => {
   }
 
   /* Floor plan mobile */
-  .floorplan-tabs {
-    flex-direction: column;
+  .highlight-value {
+    font-size: 32px;
   }
 
-  .ambientes-grid {
-    grid-template-columns: 1fr;
+  .bp-caption span:nth-child(2) {
+    display: none;
   }
 
-  .surface-value {
-    font-size: 36px;
-  }
 
   .lb-content {
     padding: 60px 20px;
@@ -1869,7 +2035,14 @@ onUnmounted(() => {
     transform: none;
   }
 
-  .badge-dot,
+  .eyebrow-line,
+  .eyebrow-text,
+  .eyebrow-sep {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+
   .scroll-line,
   .decoration-ring {
     animation: none;

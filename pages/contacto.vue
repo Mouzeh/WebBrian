@@ -90,12 +90,12 @@
             </div>
             <div class="fg full">
               <!-- Error -->
-              <div v-if="errorMsg" class="form-error">⚠️ {{ errorMsg }}</div>
+              <div v-if="errorMsg" class="form-error"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg> {{ errorMsg }}</div>
               <!-- Submit -->
               <button type="submit" class="btn-submit" :disabled="loading || sent">
                 <span v-if="loading">Enviando...</span>
-                <span v-else-if="sent">✅ ¡Enviado!</span>
-                <span v-else>Enviar solicitud →</span>
+                <span v-else-if="sent" class="btn-inline"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> ¡Enviado!</span>
+                <span v-else class="btn-inline">Enviar solicitud <IconArrow /></span>
               </button>
               <!-- Éxito -->
               <Transition name="fade">
@@ -224,6 +224,8 @@ async function handleSubmit() {
 }
 .btn-submit:hover:not(:disabled) { opacity: 0.85; transform: translateY(-2px); }
 .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-inline { display: inline-flex; align-items: center; gap: 8px; }
+.form-error svg { vertical-align: -3px; margin-right: 4px; }
 .form-error { background: #fff5f5; border: 1.5px solid #fca5a5; padding: 12px 16px; font-size: 13px; color: #b91c1c; margin-bottom: 8px; }
 .form-ok { background: #f0fdf4; border: 1.5px solid #86efac; padding: 16px 18px; font-size: 14px; color: #166534; margin-top: 14px; line-height: 1.6; }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.4s, transform 0.4s; }

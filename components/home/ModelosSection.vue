@@ -94,7 +94,7 @@ const { imgUrl, getModelos } = useProyectos()
 const { data } = await useAsyncData('modelos-casas', () => getModelos())
 const modelos = computed(() => data.value ?? [])
 
-const superficie = (m: Proyecto) => m.superficie || m.especificaciones_tecnicas?.superficie_desde
+const superficie = (m: Proyecto) => conM2(m.especificaciones_tecnicas?.superficie_desde || m.superficie)
 const habitaciones = (m: Proyecto) => m.habitaciones || m.especificaciones_tecnicas?.dormitorios
 const banos = (m: Proyecto) => m.banos || m.especificaciones_tecnicas?.banos
 </script>

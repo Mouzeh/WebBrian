@@ -72,13 +72,13 @@
               target="_blank"
               class="btn-preview"
             >
-              👁️ Ver proyecto
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Ver proyecto
             </a>
           </div>
 
           <!-- Warning si está en borrador -->
           <div v-if="form.status === 'draft'" class="draft-warning">
-            ⚠️ Este proyecto está en <strong>Borrador</strong>. No será visible en la web hasta que lo publiques.
+            <span class="warn-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></span> Este proyecto está en <strong>Borrador</strong>. No será visible en la web hasta que lo publiques.
           </div>
 
           <!-- Categoría -->
@@ -109,7 +109,7 @@
               <div class="slug-field">
                 <input v-model="form.slug" type="text" required placeholder="torres-del-sur" @input="slugManuallyEdited = true" />
                 <button type="button" class="btn-regenerate" @click="regenerateSlug" title="Regenerar desde título">
-                  ↻
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
                 </button>
               </div>
               <small class="slug-preview">/proyectos/{{ form.slug || 'mi-proyecto' }}</small>
@@ -190,7 +190,7 @@
                 class="galeria-item"
               >
                 <img :src="getImageUrl(img)" alt="Galería" />
-                <button type="button" class="remove-img" @click="quitarGaleria(i)">×</button>
+                <button type="button" class="remove-img" @click="quitarGaleria(i)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
               </div>
               <div class="add-galeria" @click="$refs.fileGaleria.click()">
                 <input ref="fileGaleria" type="file" accept="image/*" multiple hidden @change="subirGaleria" />
@@ -201,94 +201,27 @@
           </div>
 
           <!-- ══════════════════════════════════════════════════════
-               SECCIÓN: PLANO ARQUITECTÓNICO
+               SECCIÓN: ESPECIFICACIONES
                ══════════════════════════════════════════════════════ -->
           <div class="section-divider">
-            <span>Plano Arquitectónico</span>
-          </div>
-
-          <!-- Título y subtítulo del plano -->
-          <div class="form-row">
-            <div class="field">
-              <label>Título del plano</label>
-              <input v-model="form.plano_titulo" type="text" placeholder="Ej: El plano que define el hogar" />
-            </div>
-            <div class="field">
-              <label>Subtítulo</label>
-              <input v-model="form.plano_subtitulo" type="text" placeholder="Ej: DISTRIBUCIÓN" />
-            </div>
-          </div>
-
-          <!-- Imagen del plano -->
-          <div class="field full">
-            <label>Imagen del plano</label>
-            <div class="upload-area" @click="$refs.filePlano.click()">
-              <input ref="filePlano" type="file" accept="image/*" hidden @change="subirPlano" />
-              <div v-if="form.plano_imagen" class="preview">
-                <img :src="getImageUrl(form.plano_imagen)" alt="Plano" />
-                <span class="file-name">{{ form.plano_imagen }}</span>
-                <button type="button" class="btn-remove-inline" @click.stop="form.plano_imagen = ''">×</button>
-              </div>
-              <div v-else class="upload-placeholder">
-                <span>Click para subir imagen del plano</span>
-              </div>
-              <div v-if="uploadingPlano" class="uploading">Subiendo...</div>
-            </div>
-          </div>
-
-          <!-- PDF del plano -->
-          <div class="field full">
-            <label>PDF del plano (para descargar)</label>
-            <div class="upload-area pdf-upload" @click="$refs.filePlanoPdf.click()">
-              <input ref="filePlanoPdf" type="file" accept=".pdf" hidden @change="subirPlanoPdf" />
-              <div v-if="form.plano_pdf" class="preview">
-                <div class="pdf-icon">📄</div>
-                <span class="file-name">{{ form.plano_pdf }}</span>
-                <button type="button" class="btn-remove-inline" @click.stop="form.plano_pdf = ''">×</button>
-              </div>
-              <div v-else class="upload-placeholder">
-                <span>Click para subir PDF del plano</span>
-              </div>
-              <div v-if="uploadingPlanoPdf" class="uploading">Subiendo...</div>
-            </div>
-          </div>
-
-          <!-- Ambientes -->
-          <div class="field full">
-            <label>Ambientes (distribución)</label>
-            <div class="ambientes-list">
-              <div v-for="(amb, i) in form.ambientes" :key="i" class="ambiente-item">
-                <input
-                  v-model="amb.nombre"
-                  type="text"
-                  placeholder="Nombre (Ej: Dorm. Principal)"
-                  class="amb-nombre"
-                />
-                <input
-                  v-model="amb.area"
-                  type="text"
-                  placeholder="Área (Ej: 22 m²)"
-                  class="amb-area"
-                />
-                <button type="button" class="btn-remove-amb" @click="quitarAmbiente(i)">×</button>
-              </div>
-              <button type="button" class="btn-add-amb" @click="agregarAmbiente">
-                + Agregar ambiente
-              </button>
-            </div>
+            <span>Especificaciones</span>
           </div>
 
           <!-- Especificaciones técnicas -->
           <div class="field full">
-            <label>Especificaciones Técnicas</label>
+            <small class="field-hint">Se muestran en la tarjeta "Especificaciones" del proyecto. Deja vacío lo que no aplique. En superficies puedes escribir solo el número (ej: 120) y se agrega "m²".</small>
             <div class="specs-grid">
               <div class="spec-field">
                 <label>Superficie desde</label>
-                <input v-model="form.especificaciones_tecnicas.superficie_desde" type="text" placeholder="160 m²" />
+                <input v-model="form.especificaciones_tecnicas.superficie_desde" type="text" placeholder="120" />
+              </div>
+              <div class="spec-field">
+                <label>Superficie terreno</label>
+                <input v-model="form.especificaciones_tecnicas.superficie_terreno" type="text" placeholder="300" />
               </div>
               <div class="spec-field">
                 <label>Terraza</label>
-                <input v-model="form.especificaciones_tecnicas.terraza" type="text" placeholder="35 m²" />
+                <input v-model="form.especificaciones_tecnicas.terraza" type="text" placeholder="35" />
               </div>
               <div class="spec-field">
                 <label>Dormitorios</label>
@@ -329,6 +262,100 @@
                 <label>Estructura</label>
                 <input v-model="form.especificaciones_tecnicas.estructura" type="text" placeholder="Madera / Panel SIP" />
               </div>
+              <div class="spec-field">
+                <label>Estacionamientos</label>
+                <input v-model="form.especificaciones_tecnicas.estacionamientos" type="text" placeholder="2" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════════════════════════
+               SECCIÓN: PLANO ARQUITECTÓNICO
+               ══════════════════════════════════════════════════════ -->
+          <div class="section-divider">
+            <span>Plano Arquitectónico</span>
+          </div>
+
+          <!-- Título y subtítulo del plano -->
+          <div class="form-row">
+            <div class="field">
+              <label>Título del plano</label>
+              <input v-model="form.plano_titulo" type="text" placeholder="Ej: El plano que define el hogar" />
+            </div>
+            <div class="field">
+              <label>Subtítulo</label>
+              <input v-model="form.plano_subtitulo" type="text" placeholder="Ej: DISTRIBUCIÓN" />
+            </div>
+          </div>
+
+          <!-- Imagen del plano -->
+          <div class="field full">
+            <label>Imagen del plano</label>
+            <div class="upload-area" @click="$refs.filePlano.click()">
+              <input ref="filePlano" type="file" accept="image/*" hidden @change="subirPlano" />
+              <div v-if="form.plano_imagen" class="preview">
+                <img :src="getImageUrl(form.plano_imagen)" alt="Plano" />
+                <span class="file-name">{{ form.plano_imagen }}</span>
+                <button type="button" class="btn-remove-inline" @click.stop="form.plano_imagen = ''"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div v-else class="upload-placeholder">
+                <span>Click para subir imagen del plano</span>
+              </div>
+              <div v-if="uploadingPlano" class="uploading">Subiendo...</div>
+            </div>
+          </div>
+
+          <!-- PDF del plano -->
+          <div class="field full">
+            <label>PDF del plano (para descargar)</label>
+            <div class="upload-area pdf-upload" @click="$refs.filePlanoPdf.click()">
+              <input ref="filePlanoPdf" type="file" accept=".pdf" hidden @change="subirPlanoPdf" />
+              <div v-if="form.plano_pdf" class="preview">
+                <div class="pdf-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div>
+                <span class="file-name">{{ form.plano_pdf }}</span>
+                <button type="button" class="btn-remove-inline" @click.stop="form.plano_pdf = ''"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div v-else class="upload-placeholder">
+                <span>Click para subir PDF del plano</span>
+              </div>
+              <div v-if="uploadingPlanoPdf" class="uploading">Subiendo...</div>
+            </div>
+          </div>
+
+          <!-- Descarga del plano -->
+          <div class="field full">
+            <label>Permitir descargar el plano</label>
+            <div class="toggle-sino">
+              <button type="button" :class="{ active: form.plano_descargable }" @click="form.plano_descargable = true">Sí</button>
+              <button type="button" :class="{ active: !form.plano_descargable }" @click="form.plano_descargable = false">No</button>
+            </div>
+            <small class="field-hint">
+              Si está en "Sí", aparece el botón "Descargar plano" (usa el PDF; si no hay PDF, la imagen del plano).
+            </small>
+          </div>
+
+          <!-- Ambientes -->
+          <div class="field full">
+            <label>Ambientes (distribución)</label>
+            <div class="ambientes-list">
+              <div v-for="(amb, i) in form.ambientes" :key="i" class="ambiente-item">
+                <input
+                  v-model="amb.nombre"
+                  type="text"
+                  placeholder="Nombre (Ej: Dorm. Principal)"
+                  class="amb-nombre"
+                />
+                <input
+                  v-model="amb.area"
+                  type="text"
+                  placeholder="Área (Ej: 22 m²)"
+                  class="amb-area"
+                />
+                <button type="button" class="btn-remove-amb" @click="quitarAmbiente(i)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+              <button type="button" class="btn-add-amb" @click="agregarAmbiente">
+                + Agregar ambiente
+              </button>
             </div>
           </div>
 
@@ -411,6 +438,8 @@ interface Ambiente {
 
 interface EspecificacionesTecnicas {
   superficie_desde: string
+  superficie_terreno: string
+  estacionamientos: string
   terraza: string
   dormitorios: string
   banos: string
@@ -422,6 +451,8 @@ interface EspecificacionesTecnicas {
 
 const especificacionesIniciales: EspecificacionesTecnicas = {
   superficie_desde: '',
+  superficie_terreno: '',
+  estacionamientos: '',
   terraza: '',
   dormitorios: '',
   banos: '',
@@ -451,6 +482,7 @@ const formInicial = {
   // Plano arquitectónico
   plano_imagen: '',
   plano_pdf: '',
+  plano_descargable: true,
   plano_titulo: '',
   plano_subtitulo: '',
   ambientes: [] as Ambiente[],
@@ -601,11 +633,14 @@ function editarProyecto(p: any) {
     // Plano arquitectónico
     plano_imagen: p.plano_imagen || '',
     plano_pdf: p.plano_pdf || '',
+    plano_descargable: p.plano_descargable !== false,
     plano_titulo: p.plano_titulo || '',
     plano_subtitulo: p.plano_subtitulo || '',
     ambientes: p.ambientes || [],
     especificaciones_tecnicas: {
       superficie_desde: p.especificaciones_tecnicas?.superficie_desde || '',
+      superficie_terreno: p.especificaciones_tecnicas?.superficie_terreno || '',
+      estacionamientos: p.especificaciones_tecnicas?.estacionamientos || '',
       terraza: p.especificaciones_tecnicas?.terraza || '',
       dormitorios: p.especificaciones_tecnicas?.dormitorios || '',
       banos: p.especificaciones_tecnicas?.banos || '',
@@ -749,6 +784,7 @@ async function guardarProyecto() {
     // Plano arquitectónico
     plano_imagen: form.value.plano_imagen || null,
     plano_pdf: form.value.plano_pdf || null,
+    plano_descargable: form.value.plano_descargable,
     plano_titulo: form.value.plano_titulo || null,
     plano_subtitulo: form.value.plano_subtitulo || null,
     ambientes: ambientesFiltrados.length > 0 ? ambientesFiltrados : null,
@@ -767,7 +803,7 @@ async function guardarProyecto() {
       mensaje.value = {
         tipo: 'success',
         texto: datos.status === 'published'
-          ? `Proyecto actualizado. <a href="/proyectos/${datos.slug}" target="_blank">Ver proyecto →</a>`
+          ? `Proyecto actualizado. <a href="/proyectos/${datos.slug}" target="_blank">Ver proyecto</a>`
           : 'Proyecto actualizado (en borrador)'
       }
     } else {
@@ -780,7 +816,7 @@ async function guardarProyecto() {
       mensaje.value = {
         tipo: 'success',
         texto: datos.status === 'published'
-          ? `Proyecto creado. <a href="/proyectos/${datos.slug}" target="_blank">Ver proyecto →</a>`
+          ? `Proyecto creado. <a href="/proyectos/${datos.slug}" target="_blank">Ver proyecto</a>`
           : 'Proyecto creado (en borrador - no visible en la web)'
       }
     }
@@ -949,6 +985,33 @@ async function logout() {
   margin-top: 8px;
   font-size: 12px;
   color: #c00;
+}
+
+.toggle-sino {
+  display: inline-flex;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.toggle-sino button {
+  background: white;
+  border: none;
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+}
+
+.toggle-sino button + button {
+  border-left: 1px solid #ddd;
+}
+
+.toggle-sino button.active {
+  background: #2b5f00;
+  color: white;
 }
 
 .field-hint {
@@ -1350,8 +1413,15 @@ async function logout() {
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.remove-img svg {
+  width: 12px;
+  height: 12px;
 }
 
 .add-galeria {
@@ -1509,7 +1579,12 @@ async function logout() {
 }
 
 .pdf-icon {
-  font-size: 32px;
+  display: flex;
+  color: #2b5f00;
+}
+
+.warn-icon svg {
+  vertical-align: -3px;
 }
 
 /* Ambientes List */
