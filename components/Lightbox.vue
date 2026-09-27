@@ -38,7 +38,7 @@
             :class="['lb-thumb', { active: i === current }]"
             @click.stop="current = i"
           >
-            <NuxtImg :src="img" :alt="`thumb ${i}`" width="80" height="60" />
+            <NuxtImg :src="img" :alt="`Miniatura de la imagen ${i + 1}`" width="80" height="60" />
           </div>
         </div>
 

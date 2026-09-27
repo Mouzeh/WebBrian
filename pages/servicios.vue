@@ -109,7 +109,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Servicios — R&J SPA' })
+usePaginaSeo({
+  titulo: 'Servicios de Construcción en Valdivia | R&J Constructora',
+  descripcion: 'Construcción de casas, instalaciones eléctricas SEC y sanitarias, permisos de edificación, regularizaciones y topografía en la Región de Los Ríos.'
+})
 
 const activeCard = ref<number | null>(null)
 

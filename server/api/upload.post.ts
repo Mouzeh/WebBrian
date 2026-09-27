@@ -1,3 +1,4 @@
+import { slugificar } from '../../composables/negocio'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 export default defineEventHandler(async (event) => {
@@ -16,11 +17,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Generar nombre único para el archivo
-  const ext = file.filename?.split('.').pop() || 'jpg'
-  const timestamp = Date.now()
-  const randomStr = Math.random().toString(36).substring(2, 8)
-  const fileName = `${timestamp}-${randomStr}.${ext}`
+  // Nombre descriptivo para SEO: "vivienda-n1-alerces-portada-k3x9.jpg"
+  // Usa el campo "nombre" enviado por el panel o, si no viene, el nombre original del archivo.
+  const ext = (file.filename?.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
+  const nombreCampo = formData?.find(f => f.name === 'nombre')?.data?.toString('utf8')
+  const base = slugificar(nombreCampo || (file.filename || '').replace(/\.[^.]+$/, '')).slice(0, 80) || 'imagen'
+  const randomStr = Math.random().toString(36).substring(2, 6)
+  const fileName = `${base}-${randomStr}.${ext}`
 
   // Cliente S3 para R2
   const s3 = new S3Client({

@@ -166,11 +166,9 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: 'Política de Privacidad — R&J Constructora',
-  meta: [
-    { name: 'description', content: 'Política de privacidad y protección de datos personales de Inmobiliaria y Constructora R&J SPA.' }
-  ]
+usePaginaSeo({
+  titulo: 'Política de Privacidad | R&J Constructora',
+  descripcion: 'Política de privacidad y protección de datos personales de Inmobiliaria y Constructora R&J SPA: qué datos recopilamos, para qué los usamos y tus derechos.'
 })
 
 const lastUpdated = 'Septiembre 2024'

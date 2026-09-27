@@ -55,10 +55,10 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'es' },
-      title: 'Constructora — Edificamos el Futuro',
+      htmlAttrs: { lang: 'es-CL' },
+      title: 'R&J Constructora | Construcción de casas en Los Ríos',
       meta: [
-        { name: 'description', content: 'Más de 20 años construyendo proyectos residenciales y comerciales en Chile con los más altos estándares de calidad.' },
+        { name: 'description', content: 'Inmobiliaria y constructora en la Región de Los Ríos, Chile. Construcción de casas, modelos listos para construir, permisos y regularizaciones.' },
         { name: 'theme-color', content: '#0F0F0F' },
       ],
       link: [

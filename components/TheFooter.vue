@@ -68,6 +68,7 @@
             <li><NuxtLink to="/">Inicio</NuxtLink></li>
             <li><NuxtLink to="/nosotros">Nosotros</NuxtLink></li>
             <li><NuxtLink to="/proyectos/">{{ config.mostrar_terminados ? 'Proyectos' : 'Modelos' }}</NuxtLink></li>
+            <li><NuxtLink to="/blog">Blog</NuxtLink></li>
             <li><NuxtLink to="/contacto">Contacto</NuxtLink></li>
           </ul>
         </div>

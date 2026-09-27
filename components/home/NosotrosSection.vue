@@ -62,35 +62,6 @@
       <!-- Visual Side -->
       <div class="nosotros-visual">
         <div class="visual-wrapper">
-          <!-- Floating Stats Cards -->
-          <div class="stats-stack">
-            <div
-              v-for="(stat, index) in stats"
-              :key="stat.label"
-              class="stat-card glass-card"
-              :style="{ '--delay': `${index * 0.1}s` }"
-            >
-              <div class="stat-shine"></div>
-              <div class="stat-icon">
-                <svg v-if="stat.id === 'experience'" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                  <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <svg v-else-if="stat.id === 'projects'" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <svg v-else-if="stat.id === 'satisfaction'" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="stat-data">
-                <span class="stat-number">{{ stat.value }}</span>
-                <span class="stat-label">{{ stat.label }}</span>
-              </div>
-            </div>
-          </div>
-
           <!-- Main Image Frame -->
           <div class="image-frame glass-card">
             <div class="frame-shine"></div>
@@ -168,11 +139,6 @@ const features = [
   'Presupuestos transparentes sin sorpresas'
 ]
 
-const stats = [
-  { id: 'experience', value: '15+', label: 'Anos experiencia' },
-  { id: 'projects', value: '200+', label: 'Proyectos' },
-  { id: 'satisfaction', value: '100%', label: 'Satisfaccion' }
-]
 </script>
 
 <style scoped>

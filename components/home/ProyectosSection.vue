@@ -33,7 +33,7 @@
         <div class="card-image">
           <NuxtImg
             :src="p.imagen_portada.startsWith('http') ? p.imagen_portada : imgUrl(p.imagen_portada)"
-            :alt="p.titulo"
+            :alt="altProyecto(p)"
             class="card-img"
           />
           <div class="card-overlay"></div>

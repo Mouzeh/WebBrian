@@ -45,7 +45,7 @@
         >
           <NuxtImg
             :src="imgUrl(p.imagen_portada)"
-            :alt="p.titulo"
+            :alt="altProyecto(p)"
             class="pcard-img"
           />
           <div class="pcard-overlay"></div>
@@ -85,11 +85,17 @@
 <script setup lang="ts">
 const { data: config } = await useConfiguracion()
 
-useHead({
-  title: computed(() => config.value.mostrar_terminados
-    ? 'Proyectos - Construcciones Brian'
-    : 'Modelos de Casas - Construcciones Brian')
-})
+usePaginaSeo(() => config.value.mostrar_terminados
+  ? {
+      titulo: 'Proyectos de Construcción y Modelos de Casas | R&J Constructora',
+      descripcion: 'Casas que ya construimos y modelos listos para construir en Valdivia y la Región de Los Ríos. Revisa superficies, dormitorios, planos y precios.',
+      ruta: '/proyectos'
+    }
+  : {
+      titulo: 'Modelos de Casas para Construir en el Sur de Chile | R&J',
+      descripcion: 'Modelos de casas listos para construir en Valdivia y la Región de Los Ríos: planos, superficies, dormitorios y precios desde. Elige tu casa y cotiza.',
+      ruta: '/proyectos'
+    })
 
 const { initReveal } = useReveal()
 const { imgUrl, getProyectos } = useProyectos()

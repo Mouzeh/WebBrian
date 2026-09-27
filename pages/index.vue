@@ -15,6 +15,9 @@
     <!-- Modelos de Casas -->
     <HomeModelosSection />
 
+    <!-- Preguntas frecuentes (editables desde el panel) -->
+    <HomeFaqSection />
+
     <!-- Contacto -->
     <HomeContactoSection />
   </div>
@@ -24,14 +27,10 @@
 import { useReveal } from '~/composables/useReveal'
 
 // SEO
-useHead({
-  title: 'Construcciones Brian — Servicios Integrales de Construcción',
-  meta: [
-    {
-      name: 'description',
-      content: 'Servicios profesionales de construcción: eléctricos, sanitarios, permisos de edificación, topografía y más. Más de 15 años de experiencia en Chile.'
-    }
-  ]
+usePaginaSeo({
+  titulo: 'Construcción de Casas en Valdivia y Los Ríos | R&J',
+  descripcion: 'Inmobiliaria y constructora en la Región de Los Ríos. Modelos de casas listos para construir, proyectos a medida, permisos y regularizaciones. Cotiza sin costo.',
+  ruta: '/'
 })
 
 const { initReveal } = useReveal()

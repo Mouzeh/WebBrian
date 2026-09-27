@@ -110,7 +110,8 @@ const navLinks = computed(() => [
   { path: '/', label: 'Inicio' },
   { path: '/servicios', label: 'Servicios' },
   { path: '/nosotros', label: 'Nosotros' },
-  { path: '/proyectos/', label: config.value.mostrar_terminados ? 'Proyectos' : 'Modelos' }
+  { path: '/proyectos/', label: config.value.mostrar_terminados ? 'Proyectos' : 'Modelos' },
+  { path: '/blog', label: 'Blog' }
 ])
 
 const route = useRoute()

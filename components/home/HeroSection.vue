@@ -4,7 +4,7 @@
     <div class="hero-media" :style="{ transform: `translate3d(0, ${parallax}px, 0)` }">
       <img
         :src="HERO_IMAGEN"
-        alt="Casa moderna construida por la empresa"
+        alt="Casa moderna de dos pisos con grandes ventanales al atardecer"
         class="hero-img"
         fetchpriority="high"
         decoding="async"
@@ -54,15 +54,6 @@
 
     <!-- Datos + indicador de scroll -->
     <div class="hero-bottom">
-      <ul class="hero-stats">
-        <li v-for="(dato, i) in DATOS" :key="dato.label" class="stat" :style="{ '--s': i }">
-          <svg class="stat-icon" viewBox="0 0 24 24" aria-hidden="true" v-html="dato.icono" />
-          <span class="stat-body">
-            <span class="stat-value">{{ dato.valor }}</span>
-            <span class="stat-label">{{ dato.label }}</span>
-          </span>
-        </li>
-      </ul>
 
       <a href="#nosotros" class="scroll-cue" @click.prevent="bajar">
         <span>Descubre más</span>
@@ -81,24 +72,6 @@ const TITULO = [
   { texto: 'Construimos', accent: false },
   { texto: 'la casa donde', accent: false },
   { texto: 'empieza tu historia', accent: true }
-]
-
-const DATOS = [
-  {
-    valor: '15+',
-    label: 'Años de experiencia',
-    icono: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'
-  },
-  {
-    valor: '200+',
-    label: 'Proyectos realizados',
-    icono: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>'
-  },
-  {
-    valor: '100%',
-    label: 'Compromiso',
-    icono: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/>'
-  }
 ]
 
 const heroRef = ref<HTMLElement | null>(null)
@@ -401,72 +374,16 @@ onBeforeUnmount(() => {
   padding: 0 6vw 36px;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 24px;
 }
 
-.hero-stats {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 18px;
-  background: rgba(20, 19, 16, 0.45);
-  backdrop-filter: blur(16px);
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(16px);
-}
 
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 20px 28px;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  transform: translateY(16px);
-}
 
-.stat:last-child {
-  border-right: none;
-}
 
-.stat-icon {
-  width: 36px;
-  height: 36px;
-  padding: 8px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: rgba(134, 217, 90, 0.14);
-  fill: none;
-  stroke: var(--verde-claro);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 
-.stat-body {
-  display: flex;
-  flex-direction: column;
-}
 
-.stat-value {
-  font-family: var(--f-display, 'Barlow Condensed', sans-serif);
-  font-size: 30px;
-  font-weight: 900;
-  line-height: 1;
-}
 
-.stat-label {
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-}
 
 .scroll-cue {
   display: flex;
@@ -537,18 +454,7 @@ onBeforeUnmount(() => {
   transition: opacity 1s ease 1.4s, transform 1s var(--ease-hero) 1.4s;
 }
 
-.hero.entered .hero-stats {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.9s ease 1.45s, transform 0.9s var(--ease-hero) 1.45s;
-}
 
-.hero.entered .stat {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.9s ease, transform 0.9s var(--ease-hero);
-  transition-delay: calc(1.55s + var(--s) * 0.1s);
-}
 
 .hero.entered .scroll-cue {
   opacity: 1;
@@ -566,32 +472,10 @@ onBeforeUnmount(() => {
     padding-bottom: 28px;
   }
 
-  .hero-stats {
-    width: 100%;
-  }
 
-  .stat {
-    flex: 1;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 16px;
-  }
 
-  .stat-icon {
-    width: 30px;
-    height: 30px;
-    padding: 6px;
-  }
 
-  .stat-value {
-    font-size: 24px;
-  }
 
-  .stat-label {
-    font-size: 9.5px;
-    letter-spacing: 0.04em;
-  }
 
   .scroll-cue {
     display: none;
@@ -636,8 +520,6 @@ onBeforeUnmount(() => {
   .title-line,
   .hero-desc,
   .hero-actions,
-  .stat,
-  .hero-stats,
   .scroll-cue,
   .curtain,
   .hero-grid {
@@ -650,8 +532,6 @@ onBeforeUnmount(() => {
   .hero .title-line { transform: none; }
   .hero .hero-desc,
   .hero .hero-actions,
-  .hero .stat,
-  .hero .hero-stats,
   .hero .scroll-cue,
   .hero .hero-grid { opacity: 1; transform: none; }
   .hero .curtain { transform: scaleY(0); }

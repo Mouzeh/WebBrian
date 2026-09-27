@@ -81,6 +81,7 @@ useHead({
   // El panel no usa el preloader del sitio: sin esta clase, <main> queda oculto
   bodyAttrs: { class: 'preloader-done' }
 })
+useSeoMeta({ robots: 'noindex, nofollow' })
 
 const supabase = useSupabaseClient()
 const router = useRouter()

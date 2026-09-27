@@ -139,11 +139,9 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: 'Términos y Condiciones — R&J Constructora',
-  meta: [
-    { name: 'description', content: 'Términos y condiciones de uso del sitio web de Inmobiliaria y Constructora R&J SPA.' }
-  ]
+usePaginaSeo({
+  titulo: 'Términos y Condiciones | R&J Constructora',
+  descripcion: 'Términos y condiciones de uso del sitio web de Inmobiliaria y Constructora R&J SPA, incluyendo cotizaciones, contenidos y responsabilidades.'
 })
 
 const lastUpdated = 'Septiembre 2024'

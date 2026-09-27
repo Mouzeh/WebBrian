@@ -24,7 +24,7 @@
         <div class="modelo-image">
           <NuxtImg
             :src="imgUrl(modelo.imagen_portada)"
-            :alt="modelo.titulo"
+            :alt="altProyecto(modelo)"
             width="600"
             height="400"
           />

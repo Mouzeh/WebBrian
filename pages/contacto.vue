@@ -113,7 +113,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Contáctanos — R&J SPA' })
+usePaginaSeo({
+  titulo: 'Contacto y Cotización de Casas | R&J Constructora',
+  descripcion: 'Cotiza la construcción de tu casa en Valdivia y la Región de Los Ríos. Escríbenos por WhatsApp, teléfono o correo. Atención de lunes a viernes de 9:00 a 18:00.'
+})
 
 const loading  = ref(false)
 const sent     = ref(false)

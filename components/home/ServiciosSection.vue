@@ -174,73 +174,7 @@
 </template>
 
 <script setup lang="ts">
-// SEO - JSON-LD Structured Data
-useHead({
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'LocalBusiness',
-        'name': 'Constructora - Servicios Profesionales',
-        'description': 'Servicios profesionales de instalaciones sanitarias, eléctricas y regularización de propiedades en la Región de Los Ríos, Chile.',
-        'url': 'https://constructora.cl/#servicios',
-        'areaServed': {
-          '@type': 'AdministrativeArea',
-          'name': 'Región de Los Ríos, Chile'
-        },
-        'hasOfferCatalog': {
-          '@type': 'OfferCatalog',
-          'name': 'Servicios de Construcción',
-          'itemListElement': [
-            {
-              '@type': 'Offer',
-              'itemOffered': {
-                '@type': 'Service',
-                'name': 'Proyectos e Instalaciones Sanitarias',
-                'description': 'Diseño, gestión y aprobación de proyectos de agua potable y alcantarillado para zonas rurales y urbanas.',
-                'provider': {
-                  '@type': 'LocalBusiness',
-                  'name': 'Constructora'
-                },
-                'serviceType': 'Instalaciones Sanitarias',
-                'areaServed': 'Región de Los Ríos'
-              }
-            },
-            {
-              '@type': 'Offer',
-              'itemOffered': {
-                '@type': 'Service',
-                'name': 'Servicios e Instalaciones Eléctricas',
-                'description': 'Instalaciones eléctricas con certificación SEC, empalmes, tableros y proyectos normados.',
-                'provider': {
-                  '@type': 'LocalBusiness',
-                  'name': 'Constructora'
-                },
-                'serviceType': 'Instalaciones Eléctricas',
-                'areaServed': 'Región de Los Ríos'
-              }
-            },
-            {
-              '@type': 'Offer',
-              'itemOffered': {
-                '@type': 'Service',
-                'name': 'Regularización de Propiedades - Ley del Mono',
-                'description': 'Regularización de viviendas y ampliaciones bajo Ley N° 20.898 con hasta 75% de descuento en derechos municipales.',
-                'provider': {
-                  '@type': 'LocalBusiness',
-                  'name': 'Constructora'
-                },
-                'serviceType': 'Regularización de Propiedades',
-                'areaServed': 'Región de Los Ríos'
-              }
-            }
-          ]
-        }
-      })
-    }
-  ]
-})
+// El schema del negocio (servicios incluidos) está en layouts/default.vue
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)

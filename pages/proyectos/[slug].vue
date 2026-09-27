@@ -7,7 +7,7 @@
       <div class="hero-bg">
         <NuxtImg
           :src="proyecto.imagen_portada.startsWith('http') ? proyecto.imagen_portada : imgUrl(proyecto.imagen_portada)"
-          :alt="proyecto.titulo"
+          :alt="altProyecto(proyecto, 'fachada')"
           class="hero-img"
           loading="eager"
         />
@@ -190,7 +190,7 @@
             <span class="bp-corner br"></span>
             <NuxtImg
               :src="imgUrl(proyecto.plano_imagen)"
-              :alt="`Plano de ${proyecto.titulo}`"
+              :alt="`Plano de planta: ${altProyecto(proyecto)}`"
               class="floorplan-image"
               loading="lazy"
             />
@@ -294,7 +294,7 @@
           >
             <NuxtImg
               :src="url"
-              :alt="`${proyecto.titulo} - imagen ${i + 1}`"
+              :alt="altProyecto(proyecto, `imagen ${i + 1} de ${galeriaUrls.length}`)"
               class="gallery-img"
               loading="lazy"
             />
@@ -369,7 +369,7 @@
             <div class="lb-image-container">
               <NuxtImg
                 :src="galeriaUrls[lbIndex]"
-                :alt="`Imagen ${lbIndex + 1}`"
+                :alt="altProyecto(proyecto, `imagen ${lbIndex + 1} de ${galeriaUrls.length}`)"
                 class="lb-image"
               />
             </div>
@@ -390,7 +390,7 @@
                 :class="['lb-thumb', { active: i === lbIndex }]"
                 @click.stop="lbIndex = i"
               >
-                <NuxtImg :src="url" :alt="`Thumbnail ${i + 1}`" />
+                <NuxtImg :src="url" :alt="`Miniatura ${i + 1} de ${proyecto.titulo}`" />
               </button>
             </div>
           </div>
@@ -434,15 +434,47 @@ const { data: proyecto } = await useAsyncData(
 )
 
 // SEO
-useHead({
-  title: proyecto.value ? `${proyecto.value.titulo} — Constructora` : 'Proyecto no encontrado',
-  meta: proyecto.value ? [
-    { name: 'description', content: proyecto.value.descripcion },
-    { property: 'og:title', content: proyecto.value.titulo },
-    { property: 'og:description', content: proyecto.value.descripcion },
-    { property: 'og:image', content: proyecto.value.imagen_portada.startsWith('http') ? proyecto.value.imagen_portada : imgUrl(proyecto.value.imagen_portada) },
-  ] : [],
+// SEO: título con intención de búsqueda (tipo de casa + atributos + comuna)
+usePaginaSeo(() => {
+  const p = proyecto.value
+  if (!p) {
+    return { titulo: 'Proyecto no encontrado | R&J Constructora', descripcion: 'El proyecto que buscas no existe o ya no está disponible.', noindex: true }
+  }
+  const e = p.especificaciones_tecnicas || {}
+  const comuna = (p.ubicacion || '').split(',').map(s => s.trim()).filter(s => !/^regi[oó]n/i.test(s)).pop()
+  const atributos = [
+    e.superficie_desde ? conM2(e.superficie_desde) : '',
+    e.dormitorios ? `${e.dormitorios} dormitorios` : ''
+  ].filter(Boolean).join(', ')
+  const prefijo = p.categoria === 'construccion' ? 'Modelo de casa' : 'Casa'
+  let titulo = `${prefijo} ${p.titulo}${atributos ? ` (${atributos})` : ''}${comuna ? ` en ${comuna}` : ''} | R&J`
+  if (titulo.length > 65) titulo = `${prefijo} ${p.titulo}${comuna ? ` en ${comuna}` : ''} | R&J`
+  // Descripción: resumen de atributos + texto del proyecto + precio
+  const banos = e.banos || p.banos
+  const resumen = [
+    e.superficie_desde ? conM2(e.superficie_desde) : '',
+    e.dormitorios ? `${e.dormitorios} dormitorios` : '',
+    banos ? `${banos} baños` : ''
+  ].filter(Boolean).join(', ')
+  const intro = `${prefijo} ${p.titulo}${resumen ? ` de ${resumen}` : ''}${comuna ? ` en ${comuna}` : ''}.`
+  const precio = p.precio ? ` Desde ${p.precio}.` : ''
+  let descripcion = `${intro} ${p.descripcion.replace(/\.?\s*$/, '.')}${precio}`
+  if (descripcion.length > 160) descripcion = `${descripcion.slice(0, 157).replace(/\s+\S*$/, '')}…`
+  return {
+    titulo,
+    descripcion,
+    ruta: `/proyectos/${p.slug}`,
+    imagen: imgUrl(p.imagen_portada)
+  }
 })
+
+useSchema(() => proyecto.value
+  ? schemaMigas([
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: proyecto.value.categoria === 'construccion' ? 'Modelos de casas' : 'Proyectos', ruta: '/proyectos' },
+      { nombre: proyecto.value.titulo, ruta: `/proyectos/${proyecto.value.slug}` }
+    ])
+  : null)
 
 // Computed
 const heroEyebrow = computed(() => {

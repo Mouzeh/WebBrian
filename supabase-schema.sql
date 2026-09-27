@@ -2,6 +2,7 @@
 -- SCHEMA SUPABASE — Constructora
 -- Ejecutar en: Supabase Dashboard → SQL Editor
 -- ══════════════════════════════════════════════════════════════════
+-- Blog y preguntas frecuentes: ver supabase-migration-blog-faq.sql
 
 -- ── TABLA: proyectos ──
 CREATE TABLE proyectos (

@@ -76,7 +76,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Nosotros — Constructora' })
+usePaginaSeo({
+  titulo: 'Quiénes Somos | Inmobiliaria y Constructora R&J SPA',
+  descripcion: 'Conoce a R&J, inmobiliaria y constructora de la Región de Los Ríos: nuestro equipo, valores y forma de trabajar en cada proyecto de construcción de casas.'
+})
 const { initReveal } = useReveal()
 onMounted(() => nextTick(initReveal))
 

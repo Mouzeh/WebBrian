@@ -82,6 +82,22 @@ export function conM2(valor?: string | null): string {
   return /^\d+([.,]\d+)?$/.test(v) ? `${v} m²` : v
 }
 
+// Texto alternativo descriptivo para imágenes de proyectos (SEO + accesibilidad)
+export function altProyecto(
+  p: Pick<Proyecto, 'titulo' | 'categoria' | 'ubicacion'> & { especificaciones_tecnicas?: EspecificacionesTecnicas; habitaciones?: string },
+  detalle = ''
+): string {
+  const tipo = p.categoria === 'construccion' ? 'Modelo de casa' : 'Casa construida'
+  const dorm = p.especificaciones_tecnicas?.dormitorios || p.habitaciones
+  const comuna = (p.ubicacion || '').split(',').map(s => s.trim()).filter(s => !/^regi[oó]n/i.test(s)).pop()
+  return [
+    `${tipo} ${p.titulo}`,
+    dorm ? `${dorm} dormitorios` : '',
+    comuna ? `en ${comuna}` : '',
+    detalle
+  ].filter(Boolean).join(', ')
+}
+
 let supabaseClient: SupabaseClient | null = null
 
 export function useSupabaseClient() {
